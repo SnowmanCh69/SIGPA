@@ -6,7 +6,7 @@ namespace SIGPA.Models
     {
         public required int IdInformeGestion { get; set; }
         public required DateTime FechaInforme { get; set; }
-        public required string ConclucionInforme  { get; set; }
+        public required string ConclusionInforme  { get; set; }
         public required string RecomendacionInforme { get; set; }
         public required int IdUsuario { get; set; }
         public required int IdDatoAnalitico { get; set; }

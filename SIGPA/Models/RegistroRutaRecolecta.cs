@@ -8,7 +8,7 @@ namespace SIGPA.Models
         public required DateTime FechaProgramacion { get; set; }
         public required int IdUsuario { get; set; }
         public required int IdRutaRecolecta { get; set; }
-        public required int IdRegitroResiduos { get; set; }
+        public required int IdRegistroResiduos { get; set; }
 
         [ForeignKey("IdUsuario")]
         public required Usuario Usuario { get; set; }
@@ -16,7 +16,7 @@ namespace SIGPA.Models
         [ForeignKey("IdRutaRecolecta")]
         public required RutaRecolecta RutaRecolecta { get; set; }
 
-        [ForeignKey("IdRegitroResiduos")]
+        [ForeignKey("IdRegistroResiduos")]
         public required RegistroResiduos RegistroResiduos { get; set; }
 
     }
