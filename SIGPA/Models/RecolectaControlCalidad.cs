@@ -1,8 +1,13 @@
-﻿namespace SIGPA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace SIGPA.Models
 {
     public class RecolectaControlCalidad
     {
-        public required int IdRecolectaControlCalidad { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdRecolectaControlCalidad { get; set; }
         public required int IdRecolectaResiduos { get; set; }
         public required int IdControlCalidad { get; set; }
         public required int IdResultado { get; set; }

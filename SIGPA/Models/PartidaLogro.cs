@@ -1,8 +1,13 @@
-﻿namespace SIGPA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace SIGPA.Models
 {
     public class PartidaLogro
     {
-        public required int IdPartidaLogro { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdPartidaLogro { get; set; }
         public required int IdPartida { get; set; }
         public required int IdLogro { get; set; }
         public required DateTime FechaLogro { get; set; }

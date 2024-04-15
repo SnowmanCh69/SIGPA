@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SIGPA.Models
 {
     public class Partida
     {
-        public required int IdPartida { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdPartida { get; set; }
         public required int IdUsuario { get; set; }
         public required DateTime FechaInicioPartida { get; set; }
         public required DateTime FechaFinPartida { get; set; }

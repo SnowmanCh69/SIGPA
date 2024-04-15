@@ -1,8 +1,13 @@
-﻿namespace SIGPA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace SIGPA.Models
 {
     public class Resultado
     {
-        public required int IdResultado { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdResultado { get; set; }
         public required string NombreResultado { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SIGPA.Models
 {
     public class RecolectaResiduos
     {
-        public required int IdRecolectaResiduos { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdRecolectaResiduos { get; set; }
         public required int IdRutaRecolecta{ get; set; }
         public required int IdResiduos { get; set; }
         public required string CantidadRecolectada { get; set; }

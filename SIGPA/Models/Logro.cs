@@ -1,8 +1,13 @@
-﻿namespace SIGPA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace SIGPA.Models
 {
     public class Logro
     {
-        public required int IdLogro { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdLogro { get; set; }
         public required string NombreLogro { get; set; }
         public required string DescripcionLogro { get; set; }
         public required int IdTipoLogro { get; set; }

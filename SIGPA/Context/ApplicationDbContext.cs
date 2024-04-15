@@ -17,7 +17,7 @@ namespace SIGPA.Context
         public DbSet<MetodoControl> MetodoControl { get; set; }
         public DbSet<ResiduosPartida> ResiduosPartida { get; set; }
         public DbSet<Residuos> Residuos { get; set; }
-        public DbSet<EstadoRegistro> EstadoRegistro { get; set; }
+        public DbSet<EstadoResiduos> EstadoResiduos { get; set; }
         public DbSet<TipoResiduos> TipoResiduos { get; set; }
         public DbSet<RecolectaResiduos> RecolectaResisiduos { get; set; }
         public DbSet<RecolectaControlCalidad> RecolectaControlCalidad { get; set; }

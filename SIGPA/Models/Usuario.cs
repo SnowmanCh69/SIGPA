@@ -1,9 +1,14 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
 namespace SIGPA.Models
 {
     public class Usuario
     {
-        public required int IdUsuario { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdUsuario { get; set; }
         public required string NombreUsuario { get; set; }
         public required string EmailUsuario { get; set; }
         public required int IdRolUsuario { get; set; }

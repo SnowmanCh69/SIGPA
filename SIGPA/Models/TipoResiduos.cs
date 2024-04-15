@@ -1,8 +1,13 @@
-﻿namespace SIGPA.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace SIGPA.Models
 {
     public class TipoResiduos
     {
-        public required int IdTipoResiduos { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdTipoResiduos { get; set; }
         public required string NombreTipoResiduos { get; set; }
     }
 }
