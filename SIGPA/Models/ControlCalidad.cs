@@ -6,16 +6,14 @@ namespace SIGPA.Models
     {
         public required int IdControlCalidad { get; set; }
         public required DateTime FechaControl { get; set; }
-        public required string ObservacionesControl { get; set; }
         public required int IdUsuario { get; set; }
-        public required int IdResultadoControl { get; set; }
+        public required int IdMetodoControl { get; set; }
 
 
         [ForeignKey("IdUsuario")]
         public required Usuario Usuario { get; set; }
 
-        [ForeignKey("IdResultadoControl")]
-        public required ResultadoControl ResultadoControl { get; set; }
+        public required MetodoControl MetodoControl { get; set; }
 
     }
 }
