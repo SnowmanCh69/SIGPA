@@ -11,12 +11,14 @@ namespace SIGPA.Models
         public required int IdNivel { get; set; }
         public required string UbicacionJugador { get; set; }
         public required int CantidadVidas { get; set; }
+        public required int IdResiduos { get; set; }
 
 
         public required Nivel Nivel { get; set; }
 
         [ForeignKey("IdUsuario")]
         public required Usuario Usuario { get; set; }
+        public required Residuos Residuos { get; set; }
         
 
     }
