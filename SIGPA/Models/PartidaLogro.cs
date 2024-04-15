@@ -8,8 +8,8 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPartidaLogro { get; set; }
-        public required int IdPartida { get; set; }
-        public required int IdLogro { get; set; }
+        public int IdPartida { get; set; }
+        public int IdLogro { get; set; }
         public required DateTime FechaLogro { get; set; }
 
         public required Partida Partida { get; set; }

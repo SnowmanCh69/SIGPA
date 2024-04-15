@@ -8,8 +8,8 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdRecolectaResiduos { get; set; }
-        public required int IdRutaRecolecta{ get; set; }
-        public required int IdResiduos { get; set; }
+        public int IdRutaRecolecta{ get; set; }
+        public int IdResiduos { get; set; }
         public required string CantidadRecolectada { get; set; }
         public required DateTime FechaRecoleccion { get; set; }
 

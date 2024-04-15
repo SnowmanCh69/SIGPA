@@ -10,9 +10,9 @@ namespace SIGPA.Models
         public int IdRutaRecolecta { get; set; }
         public required string PuntoInicio { get; set; }
         public required string PuntoFinalizacion { get; set; }
-        public required int IdEstadoRuta { get; set; }
-        public required int IdUsuario { get; set; }
-        public required int IdVehiculo { get; set; }
+        public int IdEstadoRuta { get; set; }
+        public int IdUsuario { get; set; }
+        public int IdVehiculo { get; set; }
 
         [ForeignKey("IdUsuario")]
         public required Usuario Usuario { get; set; }

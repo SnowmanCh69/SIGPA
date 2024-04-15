@@ -8,13 +8,13 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPartida { get; set; }
-        public required int IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public required DateTime FechaInicioPartida { get; set; }
         public required DateTime FechaFinPartida { get; set; }
-        public required int IdNivel { get; set; }
+        public int IdNivel { get; set; }
         public required string UbicacionJugador { get; set; }
-        public required int CantidadVidas { get; set; }
-        public required int IdResiduos { get; set; }
+        public int CantidadVidas { get; set; }
+        public int IdResiduos { get; set; }
 
 
         public required Nivel Nivel { get; set; }

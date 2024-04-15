@@ -10,7 +10,7 @@ namespace SIGPA.Models
         public int IdLogro { get; set; }
         public required string NombreLogro { get; set; }
         public required string DescripcionLogro { get; set; }
-        public required int IdTipoLogro { get; set; }
+        public int IdTipoLogro { get; set; }
 
         public required TipoLogro TipoLogro { get; set; }
     }

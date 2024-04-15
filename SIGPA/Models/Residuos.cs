@@ -9,10 +9,10 @@ namespace SIGPA.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdResiduo { get; set; }
         public required DateTime FechaRegistro { get; set; }
-        public required int IdEstadoResiduos { get; set; }
+        public int IdEstadoResiduos { get; set; }
         public required string CantidadRegistrada { get; set; }
-        public required int IdTipoResiduos { get; set; }
-        public required int IdUsuario { get; set; }
+        public int IdTipoResiduos { get; set; }
+        public int IdUsuario { get; set; }
 
         public required EstadoResiduos EstadoResiduos { get; set; }
         public required TipoResiduos TipoResiduos { get; set; }

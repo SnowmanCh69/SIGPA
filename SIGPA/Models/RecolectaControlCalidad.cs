@@ -8,9 +8,9 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdRecolectaControlCalidad { get; set; }
-        public required int IdRecolectaResiduos { get; set; }
-        public required int IdControlCalidad { get; set; }
-        public required int IdResultado { get; set; }
+        public int IdRecolectaResiduos { get; set; }
+        public int IdControlCalidad { get; set; }
+        public int IdResultado { get; set; }
         public required string Observaciones { get; set; }
 
         public required RecolectaResiduos RecolectaResiduos { get; set; }

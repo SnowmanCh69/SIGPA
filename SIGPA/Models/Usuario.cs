@@ -11,7 +11,7 @@ namespace SIGPA.Models
         public int IdUsuario { get; set; }
         public required string NombreUsuario { get; set; }
         public required string EmailUsuario { get; set; }
-        public required int IdRolUsuario { get; set; }
+        public int IdRolUsuario { get; set; }
 
 
 
