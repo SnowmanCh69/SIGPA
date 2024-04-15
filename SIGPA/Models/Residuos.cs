@@ -7,7 +7,7 @@ namespace SIGPA.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdResiduo { get; set; }
+        public int IdResiduos { get; set; }
         public required DateTime FechaRegistro { get; set; }
         public int IdEstadoResiduos { get; set; }
         public required string CantidadRegistrada { get; set; }
@@ -19,7 +19,7 @@ namespace SIGPA.Models
 
         [ForeignKey("IdUsuario")]
         public required Usuario Usuario { get; set; }
-
-
+        public required ResiduosPartida ResiduosPartida { get; set; }
+  
     }
 }

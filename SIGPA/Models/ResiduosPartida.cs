@@ -9,7 +9,7 @@ namespace SIGPA.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdResiduosPartida { get; set; }
         public int IdPartida { get; set; }
-        public int IdResiduo { get; set; }
+        public int IdResiduos { get; set; }
         public int CantidadRegistrada { get; set; }
 
 

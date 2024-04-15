@@ -19,14 +19,47 @@ namespace SIGPA.Context
         public DbSet<Residuos> Residuos { get; set; }
         public DbSet<EstadoResiduos> EstadoResiduos { get; set; }
         public DbSet<TipoResiduos> TipoResiduos { get; set; }
-        public DbSet<RecolectaResiduos> RecolectaResisiduos { get; set; }
+        public DbSet<RecolectaResiduos> RecolectaResiduos { get; set; }
         public DbSet<RecolectaControlCalidad> RecolectaControlCalidad { get; set; }
         public DbSet<Resultado> Resultado { get; set; }
         public DbSet<EstadoRuta> EstadoRuta { get; set; }
         public DbSet<RutaRecolecta> RutaRecolecta { get; set; }
         public DbSet<Vehiculo> Vehiculo { get; set; }
         public DbSet<TipoVehiculo> TipoVehiculo { get; set; }
-  
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Partida>()
+                .HasOne(p => p.Usuario)
+                .WithMany(u => u.Partidas) // Indica que un usuario puede tener varias partidas
+                .HasForeignKey(p => p.IdUsuario)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RecolectaResiduos>()
+                .HasOne(r => r.RutaRecolecta)
+                .WithMany()
+                .HasForeignKey(r => r.IdRutaRecolecta)
+                .OnDelete(DeleteBehavior.Restrict); // Especifica el comportamiento al eliminar
+
+            modelBuilder.Entity<RecolectaResiduos>()
+                .HasOne(r => r.Usuario)
+                .WithMany(u => u.RecolectaResiduos)
+                .HasForeignKey(r => r.IdUsuario)
+                .OnDelete(DeleteBehavior.NoAction); // Especifica la opción ON DELETE aquí
+
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ResiduosPartida>()
+                .HasOne(rp => rp.Residuos)
+                .WithOne(r => r.ResiduosPartida)
+                .HasForeignKey<ResiduosPartida>(rp => rp.IdResiduos)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            base.OnModelCreating(modelBuilder);
+
+
+        }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
