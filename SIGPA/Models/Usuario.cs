@@ -19,11 +19,11 @@ namespace SIGPA.Models
         public required RolUsuario RolUsuario { get; set; }
 
 
-        public required ICollection<Partida> Partidas { get; set; }
-        public required List<ControlCalidad> ControlCalidad { get; set; }
-        public required List<RutaRecolecta> RutaRecolecta { get; set; }
-        public required List<Residuos> Residuos { get; set; }
-        public required ICollection<RecolectaResiduos> RecolectaResiduos { get; set; }
+        public ICollection<Partida> Partidas { get; set; } = new List<Partida>();
+        public List<ControlCalidad> ControlCalidad { get; set; } = new List<ControlCalidad>();
+        public List<RutaRecolecta> RutaRecolecta { get; set; } = new List<RutaRecolecta>();
+        public List<Residuos> Residuos { get; set; } = new List<Residuos>();
+        public ICollection<RecolectaResiduos> RecolectaResiduos { get; set; } = new List<RecolectaResiduos>();
 
 
 

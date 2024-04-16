@@ -13,6 +13,7 @@ namespace SIGPA.Models
         public required string CantidadRegistrada { get; set; }
         public int IdTipoResiduos { get; set; }
         public int IdUsuario { get; set; }
+        public int IdResiduosPartida { get; set; }
 
         public required EstadoResiduos EstadoResiduos { get; set; }
         public required TipoResiduos TipoResiduos { get; set; }
