@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
@@ -10,5 +11,9 @@ namespace SIGPA.Models
         public int IdMetodoControl { get; set; }
         public required string NombreMetodoControl { get; set; }
         public required string DescripcionMetodoControl { get; set; }
+
+
+        [JsonIgnore]
+        public bool IsDeleted { get; set; } = true;
     }
 }

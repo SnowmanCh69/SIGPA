@@ -1,6 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
@@ -11,12 +12,16 @@ namespace SIGPA.Models
         public int IdUsuario { get; set; }
         public required string NombreUsuario { get; set; }
         public required string EmailUsuario { get; set; }
+
+        [ForeignKey(nameof(RolUsuario))]
         public int IdRolUsuario { get; set; }
 
 
+        [JsonIgnore]
+        public bool IsDeleted { get; set; } = true;
 
-       
-        public required RolUsuario RolUsuario { get; set; }
+
+        public virtual RolUsuario? RolUsuario { get; set; }
 
 
         public ICollection<Partida> Partidas { get; set; } = new List<Partida>();

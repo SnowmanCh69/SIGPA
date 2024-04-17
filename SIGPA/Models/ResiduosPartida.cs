@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
@@ -8,11 +9,18 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdResiduosPartida { get; set; }
+
+        [ForeignKey(nameof(Partida))]
         public int IdPartida { get; set; }
+
+        [ForeignKey(nameof(Residuos))]
         public int IdResiduos { get; set; }
         public required string CantidadRegistrada { get; set; }
 
-        public required Partida Partida { get; set; }
-        public required Residuos Residuos { get; set; }
+        [JsonIgnore]
+        public bool IsDeleted { get; set; } = true;
+
+        public virtual Partida? Partida { get; set; }
+        public virtual Residuos? Residuos { get; set; }
     }
 }

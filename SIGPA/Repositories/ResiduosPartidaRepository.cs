@@ -9,7 +9,6 @@ namespace SIGPA.Repositories
     {
         Task<List<ResiduosPartida>> GetAll();
         Task<ResiduosPartida?> GetResiduosPartida(int id);
-        Task<ResiduosPartida> CreateResiduosPartida(int idPartida, int idResiduos, string cantidadRegistrada);
         Task<ResiduosPartida> UpdateResiduosPartida(ResiduosPartida residuosPartida);
         Task<ResiduosPartida> DeleteResiduosPartida(int id);
     }
@@ -28,7 +27,6 @@ namespace SIGPA.Repositories
         {
             return await _db.ResiduosPartida.FirstOrDefaultAsync(e => e.IdResiduosPartida == id);
         }
-        public async Task<ResiduosPartida> CreateResiduosPartida(int idPartida, int idResiduos, string cantidadRegistrada)
         {
             // Obtener la partida y los residuos correspondientes a partir de sus IDs
             var partida = await _db.Partida.FindAsync(idPartida);

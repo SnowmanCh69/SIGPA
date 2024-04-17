@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
@@ -11,9 +12,15 @@ namespace SIGPA.Models
         public required string MarcaVehiculo { get; set; }
         public required string ModeloVehiculo { get; set; }
         public required string PlacaVehiculo{ get; set; }
+
+        [ForeignKey(nameof(TipoVehiculo))]
         public int IdTipoVehiculo { get; set; }
 
-        public required TipoVehiculo TipoVehiculo { get; set; }
+        [JsonIgnore]
+        public bool IsDeleted { get; set; } = true;
+
+
+        public virtual TipoVehiculo? TipoVehiculo { get; set; }
 
     }
 }

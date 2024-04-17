@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
@@ -10,15 +11,20 @@ namespace SIGPA.Models
         public int IdRutaRecolecta { get; set; }
         public required string PuntoInicio { get; set; }
         public required string PuntoFinalizacion { get; set; }
+
+        [ForeignKey(nameof(EstadoRuta))]
         public int IdEstadoRuta { get; set; }
+
+        [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
+
+        [ForeignKey(nameof(Vehiculo))]
         public int IdVehiculo { get; set; }
 
-        [ForeignKey("IdUsuario")]
-        public required Usuario Usuario { get; set; }
-
-        public required EstadoRuta EstadoRuta { get; set; }
-        public required Vehiculo Vehiculo { get; set; }
+  
+        public virtual Usuario? Usuario { get; set; }
+        public virtual EstadoRuta? EstadoRuta { get; set; }
+        public virtual Vehiculo? Vehiculo { get; set; }
 
 
     }
