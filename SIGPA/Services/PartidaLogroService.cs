@@ -5,76 +5,69 @@ namespace SIGPA.Services
 {
     public interface IPartidaLogroService
     {
-        Task<List<PartidaLogro>> GetAll();
-        Task<PartidaLogro?> GetPartidaLogro(int IdPartidaLogro);
-        Task<PartidaLogro> CreatePartidaLogro(int IdPartida, int IdLogro, DateTime FechaLogro);
+        Task<IEnumerable<PartidaLogro>> GetPartidasLogros();
+        Task<PartidaLogro?> GetPartidaLogro(int id);
+        Task<PartidaLogro> CreatePartidaLogro(
+         int IdPartida,
+         int IdLogro,
+         DateTime FechaLogro
+
+        );
         Task<PartidaLogro> UpdatePartidaLogro(
           int IdPartidaLogro,
-          int? IdPartida = null,
-          int? IdLogro = null,
-          DateTime? FechaLogro = null
+          int? IdPartida,
+          int? IdLogro,
+          DateTime? FechaLogro
         );
-        Task<PartidaLogro> DeletePartidaLogro(int idPartidaLogro);
+        Task<PartidaLogro> DeletePartidaLogro(int id);
     }
-    public class PartidaLogroService: IPartidaLogroService
+    public class PartidaLogroService(IPartidaLogroRepository partidaLogroRepository) : IPartidaLogroService
     {
-        private readonly IPartidaLogroRepository _partidaLogroRepository;
-        public PartidaLogroService(IPartidaLogroRepository partidaLogroRepository)
+        
+        public async Task<PartidaLogro?> GetPartidaLogro(int id)
         {
-            _partidaLogroRepository = partidaLogroRepository;
+            return await partidaLogroRepository.GetPartidaLogro(id);
         }
 
-        public async Task<List<PartidaLogro>> GetAll()
+        public async Task<IEnumerable<PartidaLogro>> GetPartidasLogros()
         {
-            return await _partidaLogroRepository.GetAll();
+            return await partidaLogroRepository.GetPartidasLogros();
         }
 
-        public async Task<PartidaLogro?> GetPartidaLogro(int IdPartidaLogro)
+        public async Task<PartidaLogro> CreatePartidaLogro(
+           int IdPartida,
+           int IdLogro,
+           DateTime FechaLogro
+          )
         {
-            return await _partidaLogroRepository.GetPartidaLogro(IdPartidaLogro);
-        }
-
-        public async Task<PartidaLogro> CreatePartidaLogro(int IdPartida, int IdLogro, DateTime FechaLogro)
-        {
-            return await _partidaLogroRepository.CreatePartidaLogro(IdPartida, IdLogro, FechaLogro);
+            return await partidaLogroRepository.CreatePartidaLogro(new PartidaLogro
+            {
+                IdPartida = IdPartida,
+                IdLogro = IdLogro,
+                FechaLogro= FechaLogro
+            });
         }
 
         public async Task<PartidaLogro> UpdatePartidaLogro(
            int IdPartidaLogro,
-           int? IdPartida = null,
-           int? IdLogro = null,
-           DateTime? FechaLogro = null
-         )
+           int? IdPartida,
+           int? IdLogro,
+           DateTime? FechaLogro
+           )
         {
-            var partidaLogro = await _partidaLogroRepository.GetPartidaLogro(IdPartidaLogro);
-            if (partidaLogro == null)
-            {
-                throw new Exception("PartidaLogro not found");
-            }
-
-            if(IdPartida!= null)
-            {
-                partidaLogro.IdPartida = (int)IdPartida;
-
-            }
-
-            if(IdLogro!= null)
-            {
-                partidaLogro.IdLogro = (int)IdLogro;
-            }
-
-            if(FechaLogro!= null)
-            {
-                partidaLogro.FechaLogro = (DateTime)FechaLogro;
-            }
-
-            return await _partidaLogroRepository.UpdatePartidaLogro(partidaLogro);
+            PartidaLogro? partidaLogro = await partidaLogroRepository.GetPartidaLogro(IdPartidaLogro);
+            if (partidaLogro == null) throw new Exception("PartidaLogro not found");
+            partidaLogro.IdPartida = IdPartida ?? partidaLogro.IdPartida;
+            partidaLogro.IdLogro = IdLogro ?? partidaLogro.IdLogro;
+            partidaLogro.FechaLogro = FechaLogro ?? partidaLogro.FechaLogro;
+            return await partidaLogroRepository.UpdatePartidaLogro(partidaLogro);
         }
 
-        public async Task<PartidaLogro> DeletePartidaLogro(int idPartidaLogro)
+        public async Task<PartidaLogro> DeletePartidaLogro(int id)
         {
-            return await _partidaLogroRepository.DeletePartidaLogro(idPartidaLogro);
+            return await partidaLogroRepository.DeletePartidaLogro(id);
         }
+        
     }
     
 }

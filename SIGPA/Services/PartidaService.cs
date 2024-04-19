@@ -1,107 +1,95 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
-
     public interface IPartidaService
     {
-        Task<List<Partida>> GetAll();
-        Task<Partida?> GetPartida(int IdPartida);
-        Task<Partida> CreatePartida(int IdUsuario, DateTime FechaInicioPartida, DateTime FechaFinPartida, int IdNivel, string UbicacionJugador, int CantidadVidas, int IdResiduos);
+        Task<IEnumerable<Partida>> GetPartidas();
+        Task<Partida?> GetPartida(int id);
+        Task<Partida> CreatePartida(
+          int IdUsuario,
+          DateTime FechaInicioPartida,
+          DateTime FechaFinPartida,
+          int IdNivel,
+          string UbicacionJugador,
+          int CantidadVidas,
+          int IdResiduo
+        );
         Task<Partida> UpdatePartida(
-         int IdPartida,
-         int? IdUsuario = null,
-         DateTime? FechaInicioPartida = null,
-         DateTime? FechaFinPartida = null,
-         int? IdNivel = null,
-         string? UbicacionJugador = null,
-         int? CantidadVidas = null,
-         int? IdResiduos = null
-                   );
-        Task<Partida> DeletePartida(int idPartida);
+           int IdPartida,
+           int? IdUsuario,
+           DateTime? FechaInicioPartida,
+           DateTime? FechafINPartida,
+           int? IdNivel,
+           string? UbicacionJugador,
+           int? CantidadVidas,
+           int? IdResiduo
+       );
+        Task<Partida> DeletePartida(int id);
     }
-
-    public class PartidaService: IPartidaService
+    public class PartidaService(IPartidaRepository partidaRepository) : IPartidaService
     {
 
-        private readonly IPartidaRepository _partidaRepository;
-        public PartidaService(IPartidaRepository partidaRepository)
+        public async Task<Partida?> GetPartida(int id)
         {
-            _partidaRepository = partidaRepository;
+            return await partidaRepository.GetPartida(id);
         }
 
-        public async Task<List<Partida>> GetAll()
+        public async Task<IEnumerable<Partida>> GetPartidas()
         {
-            return await _partidaRepository.GetAll();
+            return await partidaRepository.GetPartidas();
         }
 
-        public async Task<Partida?> GetPartida(int IdPartida)
+        public async Task<Partida> CreatePartida(
+            int IdUsuario,
+            DateTime FechaInicioPartida,
+            DateTime FechaFinPartida,
+            int IdNivel,
+            string UbicacionJugador,
+            int CantidadVidas,
+            int IdResiduo
+        )
         {
-            return await _partidaRepository.GetPartida(IdPartida);
+            return await partidaRepository.CreatePartida(new Partida
+            {
+                IdUsuario = IdUsuario,
+                FechaInicioPartida = FechaInicioPartida,
+                FechaFinPartida = FechaFinPartida,
+                IdNivel = IdNivel,
+                UbicacionJugador = UbicacionJugador,
+                CantidadVidas = CantidadVidas,
+                IdResiduo = IdResiduo
+            });
         }
 
-        public async Task<Partida> CreatePartida(int IdUsuario, DateTime FechaInicioPartida, DateTime FechaFinPartida, int IdNivel, string UbicacionJugador, int CantidadVidas, int IdResiduos)
-        {
-            return await _partidaRepository.CreatePartida(IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, CantidadVidas, IdResiduos);
-        }
-
-        
         public async Task<Partida> UpdatePartida(
-           int IdPartida,
-           int? IdUsuario = null,
-           DateTime? FechaInicioPartida = null,
-           DateTime? FechaFinPartida = null,
-           int? IdNivel = null,
-           string? UbicacionJugador = null,
-           int? CantidadVidas = null,
-            int? IdResiduos = null
+               int IdPartida,
+                int? IdUsuario,
+                DateTime? FechaInicioPartida,
+                DateTime? FechaFinPartida,
+                int? IdNivel,
+                string? UbicacionJugador,
+                int? CantidadVidas,
+                int? IdResiduo
          )
         {
-            var partida = await _partidaRepository.GetPartida(IdPartida);
-            if (partida == null)
-            {
-                // Manejar la situación en la que la partida no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Partida no encontrada");
-            }
-
-            if (IdUsuario != null)
-            {
-                partida.IdUsuario = (int)IdUsuario;
-            }
-            if (FechaInicioPartida != null)
-            {
-                partida.FechaInicioPartida = (DateTime)FechaInicioPartida;
-            }
-            if (FechaFinPartida != null)
-            {
-                partida.FechaFinPartida = (DateTime)FechaFinPartida;
-            }
-            if (IdNivel != null)
-            {
-                partida.IdNivel = (int)IdNivel;
-            }
-            if (UbicacionJugador != null)
-            {
-                partida.UbicacionJugador = UbicacionJugador;
-            }
-            if (CantidadVidas != null)
-            {
-                partida.CantidadVidas = (int)CantidadVidas;
-            }
-            if (IdResiduos != null)
-            {
-                partida.IdResiduos = (int)IdResiduos;
-            }
-
-            return await _partidaRepository.UpdatePartida(partida);
+            Partida? partida = await partidaRepository.GetPartida(IdPartida);
+            if (partida == null) throw new Exception("Partida not found");
+            partida.IdUsuario = IdUsuario ?? partida.IdUsuario;
+            partida.FechaInicioPartida = FechaInicioPartida ?? partida.FechaInicioPartida;
+            partida.FechaFinPartida = FechaFinPartida ?? partida.FechaFinPartida;
+            partida.IdNivel = IdNivel ?? partida.IdNivel;
+            partida.UbicacionJugador = UbicacionJugador ?? partida.UbicacionJugador;
+            partida.CantidadVidas = CantidadVidas ?? partida.CantidadVidas;
+            partida.IdResiduo = IdResiduo ?? partida.IdResiduo;
+            return await partidaRepository.UpdatePartida(partida);
         }
 
-
-        public async Task<Partida> DeletePartida(int idPartida)
+        public async Task<Partida> DeletePartida(int id)
         {
-            return await _partidaRepository.DeletePartida(idPartida);
+            return await partidaRepository.DeletePartida(id);
         }
     }
 }

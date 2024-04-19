@@ -1,70 +1,59 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
-
     public interface IEstadoResiduosService
     {
-        Task<List<EstadoResiduos>> GetAll();
-        Task<EstadoResiduos?> GetEstadoResiduos(int IdEstadoResiduos);
-        Task<EstadoResiduos> CreateEstadoResiduos(string nombreEstadoResiduos);
-        Task<EstadoResiduos> UpdateEstadoResiduos(
-           int IdEstadoResiduos,
-           string? nombreEstadoResiduos = null
+        Task<IEnumerable<EstadoResiduos>> GetEstadosResiduos();
+        Task<EstadoResiduos?> GetEstadoResiduo(int id);
+        Task<EstadoResiduos> CreateEstadoResiduo(
+            string NombreEstadoResiduos
         );
-        Task<EstadoResiduos> DeleteEstadoResiduos(int idEstadoResiduos);
-
+        Task<EstadoResiduos> UpdateEstadoResiduo(
+           int IdEstadoResiduos,
+           string? NombreEstadoResiduos
+         );
+        Task<EstadoResiduos> DeleteEstadoResiduo(int id);
     }
-    public class EstadoResiduosService : IEstadoResiduosService
+    public class EstadoResiduosService(IEstadoResiduosRepository estadoResiduosRepository): IEstadoResiduosService
     {
-
-        private readonly IEstadoResiduosRepository _estadoResiduosRepository;
-        public EstadoResiduosService(IEstadoResiduosRepository estadoResiduosRepository)
+        
+        public async Task<EstadoResiduos?> GetEstadoResiduo(int id)
         {
-            _estadoResiduosRepository = estadoResiduosRepository;
+            return await estadoResiduosRepository.GetEstadoResiduo(id);
         }
 
-        public async Task<List<EstadoResiduos>> GetAll()
+        public async Task<IEnumerable<EstadoResiduos>> GetEstadosResiduos()
         {
-            return await _estadoResiduosRepository.GetAll();
+            return await estadoResiduosRepository.GetEstadosResiduos();
         }
 
-        public async Task<EstadoResiduos?> GetEstadoResiduos(int IdEstadoResiduos)
-        {
-            return await _estadoResiduosRepository.GetEstadoResiduos(IdEstadoResiduos);
-        }
-
-        public async Task<EstadoResiduos> CreateEstadoResiduos(string nombreEstadoResiduos)
-        {
-            return await _estadoResiduosRepository.CreateEstadoResiduos(nombreEstadoResiduos);
-        }
-
-        public async Task<EstadoResiduos> UpdateEstadoResiduos(
-          int IdEstadoResiduos,
-          string? nombreEstadoResiduos = null
+        public async Task<EstadoResiduos> CreateEstadoResiduo(
+           string NombreEstadoResiduos
          )
         {
-            var estadoResiduos = await _estadoResiduosRepository.GetEstadoResiduos(IdEstadoResiduos);
-            if (estadoResiduos == null)
+            return await estadoResiduosRepository.CreateEstadoResiduo(new EstadoResiduos
             {
-                // Manejar la situación en la que el estado de residuos no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Estado de Residuos no encontrado");
-            }
-
-            if (nombreEstadoResiduos != null)
-            {
-                estadoResiduos.NombreEstadoResiduos = nombreEstadoResiduos;
-            }
-
-            return await _estadoResiduosRepository.UpdateEstadoResiduos(estadoResiduos);
+                NombreEstadoResiduos = NombreEstadoResiduos
+            });
         }
 
-        public async Task<EstadoResiduos> DeleteEstadoResiduos(int idEstadoResiduos)
+        public async Task<EstadoResiduos> UpdateEstadoResiduo(
+           int IdEstadoResiduos,
+           string? NombreEstadoResiduos
+         )
         {
-            return await _estadoResiduosRepository.DeleteEstadoResiduos(idEstadoResiduos);
+            EstadoResiduos? estadoResiduos = await estadoResiduosRepository.GetEstadoResiduo(IdEstadoResiduos);
+            if (estadoResiduos == null) throw new Exception("EstadoResiduos not found");
+            estadoResiduos.NombreEstadoResiduos = NombreEstadoResiduos ?? estadoResiduos.NombreEstadoResiduos;
+            return await estadoResiduosRepository.UpdateEstadoResiduo(estadoResiduos);
+        }
+
+        public async Task<EstadoResiduos> DeleteEstadoResiduo(int id)
+        {
+            return await estadoResiduosRepository.DeleteEstadoResiduo(id);
         }
     }
-    
 }

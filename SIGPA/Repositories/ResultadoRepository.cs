@@ -1,53 +1,50 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface IResultadoRepository
     {
-        Task<List<Resultado>> GetAll();
-        Task<Resultado?> GetResultado(int id);
-        Task<Resultado> CreateResultado(string nombreResultado);
+        Task<IEnumerable<Resultado>> GetResultados();
+        Task<Resultado> GetResultado(int id);
+        Task<Resultado> CreateResultado(Resultado resultado);
         Task<Resultado> UpdateResultado(Resultado resultado);
         Task<Resultado> DeleteResultado(int id);
+
     }
-    public class ResultadoRepository : IResultadoRepository
+    public class ResultadoRepository(ApplicationDbContext db): IResultadoRepository
     {
-        private readonly ApplicationDbContext _db;
-        public ResultadoRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<Resultado>> GetAll()
-        {
-            return await _db.Resultado.ToListAsync();
-        }
         public async Task<Resultado?> GetResultado(int id)
         {
-            return await _db.Resultado.FirstOrDefaultAsync(e => e.IdResultado == id);
+            return await db.Resultado.FindAsync(id);
         }
-        public async Task<Resultado> CreateResultado(string nombreResultado)
+
+        public async Task<IEnumerable<Resultado>> GetResultados()
         {
-            Resultado newResultado = new Resultado
-            {
-                NombreResultado = nombreResultado
-            };
-            await _db.Resultado.AddAsync(newResultado);
-            await _db.SaveChangesAsync();
-            return newResultado;
+            return await db.Resultado.ToListAsync();
         }
-        public async Task<Resultado> UpdateResultado(Resultado resultado)
+
+        public async Task<Resultado> CreateResultado(Resultado resultado)
         {
-            _db.Resultado.Update(resultado);
-            await _db.SaveChangesAsync();
+            db.Resultado.Add(resultado);
+            await db.SaveChangesAsync();
             return resultado;
         }
+
+        public async Task<Resultado> UpdateResultado(Resultado resultado)
+        {
+            db.Entry(resultado).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return resultado;
+        }
+
         public async Task<Resultado> DeleteResultado(int id)
         {
-            Resultado resultado = await GetResultado(id);
-
+            var resultado = await db.Resultado.FindAsync(id);
+            if (resultado == null) return resultado;
+            resultado.IsDeleted = false;
+            await db.SaveChangesAsync();
             return resultado;
         }
     }

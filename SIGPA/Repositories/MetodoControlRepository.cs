@@ -1,56 +1,51 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface IMetodoControlRepository
     {
-        Task<List<MetodoControl>> GetAll();
-        Task<MetodoControl?> GetMetodoControl(int id);
-        Task<MetodoControl> CreateMetodoControl(string nombreMetodoControl, string descripcionMetodoControl);
+        Task<IEnumerable<MetodoControl>> GetMetodosControl();
+        Task<MetodoControl> GetMetodoControl(int id);
+        Task<MetodoControl> CreateMetodoControl(MetodoControl metodoControl);
         Task<MetodoControl> UpdateMetodoControl(MetodoControl metodoControl);
         Task<MetodoControl> DeleteMetodoControl(int id);
+
     }
-    public class MetodoControlRepository : IMetodoControlRepository
+    public class MetodoControlRepository (ApplicationDbContext db) : IMetodoControlRepository
     {
-        private readonly ApplicationDbContext _db;
-        public MetodoControlRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<MetodoControl>> GetAll()
-        {
-            return await _db.MetodoControl.ToListAsync();
-        }
         public async Task<MetodoControl?> GetMetodoControl(int id)
         {
-            return await _db.MetodoControl.FirstOrDefaultAsync(e => e.IdMetodoControl == id);
+            return await db.MetodoControl.FindAsync(id);
         }
-        public async Task<MetodoControl> CreateMetodoControl(string nombreMetodoControl, string descripcionMetodoControl)
+
+        public async Task<IEnumerable<MetodoControl>> GetMetodosControl()
         {
-            MetodoControl newMetodoControl = new MetodoControl
-            {
-                NombreMetodoControl = nombreMetodoControl,
-                DescripcionMetodoControl = descripcionMetodoControl
-            };
-            await _db.MetodoControl.AddAsync(newMetodoControl);
-            await _db.SaveChangesAsync();
-            return newMetodoControl;
+            return await db.MetodoControl.ToListAsync();
         }
+
+        public async Task<MetodoControl> CreateMetodoControl(MetodoControl metodoControl)
+        {
+            db.MetodoControl.Add(metodoControl);
+            await db.SaveChangesAsync();
+            return metodoControl;
+        }
+
         public async Task<MetodoControl> UpdateMetodoControl(MetodoControl metodoControl)
         {
-            _db.MetodoControl.Update(metodoControl);
-            await _db.SaveChangesAsync();
+            db.Entry(metodoControl).State = EntityState.Modified;
+            await db.SaveChangesAsync();
             return metodoControl;
         }
+
         public async Task<MetodoControl> DeleteMetodoControl(int id)
         {
-            MetodoControl metodoControl = await GetMetodoControl(id);
-
+            var metodoControl = await db.MetodoControl.FindAsync(id);
+            if (metodoControl == null) return metodoControl;
+            metodoControl.IsDeleted = false;
+            await db.SaveChangesAsync();
             return metodoControl;
         }
-
     }
 }

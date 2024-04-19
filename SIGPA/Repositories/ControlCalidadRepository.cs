@@ -1,77 +1,61 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
-
     public interface IControlCalidadRepository
     {
-        Task<List<ControlCalidad>> GetAll();
-        Task<ControlCalidad?> GetControlCalidad(int id);
-        Task<ControlCalidad> CreateControlCalidad(DateTime fechaControl, int idUsuario, int idMetodoControl);
+        Task<IEnumerable<ControlCalidad>> GetControlesCalidad();
+        Task<ControlCalidad> GetControlCalidad(int id);
+        Task<ControlCalidad> CreateControlCalidad(ControlCalidad controlCalidad);
         Task<ControlCalidad> UpdateControlCalidad(ControlCalidad controlCalidad);
         Task<ControlCalidad> DeleteControlCalidad(int id);
 
     }
 
-    public class ControlCalidadRepository : IControlCalidadRepository
+    public class ControlCalidadRepository(ApplicationDbContext db) : IControlCalidadRepository
     {
-        private readonly ApplicationDbContext _db;
-        public ControlCalidadRepository(ApplicationDbContext db)
+        
+        //Obtener control calidad por su ID
+        
+        public async Task<ControlCalidad> GetControlCalidad(int id)
         {
-            _db = db;
+            return await db.ControlCalidad.FindAsync(id);
         }
-        public async Task<List<ControlCalidad>> GetAll()
+
+        //Obtener todos los controles de calidad
+
+        public async Task<IEnumerable<ControlCalidad>> GetControlesCalidad()
         {
-            return await _db.ControlCalidad.ToListAsync();
+            return await db.ControlCalidad.ToListAsync();
         }
-        public async Task<ControlCalidad?> GetControlCalidad(int id)
+
+        //Crear un control de calidad
+        public async Task<ControlCalidad> CreateControlCalidad(ControlCalidad controlCalidad)
         {
-            return await _db.ControlCalidad.FirstOrDefaultAsync(c => c.IdControlCalidad == id);
-        }
-        public async Task<ControlCalidad> CreateControlCalidad(DateTime fechaControl, int idUsuario, int idMetodoControl)
-        {
-            // Obtener el usuario y método de control correspondientes
-            var usuario = await _db.Usuarios.FindAsync(idUsuario);
-            var metodoControl = await _db.MetodoControl.FindAsync(idMetodoControl);
-
-            if (usuario == null || metodoControl == null)
-            {
-                // Manejar la situación en la que el usuario o el método de control no existen
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Usuario o Método de Control no encontrado");
-            }
-
-            // Crear una nueva instancia de ControlCalidad con los valores proporcionados
-            ControlCalidad newControlCalidad = new ControlCalidad
-            {
-                FechaControl = fechaControl,
-                IdUsuario = idUsuario,
-                IdMetodoControl = idMetodoControl,
-                Usuario = usuario,
-                MetodoControl = metodoControl
-            };
-
-            await _db.ControlCalidad.AddAsync(newControlCalidad);
-            await _db.SaveChangesAsync();
-
-            return newControlCalidad;
-        }
-        public async Task<ControlCalidad> UpdateControlCalidad(ControlCalidad controlCalidad)
-        {
-            _db.ControlCalidad.Update(controlCalidad);
-            await _db.SaveChangesAsync();
+            db.ControlCalidad.Add(controlCalidad);
+            await db.SaveChangesAsync();
             return controlCalidad;
         }
+
+        //Actualizar un control de calidad
+        public async Task<ControlCalidad> UpdateControlCalidad(ControlCalidad controlCalidad)
+        {
+            db.Entry(controlCalidad).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return controlCalidad;
+        }
+
+        //Eliminar un control de calidad
         public async Task<ControlCalidad> DeleteControlCalidad(int id)
         {
-            ControlCalidad controlCalidad = await GetControlCalidad(id);
-
-            return await UpdateControlCalidad(controlCalidad);
-
+            ControlCalidad? controlCalidad = await db.ControlCalidad.FindAsync(id);
+            if (controlCalidad == null) return controlCalidad;
+            controlCalidad.IsDeleted = false; 
+            db.Entry(controlCalidad).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return controlCalidad;
         }
     }
 }

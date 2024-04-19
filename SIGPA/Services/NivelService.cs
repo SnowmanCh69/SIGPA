@@ -5,63 +5,54 @@ namespace SIGPA.Services
 {
     public interface INivelService
     {
-        Task<List<Nivel>> GetAll();
-        Task<Nivel?> GetNivel(int IdNivel);
-        Task<Nivel> CreateNivel(string nombreNivel);
+        Task<IEnumerable<Nivel>> GetNiveles();
+        Task<Nivel?> GetNivel(int id);
+        Task<Nivel> CreateNivel(
+          string NombreNivel
+         );
         Task<Nivel> UpdateNivel(
-         int IdNivel,
-         string? nombreNivel = null
-                                                                    
-     );
-        Task<Nivel> DeleteNivel(int idNivel);
+          int IdNivel,
+          string? NombreNivel
+        );
+        Task<Nivel> DeleteNivel(int id);
     }
-    public class NivelService : INivelService
+    public class NivelService(INivelRepository nivelRepository) : INivelService
     {
-        private readonly INivelRepository _nivelRepository;
-        public NivelService(INivelRepository nivelRepository)
+    
+        public async Task<Nivel?> GetNivel(int id)
         {
-            _nivelRepository = nivelRepository;
+            return await nivelRepository.GetNivel(id);
         }
 
-        public async Task<List<Nivel>> GetAll()
+        public async Task<IEnumerable<Nivel>> GetNiveles()
         {
-            return await _nivelRepository.GetAll();
+            return await nivelRepository.GetNiveles();
         }
 
-        public async Task<Nivel?> GetNivel(int IdNivel)
+        public async Task<Nivel> CreateNivel(
+          string NombreNivel
+         )
         {
-            return await _nivelRepository.GetNivel(IdNivel);
-        }
-
-        public async Task<Nivel> CreateNivel(string nombreNivel)
-        {
-            return await _nivelRepository.CreateNivel(nombreNivel);
+            return await nivelRepository.CreateNivel(new Nivel
+            {
+                NombreNivel = NombreNivel
+            });
         }
 
         public async Task<Nivel> UpdateNivel(
            int IdNivel,
-           string? nombreNivel = null
-          )
+            string? NombreNivel
+        )
         {
-            var nivel = await _nivelRepository.GetNivel(IdNivel);
-            if (nivel == null)
-            {
-                // Manejar la situación en la que el nivel no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Nivel no encontrado");
-            }
-
-            if (nombreNivel != null)
-            {
-                nivel.NombreNivel = nombreNivel;
-            }
-
-            return await _nivelRepository.UpdateNivel(nivel);
+            Nivel? nivel = await nivelRepository.GetNivel(IdNivel);
+            if (nivel == null) throw new Exception("Nivel not found");
+            nivel.NombreNivel = NombreNivel ?? nivel.NombreNivel;
+            return await nivelRepository.UpdateNivel(nivel);
         }
 
-        public async Task<Nivel> DeleteNivel(int idNivel)
+        public async Task<Nivel> DeleteNivel(int id)
         {
-            return await _nivelRepository.DeleteNivel(idNivel);
-        }
+            return await nivelRepository.DeleteNivel(id);
+        } 
     }
 }

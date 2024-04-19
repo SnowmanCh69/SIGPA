@@ -1,76 +1,74 @@
-﻿using SIGPA.Models;
+﻿using SIGPA.Models;NombreUsuario
 using SIGPA.Repositories;
 
 namespace SIGPA.Services
 {
     public interface IUsuarioService
     {
-        Task<List<Usuario>> GetAll();
-        Task<Usuario> GetUsuario(int IdUsuario);
-        Task<Usuario> CreateUsuario(string NombreUsuario, string EmailUsuario, int IdRolUsuario);
+
+        Task<IEnumerable<Usuario>> GetUsuarios();
+        Task<Usuario?> GetUsuario(int id);
+        Task<Usuario> CreateUsuario(
+          string NombresUsuario,
+          string ApellidosUsuario,
+          string EmailUsuario,
+          int IdRolUsuario
+        );
         Task<Usuario> UpdateUsuario(
           int IdUsuario,
-          string? NombreUsuario = null,
-          string? EmailUsuario = null,
-           int? IdRolUsuario = null
-       );
-        Task<Usuario> DeleteUsuario(int IdUsuario);
+          string? NombresUsuario,
+          string? ApellidosUsuario,
+          string? EmailUsuario,
+          int? IdRolUsuario
+      );
     }
-    public class UsuarioService: IUsuarioService
+    public class UsuarioService(IUsuarioRepository usuarioRepository) : IUsuarioService
     {
-        private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+
+        public async Task<Usuario?> GetUsuario(int id)
         {
-            _usuarioRepository = usuarioRepository;
+            return await usuarioRepository.GetUsuario(id);
         }
 
-        public async Task<List<Usuario>> GetAll()
+        public async Task<IEnumerable<Usuario>> GetUsuarios()
         {
-            return await _usuarioRepository.GetAll();
+            return await usuarioRepository.GetUsuarios();
         }
 
-        public async Task<Usuario> GetUsuario(int IdUsuario)
+        public async Task<Usuario> CreateUsuario(
+          string NombresUsuario,
+          string ApellidosUsuario,
+          string EmailUsuario,
+          int IdRolUsuario
+                     )
         {
-            return await _usuarioRepository.GetUsuario(IdUsuario);
-        }
-
-        public async Task<Usuario> CreateUsuario(string NombreUsuario, string EmailUsuario, int IdRolUsuario)
-        {
-            return await _usuarioRepository.CreateUsuario(NombreUsuario, EmailUsuario, IdRolUsuario);
+            return await usuarioRepository.CreateUsuario(new Usuario
+            {
+                NombresUsuario = NombresUsuario,
+                ApellidosUsuario = ApellidosUsuario,
+                EmailUsuario = EmailUsuario,
+                IdRolUsuario = IdRolUsuario
+            });
         }
 
         public async Task<Usuario> UpdateUsuario(
-           int IdUsuario,
-           string? NombreUsuario = null,
-           string? EmailUsuario = null,
-          int? IdRolUsuario = null
-                              )
+            int IdUsuario,
+            string? NombresUsuario,
+            string? ApellidosUsuario,
+            string? EmailUsuario,
+            int? IdRolUsuario
+         )
         {
-            var usuario = await _usuarioRepository.GetUsuario(IdUsuario);
+            Usuario? usuario = await usuarioRepository.GetUsuario(IdUsuario);
             if (usuario == null)
             {
-                throw new Exception("Usuario not found");
+                throw new Exception("Usuario no encontrado");
             }
-
-            if (NombreUsuario != null)
-            {
-                usuario.NombreUsuario = NombreUsuario;
-            }
-            if (EmailUsuario != null)
-            {
-                usuario.EmailUsuario = EmailUsuario;
-            }
-            if (IdRolUsuario != null)
-            {
-                usuario.IdRolUsuario = (int)IdRolUsuario;
-            }
-
-            return await _usuarioRepository.UpdateUsuario(usuario);
-        }
-
-        public async Task<Usuario> DeleteUsuario(int IdUsuario)
-        {
-            return await _usuarioRepository.DeleteUsuario(IdUsuario);
+            usuario.NombresUsuario = NombresUsuario ?? usuario.NombresUsuario;
+            usuario.ApellidosUsuario = ApellidosUsuario ?? usuario.ApellidosUsuario;
+            usuario.EmailUsuario = EmailUsuario ?? usuario.EmailUsuario;
+            usuario.IdRolUsuario = IdRolUsuario ?? usuario.IdRolUsuario;
+            return await usuarioRepository.UpdateUsuario(usuario);
         }
     }
 }

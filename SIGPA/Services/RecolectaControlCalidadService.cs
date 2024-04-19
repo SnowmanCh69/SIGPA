@@ -1,73 +1,71 @@
 ﻿using SIGPA.Models;
+using SIGPA.Models.SIGPA.Models;
 using SIGPA.Repositories;
 
 namespace SIGPA.Services
 {
     public interface IRecolectaControlCalidadService
     {
-        Task<List<RecolectaControlCalidad>> GetAll();
-        Task<RecolectaControlCalidad?> GetRecolectaControlCalidad(int IdRecolectaControlCalidad);
-        Task<RecolectaControlCalidad> CreateRecolectaControlCalidad(int IdControlCalidad, int IdResultado , string Observaciones);
+        Task<IEnumerable<RecolectaControlCalidad>> GetRecolectasControlesCalidad();
+        Task<RecolectaControlCalidad?> GetRecolectaControlCalidad(int id);
+        Task<RecolectaControlCalidad> CreateRecolectaControlCalidad(
+           int IdControlCalidad,
+           int IdResultado,
+           string Observaciones
+                    );
         Task<RecolectaControlCalidad> UpdateRecolectaControlCalidad(
-         int IdRecolectaControlCalidad,
-         int? IdResultadp = null,
-         string? Observaciones = null
+           int IdRecolectaControlCalidad,
+           int? IdControlCalidad,
+           int? IdResultado,
+           string? Observaciones
          );
-        Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int idRecolectaControlCalidad);
+        Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id);
     }
-    public class RecolectaControlCalidadService : IRecolectaControlCalidadService
+    public class RecolectaControlCalidadService(IRecolectaControlCalidadRepository recolectaControlCalidadRepository): IRecolectaControlCalidadService
     {
-        private readonly IRecolectaControlCalidadRepository _recolectaControlCalidadRepository;
-        public RecolectaControlCalidadService(IRecolectaControlCalidadRepository recolectaControlCalidadRepository)
+        
+        public async Task<RecolectaControlCalidad?> GetRecolectaControlCalidad(int id)
         {
-            _recolectaControlCalidadRepository = recolectaControlCalidadRepository;
+            return await recolectaControlCalidadRepository.GetRecolectaControlCalidad(id);
         }
 
-        public async Task<List<RecolectaControlCalidad>> GetAll()
+        public async Task<IEnumerable<RecolectaControlCalidad>> GetRecolectasControlesCalidad()
         {
-            return await _recolectaControlCalidadRepository.GetAll();
+            return await recolectaControlCalidadRepository.GetRecolectasControlCalidad();
         }
 
-        public async Task<RecolectaControlCalidad?> GetRecolectaControlCalidad(int IdRecolectaControlCalidad)
+        public async Task<RecolectaControlCalidad> CreateRecolectaControlCalidad(
+           int IdControlCalidad,
+           int IdResultado,
+           string Observaciones
+         )
         {
-            return await _recolectaControlCalidadRepository.GetRecolectaControlCalidad(IdRecolectaControlCalidad);
-        }
-
-        public async Task<RecolectaControlCalidad> CreateRecolectaControlCalidad(int IdControlCalidad, int IdResultado, string Observaciones)
-        {
-            return await _recolectaControlCalidadRepository.CreateRecolectaControlCalidad(IdControlCalidad, IdResultado, Observaciones);
+            return await recolectaControlCalidadRepository.CreateRecolectaControlCalidad(new RecolectaControlCalidad
+            {
+                IdControlCalidad = IdControlCalidad,
+                IdResultado = IdResultado,
+                Observaciones = Observaciones
+            });
         }
 
         public async Task<RecolectaControlCalidad> UpdateRecolectaControlCalidad(
-           int IdRecolectaControlCalidad,
-           int? IdResultado = null,
-           string? Observaciones = null
+              int IdRecolectaControlCalidad,
+              int? IdControlCalidad,
+              int? IdResultado,
+              string? Observaciones
          )
         {
-            var recolectaControlCalidad = await _recolectaControlCalidadRepository.GetRecolectaControlCalidad(IdRecolectaControlCalidad);
-            if (recolectaControlCalidad == null)
-            {
-                throw new Exception("RecolectaControlCalidad not found");
-            }
-
-            if (IdResultado != null)
-            {
-                recolectaControlCalidad.IdResultado = (int)IdResultado;
-
-            }
-
-            if (Observaciones != null)
-            {
-                recolectaControlCalidad.Observaciones = Observaciones;
-
-            }
-
-            return await _recolectaControlCalidadRepository.UpdateRecolectaControlCalidad(recolectaControlCalidad);
+            RecolectaControlCalidad? recolectaControlCalidad = await recolectaControlCalidadRepository.GetRecolectaControlCalidad(IdRecolectaControlCalidad);
+            if (recolectaControlCalidad == null) throw new Exception("RecolectaControlCalidad not found");
+            recolectaControlCalidad.IdControlCalidad = IdControlCalidad ?? recolectaControlCalidad.IdControlCalidad;
+            recolectaControlCalidad.IdResultado = IdResultado ?? recolectaControlCalidad.IdResultado;
+            recolectaControlCalidad.Observaciones = Observaciones ?? recolectaControlCalidad.Observaciones;
+            return await recolectaControlCalidadRepository.UpdateRecolectaControlCalidad(recolectaControlCalidad);
         }
 
-        public async Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int idRecolectaControlCalidad)
+        public async Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id)
         {
-            return await _recolectaControlCalidadRepository.DeleteRecolectaControlCalidad(idRecolectaControlCalidad);
+            return await recolectaControlCalidadRepository.DeleteRecolectaControlCalidad(id);
         }
     }
     

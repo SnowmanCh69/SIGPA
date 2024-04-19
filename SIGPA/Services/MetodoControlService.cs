@@ -5,71 +5,63 @@ namespace SIGPA.Services
 {
     public interface IMetodoControlService
     {
-        Task<List<MetodoControl>> GetAll();
-        Task<MetodoControl?> GetMetodoControl(int IdMetodoControl);
-        Task<MetodoControl> CreateMetodoControl(string nombreMetodoControl, string descripcionMetodoControl);
+        Task<IEnumerable<MetodoControl>> GetMetodosControl();
+        Task<MetodoControl?> GetMetodoControl(int id);
+        Task<MetodoControl> CreateMetodoControl(
+           string NombreMetodoControl,
+           string DescripcionMetodoControl
+        );
         Task<MetodoControl> UpdateMetodoControl(
          int IdMetodoControl,
-         string? nombreMetodoControl = null,
-         string? descripcionMetodoControl = null
-                                                        
-     );
-        Task<MetodoControl> DeleteMetodoControl(int idMetodoControl);
+         string? NombreMetodoControl,
+         string? DescripcionMetodoControl
+        );
+        Task<MetodoControl> DeleteMetodoControl(int id);
+        
     }
-    public class MetodoControlService : IMetodoControlService
+    public class MetodoControlService(IMetodoControlRepository metodoControlRepository): IMetodoControlService
     {
-        private readonly IMetodoControlRepository _metodoControlRepository;
-        public MetodoControlService(IMetodoControlRepository metodoControlRepository)
+        
+        public async Task<MetodoControl?> GetMetodoControl(int id)
         {
-            _metodoControlRepository = metodoControlRepository;
+            return await metodoControlRepository.GetMetodoControl(id);
         }
 
-        public async Task<List<MetodoControl>> GetAll()
+        public async Task<IEnumerable<MetodoControl>> GetMetodosControl()
         {
-            return await _metodoControlRepository.GetAll();
+            return await metodoControlRepository.GetMetodosControl();
         }
 
-        public async Task<MetodoControl?> GetMetodoControl(int IdMetodoControl)
+        public async Task<MetodoControl> CreateMetodoControl(
+            string NombreMetodoControl,
+            string DescripcionMetodoControl
+         )
         {
-            return await _metodoControlRepository.GetMetodoControl(IdMetodoControl);
-        }
-
-        public async Task<MetodoControl> CreateMetodoControl(string nombreMetodoControl, string descripcionMetodoControl)
-        {
-            return await _metodoControlRepository.CreateMetodoControl(nombreMetodoControl, descripcionMetodoControl);
+            return await metodoControlRepository.CreateMetodoControl(new MetodoControl
+            {
+                NombreMetodoControl = NombreMetodoControl,
+                DescripcionMetodoControl = DescripcionMetodoControl
+            });
         }
 
         public async Task<MetodoControl> UpdateMetodoControl(
-            int IdMetodoControl,
-            string? nombreMetodoControl = null,
-            string? descripcionMetodoControl = null
-         )
+           int IdMetodoControl,
+           string? NombreMetodoControl,
+           string? DescripcionMetodoControl
+          )
         {
-            var metodoControl = await _metodoControlRepository.GetMetodoControl(IdMetodoControl);
-            if (metodoControl == null)
-            {
-                // Manejar la situación en la que el metodoControl no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("MetodoControl no encontrado");
-            }
-
-            if (nombreMetodoControl != null)
-            {
-                metodoControl.NombreMetodoControl = nombreMetodoControl;
-            }
-
-            if (descripcionMetodoControl != null)
-            {
-                metodoControl.DescripcionMetodoControl = descripcionMetodoControl;
-            }
-
-            return await _metodoControlRepository.UpdateMetodoControl(metodoControl);
+            MetodoControl? metodoControl = await metodoControlRepository.GetMetodoControl(IdMetodoControl);
+            if (metodoControl == null) throw new Exception("MetodoControl not found");
+            metodoControl.NombreMetodoControl = NombreMetodoControl ?? metodoControl.NombreMetodoControl;
+            metodoControl.DescripcionMetodoControl = DescripcionMetodoControl ?? metodoControl.DescripcionMetodoControl;
+            return await metodoControlRepository.UpdateMetodoControl(metodoControl);
         }
 
-        public async Task<MetodoControl> DeleteMetodoControl(int idMetodoControl)
+        public async Task<MetodoControl> DeleteMetodoControl(int id)
         {
-            return await _metodoControlRepository.DeleteMetodoControl(idMetodoControl);
+            return await metodoControlRepository.DeleteMetodoControl(id);
         }
+        
     }
-
+    
 }

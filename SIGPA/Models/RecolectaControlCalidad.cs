@@ -25,8 +25,8 @@ namespace SIGPA.Models
 
 
    
-            public virtual? ControlCalidad ControlCalidad { get; set; }
-            public required? Resultado Resultado { get; set; }
+            public virtual ControlCalidad? ControlCalidad { get; set; }
+            public virtual Resultado? Resultado { get; set; }
         }
     }
 }

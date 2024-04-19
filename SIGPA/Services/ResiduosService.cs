@@ -3,98 +3,86 @@ using SIGPA.Repositories;
 
 namespace SIGPA.Services
 {
-
-    interface IResiduosService
+    public interface IResiduosService
     {
-        Task<List<Residuos>> GetAll();
-        Task<Residuos> GetResiduos(int IdResiduos);
-        Task<Residuos> CreateResiduos(int IdEstadoResiduos, string CantidadRegistrada, int IdTipoResiduos, int IdUsuario, int IdResiduosPartida);
-        Task<Residuos> UpdateResiduos(
-          int IdResiduos,
-          int? IdEstadoResiduos = null,
-          string? CantidadRegistrada = null,
-          int? IdTipoResiduos = null,
-          int? IdUsuario = null,
-           int? IdResiduosPartida = null
-        );
-        Task<Residuos> DeleteResiduos(int idResiduos);
+        Task<IEnumerable<Residuos>> GetResiduos();
+        Task<Residuos?> GetResiduo(int id);
+        Task<Residuos> CreateResiduo(
+           string NombreResiduo,
+           DateTime FechaRegistro,
+           int IdEstadoResiduos,
+           string CantidadRegistrada,
+           int IdUsuario,
+           int IdResiduosPartida
+     );
+        Task<Residuos> UpdateResiduo(
+           int IdResiduo,
+           string? NombreResiduo,
+           DateTime? FechaRegistro,
+           int? IdEstadoResiduos,
+           string? CantidadRegistrada,
+           int? IdUsuario,
+           int? IdResiduosPartida
+                  );
+        Task<Residuos> DeleteResiduo(int id);
+       
     }
-    public class ResiduosService: IResiduosService
+    public class ResiduosService (IResiduosRepository residuosRepository) : IResiduosService
     {
-        private readonly IResiduosRepository _residuosRepository;
-        public ResiduosService(IResiduosRepository residuosRepository)
+        public async Task<Residuos?> GetResiduo(int id)
         {
-            _residuosRepository = residuosRepository;
+            return await residuosRepository.GetResiduo(id);
         }
 
-        public async Task<List<Residuos>> GetAll()
+        public async Task<IEnumerable<Residuos>> GetResiduos()
         {
-            return await _residuosRepository.GetAll();
+            return await residuosRepository.GetResiduos();
         }
 
-        public async Task<Residuos> GetResiduos(int IdResiduos)
+        public async Task<Residuos> CreateResiduo(
+            string NombreResiduo,
+            DateTime FechaRegistro,
+            int IdEstadoResiduos,
+            string CantidadRegistrada,
+            int IdUsuario,
+            int IdResiduosPartida
+          )
         {
-            return await _residuosRepository.GetResiduos(IdResiduos);
+            return await residuosRepository.CreateResiduo(new Residuos
+            {
+                NombreResiduo = NombreResiduo,
+                FechaRegistro = FechaRegistro,
+                IdEstadoResiduos = IdEstadoResiduos,
+                CantidadRegistrada = CantidadRegistrada,
+                IdUsuario = IdUsuario,
+                IdResiduosPartida = IdResiduosPartida
+            });
         }
 
-        public async Task<Residuos> CreateResiduos(int IdEstadoResiduos, string CantidadRegistrada, int IdTipoResiduos, int IdUsuario, int IdResiduosPartida)
-        {
-            return await _residuosRepository.CreateResiduos(IdEstadoResiduos, CantidadRegistrada, IdTipoResiduos, IdUsuario, IdResiduosPartida);
-        }
-
-        public async Task<Residuos> UpdateResiduos(
-            int IdResiduos,
-            int? IdEstadoResiduos = null,
-            string? CantidadRegistrada = null,
-            int? IdTipoResiduos = null,
-             int? IdUsuario = null,
-             int? IdResiduosPartida = null
+        public async Task<Residuos> UpdateResiduo(
+             int IdResiduo,
+             string? NombreResiduo,
+             DateTime? FechaRegistro,
+             int? IdEstadoResiduos,
+             string? CantidadRegistrada,
+             int? IdUsuario,
+             int? IdResiduosPartida
         )
         {
-            var residuos = await _residuosRepository.GetResiduos(IdResiduos);
-            if (residuos == null)
-            {
-                throw new Exception("Residuos not found");
-            }
-
-            if(IdEstadoResiduos!= null)
-            {
-                residuos.IdEstadoResiduos = (int)IdEstadoResiduos;
-
-            }
-
-            if(CantidadRegistrada!= null)
-            {
-                residuos.CantidadRegistrada = (string)CantidadRegistrada;
-
-            }
-
-            if(IdTipoResiduos!= null)
-            {
-                residuos.IdTipoResiduos = (int)IdTipoResiduos;
-
-            }
-
-            if(IdUsuario!= null)
-            {
-                residuos.IdUsuario = (int)IdUsuario;
-
-            }
-
-            if(IdResiduosPartida!= null)
-            {
-                residuos.IdResiduosPartida = (int)IdResiduosPartida;
-
-            }
-
-            return await _residuosRepository.UpdateResiduos(residuos);
+            Residuos? residuo = await residuosRepository.GetResiduo(IdResiduo);
+            if (residuo == null) throw new Exception("Residuo not found");
+            residuo.NombreResiduo = NombreResiduo ?? residuo.NombreResiduo;
+            residuo.FechaRegistro = FechaRegistro ?? residuo.FechaRegistro;
+            residuo.IdEstadoResiduos = IdEstadoResiduos ?? residuo.IdEstadoResiduos;
+            residuo.CantidadRegistrada = CantidadRegistrada ?? residuo.CantidadRegistrada;
+            residuo.IdUsuario = IdUsuario ?? residuo.IdUsuario;
+            residuo.IdResiduosPartida = IdResiduosPartida ?? residuo.IdResiduosPartida;
+            return await residuosRepository.UpdateResiduo(residuo);
         }
 
-        
-        public async Task<Residuos> DeleteResiduos(int idResiduos)
+        public async Task<Residuos> DeleteResiduo(int id)
         {
-            return await _residuosRepository.DeleteResiduos(idResiduos);
+            return await residuosRepository.DeleteResiduo(id);
         }
     }
-    
 }

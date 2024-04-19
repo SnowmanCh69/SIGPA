@@ -10,7 +10,8 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdUsuario { get; set; }
-        public required string NombreUsuario { get; set; }
+        public required string NombresUsuario { get; set; }
+        public required string ApellidosUsuario { get; set; }
         public required string EmailUsuario { get; set; }
 
         [ForeignKey(nameof(RolUsuario))]

@@ -1,77 +1,73 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
     public interface IResiduosPartidaService
     {
-        Task<List<ResiduosPartida>> GetAll();
-        Task<ResiduosPartida> GetResiduosPartida(int IdResiduosPartida);
-        Task<ResiduosPartida> CreateResiduosPartida(int IdPartida, int IdResiduos, string CantidadRegistrada);
-        Task<ResiduosPartida> UpdateResiduosPartida(
-          int IdResiduosPartida,
-          int? IdPartida = null,
-          int? IdResiduos = null,
-          string? CantidadRegistrada = null
-     );
-        Task<ResiduosPartida> DeleteResiduosPartida(int idResiduosPartida);
+        Task<IEnumerable<ResiduosPartida>> GetResiduosPartida();
+        Task<ResiduosPartida?> GetResiduoPartida(int id);
+        Task<ResiduosPartida> CreateResiduoPartida(
+          int IdPartida,
+          int IdResiduo,
+          string CantidadRegistrada
+        );
+        Task<ResiduosPartida> UpdateResiduoPartida(
+          int IdResiduoPartida,
+          int? IdPartida,
+          int? IdResiduo,
+          string? CantidadRegistrada
+        );
+        Task<ResiduosPartida> DeleteResiduoPartida(int id);
+       
+
     }
-    public class ResiduosPartidaService : IResiduosPartidaService
+    public class ResiduosPartidaService(IResiduosPartidaRepository residuosPartidaRepository) : IResiduosPartidaService
     {
-        private readonly IResiduosPartidaRepository _residuosPartidaRepository;
-        public ResiduosPartidaService(IResiduosPartidaRepository residuosPartidaRepository)
+
+        public async Task<ResiduosPartida?> GetResiduoPartida(int id)
         {
-            _residuosPartidaRepository = residuosPartidaRepository;
+            return await residuosPartidaRepository.GetResiduoPartida(id);
         }
 
-        public async Task<List<ResiduosPartida>> GetAll()
+        public async Task<IEnumerable<ResiduosPartida>> GetResiduosPartida()
         {
-            return await _residuosPartidaRepository.GetAll();
+            return await residuosPartidaRepository.GetResiduosPartida();
         }
 
-        public async Task<ResiduosPartida> GetResiduosPartida(int IdResiduosPartida)
+        public async Task<ResiduosPartida> CreateResiduoPartida(
+           int IdPartida,
+           int IdResiduo,
+           string CantidadRegistrada
+          )
         {
-            return await _residuosPartidaRepository.GetResiduosPartida(IdResiduosPartida);
-        }
-
-        public async Task<ResiduosPartida> CreateResiduosPartida(int IdPartida, int IdResiduos, string CantidadRegistrada)
-        {
-            return await _residuosPartidaRepository.CreateResiduosPartida(IdPartida, IdResiduos, CantidadRegistrada);
-        }
-
-        public async Task<ResiduosPartida> UpdateResiduosPartida(
-                       int IdResiduosPartida,
-                                  int? IdPartida = null,
-                                             int? IdResiduos = null,
-                                                        string? CantidadRegistrada = null
-                   )
-        {
-            var residuosPartida = await _residuosPartidaRepository.GetResiduosPartida(IdResiduosPartida);
-            if (residuosPartida == null)
+            return await residuosPartidaRepository.CreateResiduoPartida(new ResiduosPartida
             {
-                throw new Exception("ResiduosPartida not found");
-            }
-
-            if (IdPartida != null)
-            {
-                residuosPartida.IdPartida = (int)IdPartida;
-            }
-            if (IdResiduos != null)
-            {
-                residuosPartida.IdResiduos = (int)IdResiduos;
-            }
-            if (CantidadRegistrada != null)
-            {
-                residuosPartida.CantidadRegistrada = CantidadRegistrada;
-            }
-
-            return await _residuosPartidaRepository.UpdateResiduosPartida(residuosPartida);
+                IdPartida = IdPartida,
+                IdResiduo = IdResiduo,
+                CantidadRegistrada = CantidadRegistrada
+            });
         }
 
-        public async Task<ResiduosPartida> DeleteResiduosPartida(int idResiduosPartida)
+        public async Task<ResiduosPartida> UpdateResiduoPartida(
+           int IdResiduoPartida,
+           int? IdPartida,
+           int? IdResiduo,
+           string? CantidadRegistrada
+          )
         {
-            return await _residuosPartidaRepository.DeleteResiduosPartida(idResiduosPartida);
+            ResiduosPartida? residuosPartida = await residuosPartidaRepository.GetResiduoPartida(IdResiduoPartida);
+            if (residuosPartida == null) throw new Exception("ResiduoPartida not found");
+            residuosPartida.IdPartida = IdPartida ?? residuosPartida.IdPartida;
+            residuosPartida.IdResiduo = IdResiduo ?? residuosPartida.IdResiduo;
+            residuosPartida.CantidadRegistrada = CantidadRegistrada ?? residuosPartida.CantidadRegistrada;
+            return await residuosPartidaRepository.UpdateResiduoPartida(residuosPartida);
+        }
+
+        public async Task<ResiduosPartida> DeleteResiduoPartida(int id)
+        {
+            return await residuosPartidaRepository.DeleteResiduoPartida(id);
         }
     }
-   
 }

@@ -1,67 +1,50 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
-namespace SIGPA.Repositories
-{
+
     public interface IResiduosPartidaRepository
     {
-        Task<List<ResiduosPartida>> GetAll();
-        Task<ResiduosPartida?> GetResiduosPartida(int id);
-        Task<ResiduosPartida> UpdateResiduosPartida(ResiduosPartida residuosPartida);
-        Task<ResiduosPartida> DeleteResiduosPartida(int id);
+        Task<IEnumerable<ResiduosPartida>> GetResiduosPartida();
+        Task<ResiduosPartida> GetResiduoPartida(int id);
+        Task<ResiduosPartida> CreateResiduoPartida(ResiduosPartida residuoPartida);
+        Task<ResiduosPartida> UpdateResiduoPartida(ResiduosPartida residuoPartida);
+        Task<ResiduosPartida> DeleteResiduoPartida(int id);
     }
-    public class ResiduosPartidaRepository : IResiduosPartidaRepository
+    public class ResiduosPartidaRepository(ApplicationDbContext db): IResiduosPartidaRepository
     {
-        private readonly ApplicationDbContext _db;
-        public ResiduosPartidaRepository(ApplicationDbContext db)
+        public async Task<ResiduosPartida?> GetResiduoPartida(int id)
         {
-            _db = db;
+            return await db.ResiduosPartida.FindAsync(id);
         }
-        public async Task<List<ResiduosPartida>> GetAll()
-        {
-            return await _db.ResiduosPartida.ToListAsync();
-        }
-        public async Task<ResiduosPartida?> GetResiduosPartida(int id)
-        {
-            return await _db.ResiduosPartida.FirstOrDefaultAsync(e => e.IdResiduosPartida == id);
-        }
-        {
-            // Obtener la partida y los residuos correspondientes a partir de sus IDs
-            var partida = await _db.Partida.FindAsync(idPartida);
-            var residuos = await _db.Residuos.FindAsync(idResiduos);
 
-            if (partida == null || residuos == null)
-            {
-                // Manejar la situación en la que la partida o los residuos no existen
-                throw new Exception("Partida o Residuos no encontrado");
-            }
-
-            // Crear una nueva instancia de ResiduosPartida con los valores proporcionados
-            ResiduosPartida newResiduosPartida = new ResiduosPartida
-            {
-                IdPartida = idPartida,
-                IdResiduos = idResiduos,
-                CantidadRegistrada = cantidadRegistrada,
-                Partida = partida,
-                Residuos = residuos
-            };
-            await _db.ResiduosPartida.AddAsync(newResiduosPartida);
-            await _db.SaveChangesAsync();
-            return newResiduosPartida;
-        }
-        public async Task<ResiduosPartida> UpdateResiduosPartida(ResiduosPartida residuosPartida)
+        public async Task<IEnumerable<ResiduosPartida>> GetResiduosPartida()
         {
-            _db.ResiduosPartida.Update(residuosPartida);
-            await _db.SaveChangesAsync();
-            return residuosPartida;
+            return await db.ResiduosPartida.ToListAsync();
         }
-        public async Task<ResiduosPartida> DeleteResiduosPartida(int id)
-        {
-            ResiduosPartida residuosPartida = await GetResiduosPartida(id);
 
-            return residuosPartida;
+        public async Task<ResiduosPartida> CreateResiduoPartida(ResiduosPartida residuoPartida)
+        {
+            db.ResiduosPartida.Add(residuoPartida);
+            await db.SaveChangesAsync();
+            return residuoPartida;
+        }
+
+        public async Task<ResiduosPartida> UpdateResiduoPartida(ResiduosPartida residuoPartida)
+        {
+            db.Entry(residuoPartida).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return residuoPartida;
+        }
+
+        public async Task<ResiduosPartida> DeleteResiduoPartida(int id)
+        {
+            var residuoPartida = await db.ResiduosPartida.FindAsync(id);
+            if (residuoPartida == null) return residuoPartida;
+            residuoPartida.IsDeleted = false;
+            await db.SaveChangesAsync();
+            return residuoPartida;
         }
     }
-}
+    
+

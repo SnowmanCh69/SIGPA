@@ -21,7 +21,10 @@ namespace SIGPA.Models
         [ForeignKey(nameof(Vehiculo))]
         public int IdVehiculo { get; set; }
 
-  
+        [JsonIgnore]
+        public bool IsDeleted { get; set; } = true;
+
+
         public virtual Usuario? Usuario { get; set; }
         public virtual EstadoRuta? EstadoRuta { get; set; }
         public virtual Vehiculo? Vehiculo { get; set; }

@@ -1,5 +1,7 @@
 using SIGPA.Context;
 using Microsoft.EntityFrameworkCore;
+using SIGPA.Repositories;
+using SIGPA.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+#region AppRepositories
+
+builder.Services.AddScoped<IRolUsuarioRepository, RolUsuarioRepository>();
+
+#endregion
+
+#region AppServices
+
+builder.Services.AddScoped<IRolUsuarioService, RolUsuarioService>();
+
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 

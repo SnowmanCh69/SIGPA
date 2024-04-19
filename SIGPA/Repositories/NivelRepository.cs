@@ -1,53 +1,50 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface INivelRepository
     {
-        Task<List<Nivel>> GetAll();
-        Task<Nivel?> GetNivel(int id);
-        Task<Nivel> CreateNivel(string nombreNivel);
+        Task<IEnumerable<Nivel>> GetNiveles();
+        Task<Nivel> GetNivel(int id);
+        Task<Nivel> CreateNivel(Nivel nivel);
         Task<Nivel> UpdateNivel(Nivel nivel);
         Task<Nivel> DeleteNivel(int id);
+
     }
-    public class NivelRepository : INivelRepository
+    public class NivelRepository(ApplicationDbContext db) :INivelRepository
     {
-        private readonly ApplicationDbContext _db;
-        public NivelRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<Nivel>> GetAll()
-        {
-            return await _db.Nivel.ToListAsync();
-        }
         public async Task<Nivel?> GetNivel(int id)
         {
-            return await _db.Nivel.FirstOrDefaultAsync(e => e.IdNivel == id);
+            return await db.Nivel.FindAsync(id);
         }
-        public async Task<Nivel> CreateNivel(string nombreNivel)
+
+        public async Task<IEnumerable<Nivel>> GetNiveles()
         {
-            Nivel newNivel = new Nivel
-            {
-                NombreNivel = nombreNivel
-            };
-            await _db.Nivel.AddAsync(newNivel);
-            await _db.SaveChangesAsync();
-            return newNivel;
+            return await db.Nivel.ToListAsync();
         }
-        public async Task<Nivel> UpdateNivel(Nivel nivel)
+
+        public async Task<Nivel> CreateNivel(Nivel nivel)
         {
-            _db.Nivel.Update(nivel);
-            await _db.SaveChangesAsync();
+            db.Nivel.Add(nivel);
+            await db.SaveChangesAsync();
             return nivel;
         }
+
+        public async Task<Nivel> UpdateNivel(Nivel nivel)
+        {
+            db.Entry(nivel).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return nivel;
+        }
+
         public async Task<Nivel> DeleteNivel(int id)
         {
-            Nivel nivel = await GetNivel(id);
-
+            var nivel = await db.Nivel.FindAsync(id);
+            if (nivel == null) return nivel;
+            nivel.IsDeleted = false;
+            await db.SaveChangesAsync();
             return nivel;
         }
     }

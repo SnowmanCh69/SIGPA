@@ -5,63 +5,53 @@ namespace SIGPA.Services
 {
     public interface ITipoVehiculoService
     {
-        Task<List<TipoVehiculo>> GetAll();
-        Task<TipoVehiculo> GetTipoVehiculo(int IdTipoVehiculo);
-        Task<TipoVehiculo> CreateTipoVehiculo(string NombreTipoVehiculo);
+        Task<IEnumerable<TipoVehiculo>> GetTipoVehiculo();
+        Task<TipoVehiculo?> GetTipoVehiculo(int id);
+        Task<TipoVehiculo> CreateTipoVehiculo(
+           string NombreTipoVehiculo
+         );
         Task<TipoVehiculo> UpdateTipoVehiculo(
-         int IdTipoVehiculo,
-         string? NombreTipoVehiculo = null
-     );
-        Task<TipoVehiculo> DeleteTipoVehiculo(int IdTipoVehiculo);
+            int IdTipoVehiculo,
+             string? NombreTipoVehiculo
+        );
+        Task<TipoVehiculo> DeleteTipoVehiculo(int id);
     }
-    public class TipoVehiculoService : ITipoVehiculoService
+    public class TipoVehiculoService(ITipoVehiculoRepository tipoVehiculoRepository) : ITipoVehiculoService
     {
-        private readonly ITipoVehiculoRepository _tipoVehiculoRepository;
-        public TipoVehiculoService(ITipoVehiculoRepository tipoVehiculoRepository)
+        public async Task<TipoVehiculo?> GetTipoVehiculo(int id)
         {
-            _tipoVehiculoRepository = tipoVehiculoRepository;
+            return await tipoVehiculoRepository.GetTipoVehiculo(id);
         }
 
-        public async Task<List<TipoVehiculo>> GetAll()
+        public async Task<IEnumerable<TipoVehiculo>> GetTipoVehiculo()
         {
-            return await _tipoVehiculoRepository.GetAll();
+            return await tipoVehiculoRepository.GetTiposVehiculos();
         }
 
-        public async Task<TipoVehiculo> GetTipoVehiculo(int IdTipoVehiculo)
+        public async Task<TipoVehiculo> CreateTipoVehiculo(
+                      string NombreTipoVehiculo
+                     )
         {
-            return await _tipoVehiculoRepository.GetTipoVehiculo(IdTipoVehiculo);
-        }
-
-        public async Task<TipoVehiculo> CreateTipoVehiculo(string NombreTipoVehiculo)
-        {
-            return await _tipoVehiculoRepository.CreateTipoVehiculo(NombreTipoVehiculo);
+            return await tipoVehiculoRepository.CreateTipoVehiculo(new TipoVehiculo
+            {
+                NombreTipoVehiculo = NombreTipoVehiculo
+            });
         }
 
         public async Task<TipoVehiculo> UpdateTipoVehiculo(
-                      int IdTipoVehiculo,
-                                 string? NombreTipoVehiculo = null
-                              )
+               int IdTipoVehiculo,
+               string? NombreTipoVehiculo
+           )
         {
-            var tipoVehiculo = await _tipoVehiculoRepository.GetTipoVehiculo(IdTipoVehiculo);
-            if (tipoVehiculo == null)
-            {
-                throw new Exception("TipoVehiculo not found");
-            }
-
-            if (NombreTipoVehiculo != null)
-            {
-                tipoVehiculo.NombreTipoVehiculo = NombreTipoVehiculo;
-            }
-
-            return await _tipoVehiculoRepository.UpdateTipoVehiculo(tipoVehiculo);
+            TipoVehiculo? tipoVehiculo = await tipoVehiculoRepository.GetTipoVehiculo(IdTipoVehiculo);
+            if (tipoVehiculo == null) throw new Exception("TipoVehiculo not found");
+            tipoVehiculo.NombreTipoVehiculo = NombreTipoVehiculo ?? tipoVehiculo.NombreTipoVehiculo;
+            return await tipoVehiculoRepository.UpdateTipoVehiculo(tipoVehiculo);
         }
 
-        public async Task<TipoVehiculo> DeleteTipoVehiculo(int IdTipoVehiculo)
+        public async Task<TipoVehiculo> DeleteTipoVehiculo(int id)
         {
-
-            return await _tipoVehiculoRepository.DeleteTipoVehiculo(IdTipoVehiculo);
+            return await tipoVehiculoRepository.DeleteTipoVehiculo(id);
         }
-        
     }
-    
 }

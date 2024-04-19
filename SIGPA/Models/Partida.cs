@@ -12,7 +12,7 @@ namespace SIGPA.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPartida { get; set; }
 
-        [ForeignKey(nameof(Usuario)]
+        [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
         public required DateTime FechaInicioPartida { get; set; }
         public required DateTime FechaFinPartida { get; set; }
@@ -21,7 +21,7 @@ namespace SIGPA.Models
         public required string UbicacionJugador { get; set; }
         public int CantidadVidas { get; set; }
         [ForeignKey(nameof(Residuos))]
-        public int IdResiduos { get; set; }
+        public int IdResiduo { get; set; }
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;

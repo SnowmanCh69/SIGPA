@@ -3,64 +3,56 @@ using SIGPA.Repositories;
 
 namespace SIGPA.Services
 {
-    interface ITipoLogroService
+    public interface ITipoLogroService
     {
-        Task<List<TipoLogro>> GetAll();
-        Task<TipoLogro> GetTipoLogro(int IdTipoLogro);
-        Task<TipoLogro> CreateTipoLogro(string NombreTipoLogro);
+        Task<IEnumerable<TipoLogro>> GetTipoLogros();
+        Task<TipoLogro?> GetTipoLogro(int id);
+        Task<TipoLogro> CreateTipoLogro(
+          string NombreTipoLogro
+        );
         Task<TipoLogro> UpdateTipoLogro(
-            int IdTipoLogro,
-            string? NombreTipoLogro = null
-       );
-        Task<TipoLogro> DeleteTipoLogro(int IdTipoLogro);
+           int IdTipoLogro,
+           string? NombreTipoLogro
+        );
+        Task<TipoLogro> DeleteTipoLogro(int id);
     }
-    public class TipoLogroService  : ITipoLogroService
+    public class TipoLogroService(ITipoLogroRepository tipoLogroRepository) : ITipoLogroService
     {
-        private readonly ITipoLogroRepository _tipoLogroRepository;
-        public TipoLogroService(ITipoLogroRepository tipoLogroRepository)
+        public async Task<TipoLogro?> GetTipoLogro(int id)
         {
-            _tipoLogroRepository = tipoLogroRepository;
+            return await tipoLogroRepository.GetTipoLogro(id);
         }
 
-        public async Task<List<TipoLogro>> GetAll()
+        public async Task<IEnumerable<TipoLogro>> GetTipoLogros()
         {
-            return await _tipoLogroRepository.GetAll();
+            return await tipoLogroRepository.GetTiposLogros();
         }
 
-        public async Task<TipoLogro> GetTipoLogro(int IdTipoLogro)
+        public async Task<TipoLogro> CreateTipoLogro(
+           string NombreTipoLogro
+         )
         {
-            return await _tipoLogroRepository.GetTipoLogro(IdTipoLogro);
-        }
-
-        public async Task<TipoLogro> CreateTipoLogro(string NombreTipoLogro)
-        {
-            return await _tipoLogroRepository.CreateTipoLogro(NombreTipoLogro);
+            return await tipoLogroRepository.CreateTipoLogro(new TipoLogro
+            {
+                NombreTipoLogro = NombreTipoLogro
+            });
         }
 
         public async Task<TipoLogro> UpdateTipoLogro(
           int IdTipoLogro,
-           string? NombreTipoLogro = null
+           string? NombreTipoLogro
          )
         {
-            var tipoLogro = await _tipoLogroRepository.GetTipoLogro(IdTipoLogro);
-            if (tipoLogro == null)
-            {
-                throw new Exception("TipoLogro not found");
-            }
-
-            if (NombreTipoLogro != null)
-            {
-                tipoLogro.NombreTipoLogro = NombreTipoLogro;
-            }
-
-            return await _tipoLogroRepository.UpdateTipoLogro(tipoLogro);
+            TipoLogro? tipoLogro = await tipoLogroRepository.GetTipoLogro(IdTipoLogro);
+            if (tipoLogro == null) throw new Exception("TipoLogro not found");
+            tipoLogro.NombreTipoLogro = NombreTipoLogro ?? tipoLogro.NombreTipoLogro;
+            return await tipoLogroRepository.UpdateTipoLogro(tipoLogro);
         }
 
-        public async Task<TipoLogro> DeleteTipoLogro(int IdTipoLogro)
+        public async Task<TipoLogro> DeleteTipoLogro(int id)
         {
-
-            return await _tipoLogroRepository.DeleteTipoLogro(IdTipoLogro);
+            return await tipoLogroRepository.DeleteTipoLogro(id);
         }
     }
-    
+
 }

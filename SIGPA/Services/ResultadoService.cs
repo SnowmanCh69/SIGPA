@@ -1,64 +1,59 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
     public interface IResultadoService
     {
-        Task<List<Resultado>> GetAll();
-        Task<Resultado> GetResultado(int IdResultado);
-        Task<Resultado> CreateResultado(string NombreResultado);
+        Task<IEnumerable<Resultado>> GetResultados();
+        Task<Resultado?> GetResultado(int id);
+        Task<Resultado> CreateResultado(
+           string NombreResultado
+        );
         Task<Resultado> UpdateResultado(
-         int IdResultado,
-         string? NombreResultado = null
-      );
-        Task<Resultado> DeleteResultado(int IdResultado);
+            int IdResultado,
+            string? NombreResultado
+        );
+        Task<Resultado> DeleteResultado(int id);
     }
-    public class ResultadoService : IResultadoService
+    public class ResultadoService(IResultadoRepository resultadoRepository) : IResultadoService
     {
-        private readonly IResultadoRepository _resultadoRepository;
-        public ResultadoService(IResultadoRepository resultadoRepository)
+        
+        public async Task<Resultado?> GetResultado(int id)
         {
-            _resultadoRepository = resultadoRepository;
+            return await resultadoRepository.GetResultado(id);
         }
 
-        public async Task<List<Resultado>> GetAll()
+        public async Task<IEnumerable<Resultado>> GetResultados()
         {
-            return await _resultadoRepository.GetAll();
+            return await resultadoRepository.GetResultados();
         }
 
-        public async Task<Resultado> GetResultado(int IdResultado)
+        public async Task<Resultado> CreateResultado(
+                      string NombreResultado
+                     )
         {
-            return await _resultadoRepository.GetResultado(IdResultado);
-        }
-
-        public async Task<Resultado> CreateResultado(string NombreResultado)
-        {
-            return await _resultadoRepository.CreateResultado(NombreResultado);
+            return await resultadoRepository.CreateResultado(new Resultado
+            {
+                NombreResultado = NombreResultado
+            });
         }
 
         public async Task<Resultado> UpdateResultado(
-           int IdResultado,
-            string? NombreResultado = null
-                   )
+             int IdResultado,
+             string? NombreResultado
+         )
         {
-            var resultado = await _resultadoRepository.GetResultado(IdResultado);
-            if (resultado == null)
-            {
-                throw new Exception("Resultado not found");
-            }
-
-            if (NombreResultado != null)
-            {
-                resultado.NombreResultado = NombreResultado;
-            }
-
-            return await _resultadoRepository.UpdateResultado(resultado);
+            Resultado? resultado = await resultadoRepository.GetResultado(IdResultado);
+            if (resultado == null) throw new Exception("Resultado not found");
+            resultado.NombreResultado = NombreResultado ?? resultado.NombreResultado;
+            return await resultadoRepository.UpdateResultado(resultado);
         }
 
-        public async Task<Resultado> DeleteResultado(int IdResultado)
+        public async Task<Resultado> DeleteResultado(int id)
         {
-            return await _resultadoRepository.DeleteResultado(IdResultado);
-        }
+            return await resultadoRepository.DeleteResultado(id);
+        } 
     }
 }

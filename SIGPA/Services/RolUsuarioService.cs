@@ -2,66 +2,61 @@
 using SIGPA.Repositories;
 
 namespace SIGPA.Services
-
-{ 
+{
     public interface IRolUsuarioService
     {
-        Task<List<RolUsuario>> GetAll();
-        Task<RolUsuario> GetRolUsuario(int IdRolUsuario);
-        Task<RolUsuario> CreateRolUsuario(string NombreRolUsuario);
-        Task<RolUsuario> UpdateRolUsuario(
-          int IdRolUsuario,
-          string? NombreRolUsuario = null
+        Task<IEnumerable<RolUsuario>> GetRolesUsuarios();
+        Task<RolUsuario?> GetRolUsuario(int id);
+        Task<RolUsuario> CreateRolUsuario(
+         string nombreRolUsuario
         );
-        Task<RolUsuario> DeleteRolUsuario(int IdRolUsuario);
+        Task<RolUsuario> UpdateRolUsuario(
+            int IdRolUsuario,
+            string? nombreRolUsuario
+        );
+        Task<RolUsuario?> DeleteRolUsuario(int id);
+
     }
-
-
-    public class RolUsuarioService : IRolUsuarioService
+    public class RolUsuarioService(IRolUsuarioRepository rolUsuarioRepository) : IRolUsuarioService
     {
-        private readonly IRolUsuarioRepository _rolUsuarioRepository;
-        public RolUsuarioService(IRolUsuarioRepository rolUsuarioRepository)
+        public async Task<RolUsuario?> GetRolUsuario(int id)
         {
-            _rolUsuarioRepository = rolUsuarioRepository;
+            return await rolUsuarioRepository.GetRolUsuario(id);
         }
 
-        public async Task<List<RolUsuario>> GetAll()
+        public async Task<IEnumerable<RolUsuario>> GetRolesUsuarios()
         {
-            return await _rolUsuarioRepository.GetAll();
+            return await rolUsuarioRepository.GetRolesUsuarios();
         }
 
-        public async Task<RolUsuario> GetRolUsuario(int IdRolUsuario)
+        public async Task<RolUsuario> CreateRolUsuario(
+            string nombreRolUsuario
+         )
         {
-            return await _rolUsuarioRepository.GetRolUsuario(IdRolUsuario);
-        }
-
-        public async Task<RolUsuario> CreateRolUsuario(string NombreRolUsuario)
-        {
-            return await _rolUsuarioRepository.CreateRolUsuario(NombreRolUsuario);
+          return await rolUsuarioRepository.CreateRolUsuario(new RolUsuario 
+          { 
+              NombreRolUsuario = nombreRolUsuario
+          });
+         
         }
 
         public async Task<RolUsuario> UpdateRolUsuario(
-                      int IdRolUsuario,
-                                 string? NombreRolUsuario = null
-                              )
+           
+            int IdRolUsuario,
+            string? nombreRolUsuario
+           )
         {
-            var rolUsuario = await _rolUsuarioRepository.GetRolUsuario(IdRolUsuario);
-            if (rolUsuario == null)
-            {
-                throw new Exception("RolUsuario not found");
-            }
+            RolUsuario? rolUsuario = await rolUsuarioRepository.GetRolUsuario(IdRolUsuario);
+            if (rolUsuario == null) throw new Exception("RolUsuario no encontrado");
 
-            if (NombreRolUsuario != null)
-            {
-                rolUsuario.NombreRolUsuario = NombreRolUsuario;
-            }
+            rolUsuario.NombreRolUsuario = nombreRolUsuario ?? rolUsuario.NombreRolUsuario;
 
-            return await _rolUsuarioRepository.UpdateRolUsuario(rolUsuario);
+            return await rolUsuarioRepository.UpdateRolUsuario(rolUsuario);
         }
 
-        public async Task<RolUsuario> DeleteRolUsuario(int IdRolUsuario)
+        public async Task<RolUsuario?> DeleteRolUsuario(int id)
         {
-            return await _rolUsuarioRepository.DeleteRolUsuario(IdRolUsuario);
+            return await rolUsuarioRepository.DeleteRolUsuario(id);
         }
     }
     

@@ -5,79 +5,71 @@ namespace SIGPA.Services
 {
     public interface IControlCalidadService
     {
-        Task<List<ControlCalidad>> GetAll();
-        Task<ControlCalidad?> GetControlCalidad(int IdControlCalidad);
-        Task<ControlCalidad> CreateControlCalidad(DateTime fechaControl, int idUsuario, int idMetodoControl);
+        Task<IEnumerable<ControlCalidad>> GetControlesCalidad();
+        Task<ControlCalidad?> GetControlCalidad(int id);
+        Task<ControlCalidad> CreateControlCalidad(
+            DateTime FechaControl,
+            int IdUsuario,
+            int IdMetodoControl
+            );
         Task<ControlCalidad> UpdateControlCalidad(
-            int IdControlCalidad,
-            DateTime? fechaControl = null,
-            int? idUsuario = null,
-            int? idMetodoControl =null
-        );
-        Task<ControlCalidad> DeleteControlCalidad(int idControlCalidad);
+           int IdControlCalidad,
+           DateTime? FechaControl,
+           int? IdUsuario,
+           int? IdMetodoControl
+            );
+        Task<ControlCalidad?> DeleteControlCalidad(int id);
 
     }
-    public class ControlCalidadService
+    public class ControlCalidadService(IControlCalidadRepository controlCalidadRepository) : IControlCalidadService
     {
-
-        private readonly IControlCalidadRepository _controlCalidadRepository;
-        public ControlCalidadService(IControlCalidadRepository controlCalidadRepository)
+       
+        public async Task<ControlCalidad?> GetControlCalidad(int id)
         {
-            _controlCalidadRepository = controlCalidadRepository;
-        }
-        
-        public async Task<List<ControlCalidad>> GetAll()
-        {
-            return await _controlCalidadRepository.GetAll();
+            return await controlCalidadRepository.GetControlCalidad(id);
         }
 
-        public async Task<ControlCalidad?> GetControlCalidad(int IdControlCalidad)
+        public async Task<IEnumerable<ControlCalidad>> GetControlesCalidad()
         {
-            return await _controlCalidadRepository.GetControlCalidad(IdControlCalidad);
+            return await controlCalidadRepository.GetControlesCalidad();
         }
 
-        public async Task<ControlCalidad> CreateControlCalidad(DateTime fechaControl, int idUsuario, int idMetodoControl)
+        public async Task<ControlCalidad> CreateControlCalidad(
+          DateTime FechaControl,
+          int IdUsuario,
+          int IdMetodoControl
+         )
         {
-            return await _controlCalidadRepository.CreateControlCalidad(fechaControl, idUsuario, idMetodoControl);
-        }
+            return await controlCalidadRepository.CreateControlCalidad(new ControlCalidad
+            { 
+                FechaControl = FechaControl,
+                IdUsuario = IdUsuario,
+                IdMetodoControl = IdMetodoControl
+                });
+            }
 
         public async Task<ControlCalidad> UpdateControlCalidad(
+            
             int IdControlCalidad,
-            DateTime? fechaControl = null,
-            int? idUsuario = null,
-            int? idMetodoControl =null
-          )
+            DateTime? FechaControl,
+            int? IdUsuario,
+            int? IdMetodoControl
+            )
         {
-            var controlCalidad = await _controlCalidadRepository.GetControlCalidad(IdControlCalidad);
-            if (controlCalidad == null)
-            {
-                // Manejar la situación en la que el control de calidad no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Control de Calidad no encontrado");
-            }
+            ControlCalidad? controlCalidad = await controlCalidadRepository.GetControlCalidad(IdControlCalidad);
+            if (controlCalidad == null) throw new Exception("Control de calidad no encontrado");
 
-            if (fechaControl != null)
-            {
-                controlCalidad.FechaControl = fechaControl.Value;
-            }
-
-            if (idUsuario != null)
-            {
-                controlCalidad.IdUsuario = idUsuario.Value;
-            }
-
-            if (idMetodoControl != null)
-            {
-                controlCalidad.IdMetodoControl = idMetodoControl.Value;
-            }
-
-            return await _controlCalidadRepository.UpdateControlCalidad(controlCalidad);
+            controlCalidad.FechaControl = FechaControl ?? controlCalidad.FechaControl;
+            controlCalidad.IdUsuario = IdUsuario ?? controlCalidad.IdUsuario;
+            controlCalidad.IdMetodoControl = IdMetodoControl ?? controlCalidad.IdMetodoControl;
+            return await controlCalidadRepository.UpdateControlCalidad(controlCalidad);
         }
 
-        public async Task<ControlCalidad> DeleteControlCalidad(int idControlCalidad)
+        public async Task<ControlCalidad?> DeleteControlCalidad(int id)
         {
-            return await _controlCalidadRepository.DeleteControlCalidad(idControlCalidad);
+            return await controlCalidadRepository.DeleteControlCalidad(id);
         }
-
+      
     }
 }
+

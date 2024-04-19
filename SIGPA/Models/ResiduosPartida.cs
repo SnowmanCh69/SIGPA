@@ -14,7 +14,7 @@ namespace SIGPA.Models
         public int IdPartida { get; set; }
 
         [ForeignKey(nameof(Residuos))]
-        public int IdResiduos { get; set; }
+        public int IdResiduo { get; set; }
         public required string CantidadRegistrada { get; set; }
 
         [JsonIgnore]

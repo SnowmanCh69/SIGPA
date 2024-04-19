@@ -1,67 +1,53 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
+
     public interface IUsuarioRepository
     {
-        Task<List<Usuario>> GetAll();
-        Task<Usuario?> GetUsuario(int id);
-        Task<Usuario> CreateUsuario(string nombreUsuario, string emailUsuario, int idRolUsuario);
+        Task<IEnumerable<Usuario>> GetUsuarios();
+        Task<Usuario> GetUsuario(int id);
+        Task<Usuario> CreateUsuario(Usuario usuario);
         Task<Usuario> UpdateUsuario(Usuario usuario);
         Task<Usuario> DeleteUsuario(int id);
     }
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository(ApplicationDbContext db) : IUsuarioRepository
     {
-        private readonly ApplicationDbContext _db;
-        public UsuarioRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<Usuario>> GetAll()
-        {
-            return await _db.Usuarios.ToListAsync();
-        }
+
         public async Task<Usuario?> GetUsuario(int id)
         {
-            return await _db.Usuarios.FirstOrDefaultAsync(e => e.IdUsuario == id);
+            return await db.Usuarios.FindAsync(id);
         }
-        public async Task<Usuario> CreateUsuario(string nombreUsuario, string emailUsuario, int idRolUsuario)
+
+        public async Task<IEnumerable<Usuario>> GetUsuarios()
         {
-            // Obtener el rol de usuario correspondiente a partir de su ID
-            var rolUsuario = await _db.RolUsuarios.FindAsync(idRolUsuario);
-
-            if (rolUsuario == null)
-            {
-                // Manejar la situación en la que el rol de usuario no existe
-                throw new Exception("Rol de Usuario no encontrado");
-            }
-
-            // Crear una nueva instancia de Usuario con los valores proporcionados
-            Usuario newUsuario = new Usuario
-            {
-                NombreUsuario = nombreUsuario,
-                EmailUsuario = emailUsuario,
-                IdRolUsuario = idRolUsuario,
-                RolUsuario = rolUsuario
-            };
-            await _db.Usuarios.AddAsync(newUsuario);
-            await _db.SaveChangesAsync();
-            return newUsuario;
+            return await db.Usuarios.ToListAsync();
         }
-        public async Task<Usuario> UpdateUsuario(Usuario usuario)
+
+        public async Task<Usuario> CreateUsuario(Usuario usuario)
         {
-            _db.Usuarios.Update(usuario);
-            await _db.SaveChangesAsync();
+            db.Usuarios.Add(usuario);
+            await db.SaveChangesAsync();
             return usuario;
         }
+
+        public async Task<Usuario> UpdateUsuario(Usuario usuario)
+        {
+            db.Entry(usuario).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return usuario;
+        }
+
         public async Task<Usuario> DeleteUsuario(int id)
         {
-            Usuario usuario = await GetUsuario(id);
-
+            var usuario = await db.Usuarios.FindAsync(id);
+            if (usuario == null) return usuario;
+            usuario.IsDeleted = false;
+            await db.SaveChangesAsync();
             return usuario;
         }
     }
+    
 }

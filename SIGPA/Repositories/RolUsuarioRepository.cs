@@ -1,53 +1,51 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface IRolUsuarioRepository
     {
-        Task<List<RolUsuario>> GetAll();
+        Task<IEnumerable<RolUsuario>> GetRolesUsuarios();
         Task<RolUsuario?> GetRolUsuario(int id);
-        Task<RolUsuario> CreateRolUsuario(string nombreRolUsuario);
+        Task<RolUsuario> CreateRolUsuario(RolUsuario rolUsuario);
         Task<RolUsuario> UpdateRolUsuario(RolUsuario rolUsuario);
-        Task<RolUsuario> DeleteRolUsuario(int id);
+        Task<RolUsuario?> DeleteRolUsuario(int id);
+
     }
-    public class RolUsuarioRepository : IRolUsuarioRepository
+    public class RolUsuarioRepository(ApplicationDbContext db) : IRolUsuarioRepository
     {
-        private readonly ApplicationDbContext _db;
-        public RolUsuarioRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<RolUsuario>> GetAll()
-        {
-            return await _db.RolUsuarios.ToListAsync();
-        }
+
         public async Task<RolUsuario?> GetRolUsuario(int id)
         {
-            return await _db.RolUsuarios.FirstOrDefaultAsync(e => e.IdRolUsuario == id);
+            return await db.RolUsuarios.FindAsync(id);
         }
-        public async Task<RolUsuario> CreateRolUsuario(string nombreRolUsuario)
+
+        public async Task<IEnumerable<RolUsuario>> GetRolesUsuarios()
         {
-            RolUsuario newRolUsuario = new RolUsuario
-            {
-                NombreRolUsuario = nombreRolUsuario
-            };
-            await _db.RolUsuarios.AddAsync(newRolUsuario);
-            await _db.SaveChangesAsync();
-            return newRolUsuario;
+            return await db.RolUsuarios.ToListAsync();
         }
-        public async Task<RolUsuario> UpdateRolUsuario(RolUsuario rolUsuario)
+
+        public async Task<RolUsuario> CreateRolUsuario(RolUsuario rolUsuario)
         {
-            _db.RolUsuarios.Update(rolUsuario);
-            await _db.SaveChangesAsync();
+            db.RolUsuarios.Add(rolUsuario);
+            await db.SaveChangesAsync();
             return rolUsuario;
         }
-        public async Task<RolUsuario> DeleteRolUsuario(int id)
-        {
-            RolUsuario rolUsuario = await GetRolUsuario(id);
 
+        public async Task<RolUsuario> UpdateRolUsuario(RolUsuario rolUsuario)
+        {
+            db.Entry(rolUsuario).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return rolUsuario;
+        }
+
+        public async Task<RolUsuario?> DeleteRolUsuario(int id)
+        {
+            var rolUsuario = await db.RolUsuarios.FindAsync(id);
+            if (rolUsuario == null) return rolUsuario;
+            rolUsuario.IsDeleted = false;
+            await db.SaveChangesAsync();
             return rolUsuario;
         }
     }

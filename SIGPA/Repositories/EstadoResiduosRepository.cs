@@ -1,56 +1,50 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface IEstadoResiduosRepository
     {
-        Task<List<EstadoResiduos>> GetAll();
-        Task<EstadoResiduos?> GetEstadoResiduos(int id);
-        Task<EstadoResiduos> CreateEstadoResiduos(string nombreEstadoResiduos);
-        Task<EstadoResiduos> UpdateEstadoResiduos(EstadoResiduos estadoResiduos);
-        Task<EstadoResiduos> DeleteEstadoResiduos(int id);
+        Task<IEnumerable<EstadoResiduos>> GetEstadosResiduos();
+        Task<EstadoResiduos> GetEstadoResiduo(int id);
+        Task<EstadoResiduos> CreateEstadoResiduo(EstadoResiduos estadoResiduos);
+        Task<EstadoResiduos> UpdateEstadoResiduo(EstadoResiduos estadoResiduos);
+        Task<EstadoResiduos> DeleteEstadoResiduo(int id);
+
     }
-
-
-    public class EstadoResiduosRepository
+    public class EstadoResiduosRepository(ApplicationDbContext db) : IEstadoResiduosRepository
     {
-        private readonly ApplicationDbContext _db;
-        public EstadoResiduosRepository(ApplicationDbContext db)
+        public async Task<EstadoResiduos?> GetEstadoResiduo(int id)
         {
-            _db = db;
+            return await db.EstadoResiduos.FindAsync(id);
         }
-        public async Task<List<EstadoResiduos>> GetAll()
+
+        public async Task<IEnumerable<EstadoResiduos>> GetEstadosResiduos()
         {
-            return await _db.EstadoResiduos.ToListAsync();
+            return await db.EstadoResiduos.ToListAsync();
         }
-        public async Task<EstadoResiduos?> GetEstadoResiduos(int id)
+
+        public async Task<EstadoResiduos> CreateEstadoResiduo(EstadoResiduos estadoResiduos)
         {
-            return await _db.EstadoResiduos.FirstOrDefaultAsync(e => e.IdEstadoResiduos == id);
-        }
-        public async Task<EstadoResiduos> CreateEstadoResiduos(string nombreEstadoResiduos)
-        {
-            EstadoResiduos newEstadoResiduos = new EstadoResiduos
-            {
-                NombreEstadoResiduos = nombreEstadoResiduos
-            };
-            await _db.EstadoResiduos.AddAsync(newEstadoResiduos);
-            await _db.SaveChangesAsync();
-            return newEstadoResiduos;
-        }
-        public async Task<EstadoResiduos> UpdateEstadoResiduos(EstadoResiduos estadoResiduos)
-        {
-            _db.EstadoResiduos.Update(estadoResiduos);
-            await _db.SaveChangesAsync();
+            db.EstadoResiduos.Add(estadoResiduos);
+            await db.SaveChangesAsync();
             return estadoResiduos;
         }
-        public async Task<EstadoResiduos> DeleteEstadoResiduos(int id)
-        {
-            EstadoResiduos estadoResiduos = await GetEstadoResiduos(id);
 
+        public async Task<EstadoResiduos> UpdateEstadoResiduo(EstadoResiduos estadoResiduos)
+        {
+            db.Entry(estadoResiduos).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return estadoResiduos;
+        }
+
+        public async Task<EstadoResiduos> DeleteEstadoResiduo(int id)
+        {
+            var estadoResiduos = await db.EstadoResiduos.FindAsync(id);
+            if (estadoResiduos == null) return estadoResiduos;
+            estadoResiduos.IsDeleted = false;
+            await db.SaveChangesAsync();
             return estadoResiduos;
         }
     }

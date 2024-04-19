@@ -5,87 +5,74 @@ namespace SIGPA.Services
 {
     public interface IRutaRecolectaService
     {
-
-        Task<List<RutaRecolecta>> GetAll();
-        Task<RutaRecolecta> GetRutaRecolecta(int IdRutaRecolecta);
-        Task<RutaRecolecta> CreateRutaRecolecta(string PuntoInicio, string PuntoFinalizacion, int IdEstadoRuta, int IdUsuario, int IdVehiculo);
-        
+        Task<IEnumerable<RutaRecolecta>> GetRutasRecolecta();
+        Task<RutaRecolecta?> GetRutaRecolecta(int id);
+        Task<RutaRecolecta> CreateRutaRecolecta(
+          string PuntoInicio,
+          string PuntoFinalizacion,
+          int IdEstadoRuta,
+          int IdUsuario,
+          int IdVehiculo
+        );
         Task<RutaRecolecta> UpdateRutaRecolecta(
-         int IdRutaRecolecta,
-         string? PuntoInicio = null,
-         string? PuntoFinalizacion = null,
-         int? IdEstadoRuta = null,
-         int? IdUsuario = null,
-         int? IdVehiculo = null
-      );
+          int IdRutaRecolecta,
+          string? PuntoInicio,
+          string? PuntoFinalizacion,
+          int? IdEstadoRuta,
+          int? IdUsuario,
+          int? IdVehiculo
+        );
+
     }
-    public class RutaRecolectaService : IRutaRecolectaService
+    public class RutaRecolectaService(IRutaRecolectaRepository rutaRecolectaRepository) : IRutaRecolectaService
     {
-        private readonly IRutaRecolectaRepository _rutaRecolectaRepository;
-        public RutaRecolectaService(IRutaRecolectaRepository rutaRecolectaRepository)
+
+        public async Task<RutaRecolecta?> GetRutaRecolecta(int id)
         {
-            _rutaRecolectaRepository = rutaRecolectaRepository;
+            return await rutaRecolectaRepository.GetRutaRecolecta(id);
         }
 
-        public async Task<List<RutaRecolecta>> GetAll()
+        public async Task<IEnumerable<RutaRecolecta>> GetRutasRecolecta()
         {
-            return await _rutaRecolectaRepository.GetAll();
+            return await rutaRecolectaRepository.GetRutasRecolecta();
         }
 
-        public async Task<RutaRecolecta> GetRutaRecolecta(int IdRutaRecolecta)
+        public async Task<RutaRecolecta> CreateRutaRecolecta(
+           string PuntoInicio,
+           string PuntoFinalizacion,
+           int IdEstadoRuta,
+           int IdUsuario,
+           int IdVehiculo
+         )
         {
-            return await _rutaRecolectaRepository.GetRutaRecolecta(IdRutaRecolecta);
-        }
-
-        public async Task<RutaRecolecta> CreateRutaRecolecta(string PuntoInicio, string PuntoFinalizacion, int IdEstadoRuta, int IdUsuario, int IdVehiculo)
-        {
-            return await _rutaRecolectaRepository.CreateRutaRecolecta(PuntoInicio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo);
+            return await rutaRecolectaRepository.CreateRutaRecolecta(new RutaRecolecta
+            {
+                PuntoInicio = PuntoInicio,
+                PuntoFinalizacion = PuntoFinalizacion,
+                IdEstadoRuta = IdEstadoRuta,
+                IdUsuario = IdUsuario,
+                IdVehiculo = IdVehiculo
+            });
         }
 
         public async Task<RutaRecolecta> UpdateRutaRecolecta(
            int IdRutaRecolecta,
-           string? PuntoInicio = null,
-           string? PuntoFinalizacion = null,
-           int? IdEstadoRuta = null,
-           int? IdUsuario = null,
-           int? IdVehiculo = null
+           string? PuntoInicio,
+           string? PuntoFinalizacion,
+           int? IdEstadoRuta,
+           int? IdUsuario,
+           int? IdVehiculo
           )
         {
-            var rutaRecolecta = await _rutaRecolectaRepository.GetRutaRecolecta(IdRutaRecolecta);
-            if (rutaRecolecta == null)
-            {
-                throw new Exception("RutaRecolecta not found");
-            }
-
-            if (PuntoInicio != null)
-            {
-                rutaRecolecta.PuntoInicio = PuntoInicio;
-            }
-            if (PuntoFinalizacion != null)
-            {
-                rutaRecolecta.PuntoFinalizacion = PuntoFinalizacion;
-            }
-            if (IdEstadoRuta != null)
-            {
-                rutaRecolecta.IdEstadoRuta = (int)IdEstadoRuta;
-            }
-            if (IdUsuario != null)
-            {
-                rutaRecolecta.IdUsuario = (int)IdUsuario;
-            }
-            if (IdVehiculo != null)
-            {
-                rutaRecolecta.IdVehiculo = (int)IdVehiculo;
-            }
-
-            return await _rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
+            RutaRecolecta? rutaRecolecta = await rutaRecolectaRepository.GetRutaRecolecta(IdRutaRecolecta);
+            if (rutaRecolecta == null) throw new Exception("RutaRecolecta not found");
+            rutaRecolecta.PuntoInicio = PuntoInicio ?? rutaRecolecta.PuntoInicio;
+            rutaRecolecta.PuntoFinalizacion = PuntoFinalizacion ?? rutaRecolecta.PuntoFinalizacion;
+            rutaRecolecta.IdEstadoRuta = IdEstadoRuta ?? rutaRecolecta.IdEstadoRuta;
+            rutaRecolecta.IdUsuario = IdUsuario ?? rutaRecolecta.IdUsuario;
+            rutaRecolecta.IdVehiculo = IdVehiculo ?? rutaRecolecta.IdVehiculo;
+            return await rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
             
         }
-
-        public async Task<RutaRecolecta> DeleteRutaRecolecta(int IdRutaRecolecta)
-        {
-            return await _rutaRecolectaRepository.DeleteRutaRecolecta(IdRutaRecolecta);
-        }
     }
-    
 }

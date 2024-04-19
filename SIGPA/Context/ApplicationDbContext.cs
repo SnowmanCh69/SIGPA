@@ -1,5 +1,6 @@
 ﻿using SIGPA.Models;
 using Microsoft.EntityFrameworkCore;
+using SIGPA.Models.SIGPA.Models;
 
 
 namespace SIGPA.Context

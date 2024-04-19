@@ -1,67 +1,53 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
-{   
+{
+
     public interface ILogroRepository
     {
-        Task<List<Logro>> GetAll();
-        Task<Logro?> GetLogro(int id);
-        Task<Logro> CreateLogro(string nombreLogro, string descripcionLogro, int idTipoLogro);
+        Task<IEnumerable<Logro>> GetLogros();
+        Task<Logro> GetLogro(int id);
+        Task<Logro> CreateLogro(Logro logro);
         Task<Logro> UpdateLogro(Logro logro);
         Task<Logro> DeleteLogro(int id);
-    }
 
-    public class LogroRepository : ILogroRepository
+    }
+    public class LogroRepository ( ApplicationDbContext db) : ILogroRepository
     {
-        private readonly ApplicationDbContext _db;
-        public LogroRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<Logro>> GetAll()
-        {
-            return await _db.Logro.ToListAsync();
-        }
         public async Task<Logro?> GetLogro(int id)
         {
-            return await _db.Logro.FirstOrDefaultAsync(e => e.IdLogro == id);
+            return await db.Logro.FindAsync(id);
         }
-        public async Task<Logro> CreateLogro(string nombreLogro, string descripcionLogro, int idTipoLogro)
+
+        public async Task<IEnumerable<Logro>> GetLogros()
         {
-            // Obtener el TipoLogro correspondiente a partir de su ID
-            var tipoLogro = await _db.TipoLogro.FindAsync(idTipoLogro);
-
-            if (tipoLogro == null)
-            {
-                // Manejar la situación en la que el TipoLogro no existe
-                throw new Exception("TipoLogro no encontrado");
-            }
-
-            // Crear una nueva instancia de Logro con los valores proporcionados
-            Logro newLogro = new Logro
-            {
-                NombreLogro = nombreLogro,
-                DescripcionLogro = descripcionLogro,
-                TipoLogro = tipoLogro
-            };
-            await _db.Logro.AddAsync(newLogro);
-            await _db.SaveChangesAsync();
-            return newLogro;
+            return await db.Logro.ToListAsync();
         }
+
+        public async Task<Logro> CreateLogro(Logro logro)
+        {
+            db.Logro.Add(logro);
+            await db.SaveChangesAsync();
+            return logro;
+        }
+
         public async Task<Logro> UpdateLogro(Logro logro)
         {
-            _db.Logro.Update(logro);
-            await _db.SaveChangesAsync();
+            db.Entry(logro).State = EntityState.Modified;
+            await db.SaveChangesAsync();
             return logro;
         }
+
         public async Task<Logro> DeleteLogro(int id)
         {
-            Logro logro = await GetLogro(id);
-
+            var logro = await db.Logro.FindAsync(id);
+            if (logro == null) return logro;
+            logro.IsDeleted = false;
+            await db.SaveChangesAsync();
             return logro;
         }
+
     }
 }

@@ -9,16 +9,15 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdResiduos { get; set; }
-        public required DateTime FechaRegistro { get; set; }
 
+        public required string NombreResiduo { get; set; }
+        public required DateTime FechaRegistro { get; set; }
         [ForeignKey(nameof(EstadoResiduos))]
         public int IdEstadoResiduos { get; set; }
 
         public required string CantidadRegistrada { get; set; }
 
-        [ForeignKey(nameof(TipoResiduos))]
-        public int IdTipoResiduos { get; set; }
-
+     
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
 
@@ -29,9 +28,8 @@ namespace SIGPA.Models
         public bool IsDeleted { get; set; } = true;
 
         public virtual EstadoResiduos? EstadoResiduos { get; set; }
-        public virtual TipoResiduos? TipoResiduos { get; set; }
         public virtual Usuario? Usuario { get; set; }
-        public virtuak ResiduosPartida? ResiduosPartida { get; set; }
+        public virtual ResiduosPartida? ResiduosPartida { get; set; }
   
     }
 }

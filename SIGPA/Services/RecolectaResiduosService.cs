@@ -6,91 +6,83 @@ namespace SIGPA.Services
 
     public interface IRecolectaResiduosService
     {
-        Task<List<RecolectaResiduos>> GetAll();
-        Task<RecolectaResiduos?> GetRecolectaResiduos(int IdRecolectaResiduos);
-        Task<RecolectaResiduos> CreateRecolectaResiduos(int IdRutaRecolecta, int IdResiduos, int IdUsuario, string CantidadRecolectada, DateTime FechaRecoleccion);
+        Task<IEnumerable<RecolectaResiduos>> GetRecolectasResiduos();
+        Task<RecolectaResiduos?> GetRecolectaResiduos(int id);
+        Task<RecolectaResiduos> CreateRecolectaResiduos(
+           int IdRutaRecolecta,
+           int IdResiduo,
+           int IdUsuario,
+           string CantidadRecolectada,
+           DateTime FechaRecoleccion
+         );
+
         Task<RecolectaResiduos> UpdateRecolectaResiduos(
-          int IdRecolectaResiduos,
-          int? IdRutaRecolecta = null,
-          int? IdResiduos = null,
-          int? IdUsuario = null,
-          string? CantidadRecolectada = null,
-          DateTime? FechaRecoleccion = null
-                   );
-        Task<RecolectaResiduos> DeleteRecolectaResiduos(int idRecolectaResiduos);
+         int IdRecolectaResiduos,
+         int? IdRutaRecolecta,
+         int? IdResiduo,
+         int? IdUsuario,
+         string? CantidadRecolectada,
+         DateTime? FechaRecoleccion
+       );
+
+        Task<RecolectaResiduos> DeleteRecolectaResiduos(int id);
     }
-    public class RecolectaResiduosService : IRecolectaResiduosService
+
+    public class RecolectaResiduosService(IRecolectaResiduosRepository recolectaResiduosRepository) : IRecolectaResiduosService
     {
-        private readonly IRecolectaResiduosRepository _recolectaResiduosRepository;
-        public RecolectaResiduosService(IRecolectaResiduosRepository recolectaResiduosRepository)
+
+        public async Task<RecolectaResiduos?> GetRecolectaResiduos(int id)
         {
-            _recolectaResiduosRepository = recolectaResiduosRepository;
+            return await recolectaResiduosRepository.GetRecolectaResiduos(id);
         }
 
-        public async Task<List<RecolectaResiduos>> GetAll()
+        public async Task<IEnumerable<RecolectaResiduos>> GetRecolectasResiduos()
         {
-            return await _recolectaResiduosRepository.GetAll();
+            return await recolectaResiduosRepository.GetRecolectasResiduos();
         }
 
-        public async Task<RecolectaResiduos?> GetRecolectaResiduos(int IdRecolectaResiduos)
+        public async Task<RecolectaResiduos> CreateRecolectaResiduos(
+           int IdRutaRecolecta,
+           int IdResiduo,
+           int IdUsuario,
+           string CantidadRecolectada,
+           DateTime FechaRecoleccion
+         )
         {
-            return await _recolectaResiduosRepository.GetRecolectaResiduos(IdRecolectaResiduos);
-        }
-
-        public async Task<RecolectaResiduos> CreateRecolectaResiduos(int IdRutaRecolecta, int IdResiduos, int IdUsuario, string CantidadRecolectada, DateTime FechaRecoleccion)
-        {
-            return await _recolectaResiduosRepository.CreateRecolectaResiduos(IdRutaRecolecta, IdResiduos, IdUsuario, CantidadRecolectada, FechaRecoleccion);
+            return await recolectaResiduosRepository.CreateRecolectaResiduos(new RecolectaResiduos
+            {
+                IdRutaRecolecta = IdRutaRecolecta,
+                IdResiduo = IdResiduo,
+                IdUsuario = IdUsuario,
+                CantidadRecolectada = CantidadRecolectada,
+                FechaRecoleccion = FechaRecoleccion
+            });
         }
 
         public async Task<RecolectaResiduos> UpdateRecolectaResiduos(
-           int IdRecolectaResiduos,
-           int? IdRutaRecolecta = null,
-           int? IdResiduos = null,
-           int? IdUsuario = null,
-           string? CantidadRecolectada = null,
-           DateTime? FechaRecoleccion = null
+            int IdRecolectaResiduos,
+            int? IdRutaRecolecta,
+            int? IdResiduo,
+            int? IdUsuario,
+            string? CantidadRecolectada,
+             DateTime? FechaRecoleccion
          )
         {
-            var recolectaResiduos = await _recolectaResiduosRepository.GetRecolectaResiduos(IdRecolectaResiduos);
-            if (recolectaResiduos == null)
-            {
-                throw new Exception("RecolectaResiduos not found");
-            }
-
-            if (IdRutaRecolecta != null)
-            {
-                recolectaResiduos.IdRutaRecolecta = (int)IdRutaRecolecta;
-
-            }
-
-            if (IdResiduos != null)
-            {
-                recolectaResiduos.IdResiduos = (int)IdResiduos;
-            }
-
-            if (IdUsuario != null)
-            {
-                recolectaResiduos.IdUsuario = (int)IdUsuario;
-            }
-
-            if (CantidadRecolectada != null)
-            {
-                recolectaResiduos.CantidadRecolectada = (string)CantidadRecolectada;
-            }
-
-            if (FechaRecoleccion != null)
-            {
-                recolectaResiduos.FechaRecoleccion = (DateTime)FechaRecoleccion;
-            }
-
-                return await _recolectaResiduosRepository.UpdateRecolectaResiduos(recolectaResiduos);
-  
+            RecolectaResiduos? recolectaResiduos = await recolectaResiduosRepository.GetRecolectaResiduos(IdRecolectaResiduos);
+            if (recolectaResiduos == null) throw new Exception("RecolectaResiduos not found");
+            recolectaResiduos.IdRutaRecolecta = IdRutaRecolecta ?? recolectaResiduos.IdRutaRecolecta;
+            recolectaResiduos.IdResiduo = IdResiduo ?? recolectaResiduos.IdResiduo;
+            recolectaResiduos.IdUsuario = IdUsuario ?? recolectaResiduos.IdUsuario;
+            recolectaResiduos.CantidadRecolectada = CantidadRecolectada ?? recolectaResiduos.CantidadRecolectada;
+            recolectaResiduos.FechaRecoleccion = FechaRecoleccion ?? recolectaResiduos.FechaRecoleccion;
+            return await recolectaResiduosRepository.UpdateRecolectaResiduos(recolectaResiduos);
+            
         }
 
-        public async Task<RecolectaResiduos> DeleteRecolectaResiduos(int idRecolectaResiduos)
+        public async Task<RecolectaResiduos> DeleteRecolectaResiduos(int id)
         {
-            return await _recolectaResiduosRepository.DeleteRecolectaResiduos(idRecolectaResiduos);
+            return await recolectaResiduosRepository.DeleteRecolectaResiduos(id);
         }
     }
-    
+
 }

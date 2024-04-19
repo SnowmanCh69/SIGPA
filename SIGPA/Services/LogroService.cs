@@ -1,84 +1,71 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
-
     public interface ILogroService
     {
-        Task<List<Logro>> GetAll();
-        Task<Logro?> GetLogro(int IdLogro);
-        Task<Logro> CreateLogro(string nombreLogro, string descripcionLogro, int IdTipoLogro);
+        Task<IEnumerable<Logro>> GetLogros();
+        Task<Logro?> GetLogro(int id);
+        Task<Logro> CreateLogro(
+           string NombreLogro,
+           string DescripcionLogro,
+           int IdTipoLogro
+         );
         Task<Logro> UpdateLogro(
-            int IdLogro,
-            string? nombreLogro = null,
-            string? descripcionLogro = null,
-            int? IdTipoLogro = null
-       );
-        Task<Logro> DeleteLogro(int idLogro);
+          int IdLogro,
+          string? NombreLogro,
+          string? DescripcionLogro,
+          int? IdTipoLogro
+        );
+        
     }
-
-    public class LogroService : ILogroService
+    public class LogroService(ILogroRepository logroRepository): ILogroService
     {
-
-        private readonly ILogroRepository _logroRepository;
-        public LogroService(ILogroRepository logroRepository)
+        
+        public async Task<Logro?> GetLogro(int id)
         {
-            _logroRepository = logroRepository;
+            return await logroRepository.GetLogro(id);
         }
 
-        public async Task<List<Logro>> GetAll()
+        public async Task<IEnumerable<Logro>> GetLogros()
         {
-            return await _logroRepository.GetAll();
+            return await logroRepository.GetLogros();
         }
 
-        public async Task<Logro?> GetLogro(int IdLogro)
+        public async Task<Logro> CreateLogro(
+            string NombreLogro,
+            string DescripcionLogro,
+            int IdTipoLogro
+         )
         {
-            return await _logroRepository.GetLogro(IdLogro);
-        }
-
-        public async Task<Logro> CreateLogro(string nombreLogro, string descripcionLogro, int IdTipoLogro)
-        {
-            return await _logroRepository.CreateLogro(nombreLogro, descripcionLogro, IdTipoLogro);
+            return await logroRepository.CreateLogro(new Logro
+            {
+                NombreLogro = NombreLogro,
+                DescripcionLogro = DescripcionLogro,
+                IdTipoLogro = IdTipoLogro
+            });
         }
 
         public async Task<Logro> UpdateLogro(
-          int IdLogro,
-          string? nombreLogro = null,
-          string? descripcionLogro = null,
-          int? IdTipoLogro = null
-         )
+            int IdLogro,
+            string? NombreLogro,
+            string? DescripcionLogro,
+            int? IdTipoLogro
+          )
         {
-            var logro = await _logroRepository.GetLogro(IdLogro);
-            if (logro == null)
-            {
-                // Manejar la situación en la que el logro no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Logro no encontrado");
-            }
-
-            if (nombreLogro != null)
-            {
-                logro.NombreLogro = nombreLogro;
-            }
-
-            if (descripcionLogro != null)
-            {
-                logro.DescripcionLogro = descripcionLogro;
-            }
-
-            if (IdTipoLogro != null)
-            {
-                logro.IdTipoLogro = (int)IdTipoLogro;
-            }
-
-            return await _logroRepository.UpdateLogro(logro);
+            Logro? logro = await logroRepository.GetLogro(IdLogro);
+            if (logro == null) throw new Exception("Logro not found");
+            logro.NombreLogro = NombreLogro ?? logro.NombreLogro;
+            logro.DescripcionLogro = DescripcionLogro ?? logro.DescripcionLogro;
+            logro.IdTipoLogro = IdTipoLogro ?? logro.IdTipoLogro;
+            return await logroRepository.UpdateLogro(logro);
         }
 
-        public async Task<Logro> DeleteLogro(int idLogro)
+        public async Task<Logro> DeleteLogro(int id)
         {
-            return await _logroRepository.DeleteLogro(idLogro);
+            return await logroRepository.DeleteLogro(id);
         }
     }
-    
 }

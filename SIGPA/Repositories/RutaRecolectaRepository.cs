@@ -1,72 +1,50 @@
-﻿using SIGPA.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using SIGPA.Models;
 
 namespace SIGPA.Repositories
 {
     public interface IRutaRecolectaRepository
     {
-        Task<List<RutaRecolecta>> GetAll();
-        Task<RutaRecolecta?> GetRutaRecolecta(int id);
-        Task<RutaRecolecta> CreateRutaRecolecta(string puntoInicio, string puntoFinalizacion, int idEstadoRuta, int idUsuario, int idVehiculo);
+        Task<IEnumerable<RutaRecolecta>> GetRutasRecolecta();
+        Task<RutaRecolecta> GetRutaRecolecta(int id);
+        Task<RutaRecolecta> CreateRutaRecolecta(RutaRecolecta rutaRecolecta);
         Task<RutaRecolecta> UpdateRutaRecolecta(RutaRecolecta rutaRecolecta);
         Task<RutaRecolecta> DeleteRutaRecolecta(int id);
+
     }
-    public class RutaRecolectaRepository : IRutaRecolectaRepository
+    public class RutaRecolectaRepository(ApplicationDbContext db): IRutaRecolectaRepository
     {
-        private readonly ApplicationDbContext _db;
-        public RutaRecolectaRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public async Task<List<RutaRecolecta>> GetAll()
-        {
-            return await _db.RutaRecolecta.ToListAsync();
-        }
         public async Task<RutaRecolecta?> GetRutaRecolecta(int id)
         {
-            return await _db.RutaRecolecta.FirstOrDefaultAsync(e => e.IdRutaRecolecta == id);
+            return await db.RutaRecolecta.FindAsync(id);
         }
-        public async Task<RutaRecolecta> CreateRutaRecolecta(string puntoInicio, string puntoFinalizacion, int idEstadoRuta, int idUsuario, int idVehiculo)
+
+        public async Task<IEnumerable<RutaRecolecta>> GetRutasRecolecta()
         {
-            // Obtener el usuario, el estado de ruta y el vehículo correspondientes a partir de sus IDs
-            var usuario = await _db.Usuarios.FindAsync(idUsuario);
-            var estadoRuta = await _db.EstadoRuta.FindAsync(idEstadoRuta);
-            var vehiculo = await _db.Vehiculo.FindAsync(idVehiculo);
-
-            if (usuario == null || estadoRuta == null || vehiculo == null)
-            {
-                // Manejar la situación en la que el usuario, el estado de ruta o el vehículo no existen
-                throw new Exception("Usuario, Estado de Ruta o Vehículo no encontrado");
-            }
-
-            // Crear una nueva instancia de RutaRecolecta con los valores proporcionados
-            RutaRecolecta newRutaRecolecta = new RutaRecolecta
-            {
-                PuntoInicio = puntoInicio,
-                PuntoFinalizacion = puntoFinalizacion,
-                IdEstadoRuta = idEstadoRuta,
-                IdUsuario = idUsuario,
-                IdVehiculo = idVehiculo,
-                Usuario = usuario,
-                EstadoRuta = estadoRuta,
-                Vehiculo = vehiculo
-            };
-            await _db.RutaRecolecta.AddAsync(newRutaRecolecta);
-            await _db.SaveChangesAsync();
-            return newRutaRecolecta;
+            return await db.RutaRecolecta.ToListAsync();
         }
-        public async Task<RutaRecolecta> UpdateRutaRecolecta(RutaRecolecta rutaRecolecta)
+
+        public async Task<RutaRecolecta> CreateRutaRecolecta(RutaRecolecta rutaRecolecta)
         {
-            _db.RutaRecolecta.Update(rutaRecolecta);
-            await _db.SaveChangesAsync();
+            db.RutaRecolecta.Add(rutaRecolecta);
+            await db.SaveChangesAsync();
             return rutaRecolecta;
         }
+
+        public async Task<RutaRecolecta> UpdateRutaRecolecta(RutaRecolecta rutaRecolecta)
+        {
+            db.Entry(rutaRecolecta).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return rutaRecolecta;
+        }
+
         public async Task<RutaRecolecta> DeleteRutaRecolecta(int id)
         {
-            RutaRecolecta rutaRecolecta = await GetRutaRecolecta(id);
-
+            var rutaRecolecta = await db.RutaRecolecta.FindAsync(id);
+            if (rutaRecolecta == null) return rutaRecolecta;
+            rutaRecolecta.IsDeleted = false;
+            await db.SaveChangesAsync();
             return rutaRecolecta;
         }
     }

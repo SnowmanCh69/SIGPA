@@ -39,14 +39,20 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<int>("MetodoControlIdMetodoControl")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("MetodoControlIdMetodoControl")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioIdUsuario")
                         .HasColumnType("int");
 
                     b.HasKey("IdControlCalidad");
 
-                    b.HasIndex("IdUsuario");
-
                     b.HasIndex("MetodoControlIdMetodoControl");
+
+                    b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("ControlCalidad");
                 });
@@ -58,6 +64,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoResiduos"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreEstadoResiduos")
                         .IsRequired()
@@ -75,6 +84,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoRuta"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreEstadoRuta")
                         .IsRequired()
@@ -100,11 +112,14 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdTipoLogro")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NombreLogro")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TipoLogroIdTipoLogro")
+                    b.Property<int?>("TipoLogroIdTipoLogro")
                         .HasColumnType("int");
 
                     b.HasKey("IdLogro");
@@ -126,6 +141,9 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NombreMetodoControl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -142,6 +160,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNivel"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreNivel")
                         .IsRequired()
@@ -178,11 +199,8 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<int>("NivelIdNivel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResiduosIdResiduos")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UbicacionJugador")
                         .IsRequired()
@@ -190,11 +208,11 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdPartida");
 
+                    b.HasIndex("IdNivel");
+
+                    b.HasIndex("IdResiduos");
+
                     b.HasIndex("IdUsuario");
-
-                    b.HasIndex("NivelIdNivel");
-
-                    b.HasIndex("ResiduosIdResiduos");
 
                     b.ToTable("Partida");
                 });
@@ -216,46 +234,16 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdPartida")
                         .HasColumnType("int");
 
-                    b.Property<int>("LogroIdLogro")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PartidaIdPartida")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdPartidaLogro");
 
-                    b.HasIndex("LogroIdLogro");
+                    b.HasIndex("IdLogro");
 
-                    b.HasIndex("PartidaIdPartida");
+                    b.HasIndex("IdPartida");
 
                     b.ToTable("PartidaLogro");
-                });
-
-            modelBuilder.Entity("SIGPA.Models.RecolectaControlCalidad", b =>
-                {
-                    b.Property<int>("IdRecolectaControlCalidad")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRecolectaControlCalidad"));
-
-                    b.Property<int>("IdControlCalidad")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdResultado")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Observaciones")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdRecolectaControlCalidad");
-
-                    b.HasIndex("IdControlCalidad");
-
-                    b.HasIndex("IdResultado");
-
-                    b.ToTable("RecolectaControlCalidad");
                 });
 
             modelBuilder.Entity("SIGPA.Models.RecolectaResiduos", b =>
@@ -282,6 +270,9 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdRecolectaResiduos");
 
                     b.HasIndex("IdResiduos");
@@ -305,13 +296,13 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EstadoResiduosIdEstadoResiduos")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdEstadoResiduos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdResiduosPartida")
                         .HasColumnType("int");
 
                     b.Property<int>("IdTipoResiduos")
@@ -320,16 +311,16 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoResiduosIdTipoResiduos")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdResiduos");
 
-                    b.HasIndex("EstadoResiduosIdEstadoResiduos");
+                    b.HasIndex("IdEstadoResiduos");
+
+                    b.HasIndex("IdTipoResiduos");
 
                     b.HasIndex("IdUsuario");
-
-                    b.HasIndex("TipoResiduosIdTipoResiduos");
 
                     b.ToTable("Residuos");
                 });
@@ -342,8 +333,9 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdResiduosPartida"));
 
-                    b.Property<int>("CantidadRegistrada")
-                        .HasColumnType("int");
+                    b.Property<string>("CantidadRegistrada")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdPartida")
                         .HasColumnType("int");
@@ -351,15 +343,15 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdResiduos")
                         .HasColumnType("int");
 
-                    b.Property<int>("PartidaIdPartida")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdResiduosPartida");
 
+                    b.HasIndex("IdPartida");
+
                     b.HasIndex("IdResiduos")
                         .IsUnique();
-
-                    b.HasIndex("PartidaIdPartida");
 
                     b.ToTable("ResiduosPartida");
                 });
@@ -371,6 +363,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdResultado"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreResultado")
                         .IsRequired()
@@ -389,6 +384,9 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRolUsuario"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NombreRolUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -405,9 +403,6 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRutaRecolecta"));
-
-                    b.Property<int>("EstadoRutaIdEstadoRuta")
-                        .HasColumnType("int");
 
                     b.Property<int>("IdEstadoRuta")
                         .HasColumnType("int");
@@ -426,18 +421,45 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VehiculoIdVehiculo")
-                        .HasColumnType("int");
-
                     b.HasKey("IdRutaRecolecta");
 
-                    b.HasIndex("EstadoRutaIdEstadoRuta");
+                    b.HasIndex("IdEstadoRuta");
 
                     b.HasIndex("IdUsuario");
 
-                    b.HasIndex("VehiculoIdVehiculo");
+                    b.HasIndex("IdVehiculo");
 
                     b.ToTable("RutaRecolecta");
+                });
+
+            modelBuilder.Entity("SIGPA.Models.SIGPA.Models.RecolectaControlCalidad", b =>
+                {
+                    b.Property<int>("IdRecolectaControlCalidad")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRecolectaControlCalidad"));
+
+                    b.Property<int>("IdControlCalidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdResultado")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Observaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdRecolectaControlCalidad");
+
+                    b.HasIndex("IdControlCalidad");
+
+                    b.HasIndex("IdResultado");
+
+                    b.ToTable("RecolectaControlCalidad");
                 });
 
             modelBuilder.Entity("SIGPA.Models.TipoLogro", b =>
@@ -447,6 +469,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoLogro"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreTipoLogro")
                         .IsRequired()
@@ -465,6 +490,9 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoResiduos"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NombreTipoResiduos")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -481,6 +509,9 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoVehiculo"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombreTipoVehiculo")
                         .IsRequired()
@@ -499,6 +530,10 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
 
+                    b.Property<string>("ApellidosUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmailUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -506,16 +541,16 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdRolUsuario")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombreUsuario")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombresUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RolUsuarioIdRolUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IdUsuario");
 
-                    b.HasIndex("RolUsuarioIdRolUsuario");
+                    b.HasIndex("IdRolUsuario");
 
                     b.ToTable("Usuarios");
                 });
@@ -531,6 +566,9 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdTipoVehiculo")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MarcaVehiculo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -543,29 +581,22 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TipoVehiculoIdTipoVehiculo")
-                        .HasColumnType("int");
-
                     b.HasKey("IdVehiculo");
 
-                    b.HasIndex("TipoVehiculoIdTipoVehiculo");
+                    b.HasIndex("IdTipoVehiculo");
 
                     b.ToTable("Vehiculo");
                 });
 
             modelBuilder.Entity("SIGPA.Models.ControlCalidad", b =>
                 {
-                    b.HasOne("SIGPA.Models.Usuario", "Usuario")
-                        .WithMany("ControlCalidad")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SIGPA.Models.MetodoControl", "MetodoControl")
                         .WithMany()
-                        .HasForeignKey("MetodoControlIdMetodoControl")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MetodoControlIdMetodoControl");
+
+                    b.HasOne("SIGPA.Models.Usuario", "Usuario")
+                        .WithMany("ControlCalidad")
+                        .HasForeignKey("UsuarioIdUsuario");
 
                     b.Navigation("MetodoControl");
 
@@ -576,31 +607,29 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.TipoLogro", "TipoLogro")
                         .WithMany()
-                        .HasForeignKey("TipoLogroIdTipoLogro")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoLogroIdTipoLogro");
 
                     b.Navigation("TipoLogro");
                 });
 
             modelBuilder.Entity("SIGPA.Models.Partida", b =>
                 {
-                    b.HasOne("SIGPA.Models.Usuario", "Usuario")
-                        .WithMany("Partidas")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SIGPA.Models.Nivel", "Nivel")
                         .WithMany()
-                        .HasForeignKey("NivelIdNivel")
+                        .HasForeignKey("IdNivel")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SIGPA.Models.Residuos", "Residuos")
                         .WithMany()
-                        .HasForeignKey("ResiduosIdResiduos")
+                        .HasForeignKey("IdResiduos")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SIGPA.Models.Usuario", "Usuario")
+                        .WithMany("Partidas")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Nivel");
@@ -614,38 +643,19 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.Logro", "Logro")
                         .WithMany()
-                        .HasForeignKey("LogroIdLogro")
+                        .HasForeignKey("IdLogro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SIGPA.Models.Partida", "Partida")
                         .WithMany()
-                        .HasForeignKey("PartidaIdPartida")
+                        .HasForeignKey("IdPartida")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Logro");
 
                     b.Navigation("Partida");
-                });
-
-            modelBuilder.Entity("SIGPA.Models.RecolectaControlCalidad", b =>
-                {
-                    b.HasOne("SIGPA.Models.ControlCalidad", "ControlCalidad")
-                        .WithMany()
-                        .HasForeignKey("IdControlCalidad")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SIGPA.Models.Resultado", "Resultado")
-                        .WithMany()
-                        .HasForeignKey("IdResultado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ControlCalidad");
-
-                    b.Navigation("Resultado");
                 });
 
             modelBuilder.Entity("SIGPA.Models.RecolectaResiduos", b =>
@@ -679,19 +689,19 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.EstadoResiduos", "EstadoResiduos")
                         .WithMany()
-                        .HasForeignKey("EstadoResiduosIdEstadoResiduos")
+                        .HasForeignKey("IdEstadoResiduos")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SIGPA.Models.TipoResiduos", "TipoResiduos")
+                        .WithMany()
+                        .HasForeignKey("IdTipoResiduos")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SIGPA.Models.Usuario", "Usuario")
                         .WithMany("Residuos")
                         .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SIGPA.Models.TipoResiduos", "TipoResiduos")
-                        .WithMany()
-                        .HasForeignKey("TipoResiduosIdTipoResiduos")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -704,16 +714,16 @@ namespace SIGPA.Migrations
 
             modelBuilder.Entity("SIGPA.Models.ResiduosPartida", b =>
                 {
+                    b.HasOne("SIGPA.Models.Partida", "Partida")
+                        .WithMany()
+                        .HasForeignKey("IdPartida")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SIGPA.Models.Residuos", "Residuos")
                         .WithOne("ResiduosPartida")
                         .HasForeignKey("SIGPA.Models.ResiduosPartida", "IdResiduos")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SIGPA.Models.Partida", "Partida")
-                        .WithMany()
-                        .HasForeignKey("PartidaIdPartida")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Partida");
@@ -725,7 +735,7 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.EstadoRuta", "EstadoRuta")
                         .WithMany()
-                        .HasForeignKey("EstadoRutaIdEstadoRuta")
+                        .HasForeignKey("IdEstadoRuta")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -737,7 +747,7 @@ namespace SIGPA.Migrations
 
                     b.HasOne("SIGPA.Models.Vehiculo", "Vehiculo")
                         .WithMany()
-                        .HasForeignKey("VehiculoIdVehiculo")
+                        .HasForeignKey("IdVehiculo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -748,11 +758,30 @@ namespace SIGPA.Migrations
                     b.Navigation("Vehiculo");
                 });
 
+            modelBuilder.Entity("SIGPA.Models.SIGPA.Models.RecolectaControlCalidad", b =>
+                {
+                    b.HasOne("SIGPA.Models.ControlCalidad", "ControlCalidad")
+                        .WithMany()
+                        .HasForeignKey("IdControlCalidad")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SIGPA.Models.Resultado", "Resultado")
+                        .WithMany()
+                        .HasForeignKey("IdResultado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ControlCalidad");
+
+                    b.Navigation("Resultado");
+                });
+
             modelBuilder.Entity("SIGPA.Models.Usuario", b =>
                 {
                     b.HasOne("SIGPA.Models.RolUsuario", "RolUsuario")
                         .WithMany()
-                        .HasForeignKey("RolUsuarioIdRolUsuario")
+                        .HasForeignKey("IdRolUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -763,7 +792,7 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.TipoVehiculo", "TipoVehiculo")
                         .WithMany()
-                        .HasForeignKey("TipoVehiculoIdTipoVehiculo")
+                        .HasForeignKey("IdTipoVehiculo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -772,8 +801,7 @@ namespace SIGPA.Migrations
 
             modelBuilder.Entity("SIGPA.Models.Residuos", b =>
                 {
-                    b.Navigation("ResiduosPartida")
-                        .IsRequired();
+                    b.Navigation("ResiduosPartida");
                 });
 
             modelBuilder.Entity("SIGPA.Models.Usuario", b =>

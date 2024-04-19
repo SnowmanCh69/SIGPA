@@ -5,78 +5,74 @@ namespace SIGPA.Services
 {
     public interface IVehiculoService
     {
-        Task<List<Vehiculo>> GetAll();
-        Task<Vehiculo> GetVehiculo(int IdVehiculo);
-        Task<Vehiculo> CreateVehiculo(string MarcaVehiculo, string ModeloVehiculo, string PlacaVehiculo, int IdTipoVehiculo);
+        Task<IEnumerable<Vehiculo>> GetVehiculos();
+        Task<Vehiculo?> GetVehiculo(int id);
+        Task<Vehiculo> CreateVehiculo(
+          string MarcaVehiculo,
+          string ModeloVehiculo,
+          string PlacaVehiculo,
+          int IdTipoVehiculo                          
+         );
         Task<Vehiculo> UpdateVehiculo(
-         int IdVehiculo,
-         string? MarcaVehiculo = null,
-         string? ModeloVehiculo = null,
-         string? PlacaVehiculo = null,
-          int? IdTipoVehiculo = null
-       );
-        Task<Vehiculo> DeleteVehiculo(int IdVehiculo);
+           int IdVehiculo,
+           string? MarcaVehiculo,
+           string? ModeloVehiculo,
+           string? PlacaVehiculo,
+           int? IdTipoVehiculo
+        );
+        Task<Vehiculo> DeleteVehiculo(int id);
+
     }
-    public class VehiculoService: IVehiculoService
+
+    public class VehiculoService(IVehiculoRepository vehiculoRepository) : IVehiculoService
     {
-        private readonly IVehiculoRepository _vehiculoRepository;
-        public VehiculoService(IVehiculoRepository vehiculoRepository)
+
+        public async Task<Vehiculo?> GetVehiculo(int id)
         {
-            _vehiculoRepository = vehiculoRepository;
+            return await vehiculoRepository.GetVehiculo(id);
         }
 
-        public async Task<List<Vehiculo>> GetAll()
+        public async Task<IEnumerable<Vehiculo>> GetVehiculos()
         {
-            return await _vehiculoRepository.GetAll();
+            return await vehiculoRepository.GetVehiculos();
         }
 
-        public async Task<Vehiculo> GetVehiculo(int IdVehiculo)
+        public async Task<Vehiculo> CreateVehiculo(
+            string MarcaVehiculo,
+            string ModeloVehiculo,
+            string PlacaVehiculo,
+            int IdTipoVehiculo
+          )
         {
-            return await _vehiculoRepository.GetVehiculo(IdVehiculo);
-        }
-
-        public async Task<Vehiculo> CreateVehiculo(string MarcaVehiculo, string ModeloVehiculo, string PlacaVehiculo, int IdTipoVehiculo)
-        {
-            return await _vehiculoRepository.CreateVehiculo(MarcaVehiculo, ModeloVehiculo, PlacaVehiculo, IdTipoVehiculo);
+            return await vehiculoRepository.CreateVehiculo(new Vehiculo
+            {
+                MarcaVehiculo = MarcaVehiculo,
+                ModeloVehiculo = ModeloVehiculo,
+                PlacaVehiculo = PlacaVehiculo,
+                IdTipoVehiculo = IdTipoVehiculo
+            });
         }
 
         public async Task<Vehiculo> UpdateVehiculo(
             int IdVehiculo,
-            string? MarcaVehiculo = null,
-            string? ModeloVehiculo = null,
-            string? PlacaVehiculo = null,
-            int? IdTipoVehiculo = null
-          )
+            string? MarcaVehiculo,
+            string? ModeloVehiculo,
+            string? PlacaVehiculo,
+            int? IdTipoVehiculo
+         )
         {
-            var vehiculo = await _vehiculoRepository.GetVehiculo(IdVehiculo);
-            if (vehiculo == null)
-            {
-                throw new Exception("Vehiculo not found");
-            }
-
-            if (MarcaVehiculo != null)
-            {
-                vehiculo.MarcaVehiculo = MarcaVehiculo;
-            }
-            if (ModeloVehiculo != null)
-            {
-                vehiculo.ModeloVehiculo = ModeloVehiculo;
-            }
-            if (PlacaVehiculo != null)
-            {
-                vehiculo.PlacaVehiculo = PlacaVehiculo;
-            }
-            if (IdTipoVehiculo != null)
-            {
-                vehiculo.IdTipoVehiculo = (int)IdTipoVehiculo;
-            }
-
-            return await _vehiculoRepository.UpdateVehiculo(vehiculo);
+            Vehiculo? vehiculo = await vehiculoRepository.GetVehiculo(IdVehiculo);
+            if (vehiculo == null) throw new Exception("Vehiculo not found");
+            vehiculo.MarcaVehiculo = MarcaVehiculo ?? vehiculo.MarcaVehiculo;
+            vehiculo.ModeloVehiculo = ModeloVehiculo ?? vehiculo.ModeloVehiculo;
+            vehiculo.PlacaVehiculo = PlacaVehiculo ?? vehiculo.PlacaVehiculo;
+            vehiculo.IdTipoVehiculo = IdTipoVehiculo ?? vehiculo.IdTipoVehiculo;
+            return await vehiculoRepository.UpdateVehiculo(vehiculo);
         }
 
-        public async Task<Vehiculo> DeleteVehiculo(int IdVehiculo)
+        public async Task<Vehiculo> DeleteVehiculo(int id)
         {
-            return await _vehiculoRepository.DeleteVehiculo(IdVehiculo);
+            return await vehiculoRepository.DeleteVehiculo(id);
         }
     }
 }

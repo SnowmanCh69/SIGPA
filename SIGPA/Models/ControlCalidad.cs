@@ -14,7 +14,7 @@ namespace SIGPA.Models
 
         [ForeignKey(nameof(IdUsuario))]
         public int IdUsuario { get; set; }
-        [ForeignKey(nameof(IdMetodoControl)])]
+        [ForeignKey(nameof(IdMetodoControl))]
         public int IdMetodoControl { get; set; }
 
         [JsonIgnore]

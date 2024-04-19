@@ -1,71 +1,61 @@
 ﻿using SIGPA.Models;
 using SIGPA.Repositories;
 
+
 namespace SIGPA.Services
 {
-
     public interface IEstadoRutaService
     {
-        Task<List<EstadoRuta>> GetAll();
-        Task<EstadoRuta?> GetEstadoRuta(int IdEstadoRuta);
-        Task<EstadoRuta> CreateEstadoRuta(string nombreEstadoRuta);
+        Task<IEnumerable<EstadoRuta>> GetEstadosRuta();
+        Task<EstadoRuta?> GetEstadoRuta(int id);
+        Task<EstadoRuta> CreateEstadoRuta(
+         string NombreEstadoRuta
+        );
         Task<EstadoRuta> UpdateEstadoRuta(
           int IdEstadoRuta,
-          string? nombreEstadoRuta = null
+          string? NombreEstadoRuta
         );
-        Task<EstadoRuta> DeleteEstadoRuta(int idEstadoRuta);
-
+        Task<EstadoRuta> DeleteEstadoRuta(int id);
     }
-    public class EstadoRutaService: IEstadoRutaService
+    public class EstadoRutaService(IEstadoRutaRepository estadoRutaRepository): IEstadoRutaService
     {
-
-        private readonly IEstadoRutaRepository _estadoRutaRepository;
-        public EstadoRutaService(IEstadoRutaRepository estadoRutaRepository)
+        
+        public async Task<EstadoRuta?> GetEstadoRuta(int id)
         {
-            _estadoRutaRepository = estadoRutaRepository;
+            return await estadoRutaRepository.GetEstadoRuta(id);
         }
 
-        public async Task<List<EstadoRuta>> GetAll()
+        public async Task<IEnumerable<EstadoRuta>> GetEstadosRuta()
         {
-            return await _estadoRutaRepository.GetAll();
+            return await estadoRutaRepository.GetEstadosRuta();
         }
 
-        public async Task<EstadoRuta?> GetEstadoRuta(int IdEstadoRuta)
+        public async Task<EstadoRuta> CreateEstadoRuta(
+           string NombreEstadoRuta
+         )
         {
-            return await _estadoRutaRepository.GetEstadoRuta(IdEstadoRuta);
-        }
-
-        public async Task<EstadoRuta> CreateEstadoRuta(string nombreEstadoRuta)
-        {
-            return await _estadoRutaRepository.CreateEstadoRuta(nombreEstadoRuta);
+            return await estadoRutaRepository.CreateEstadoRuta(new EstadoRuta
+            {
+                NombreEstadoRuta = NombreEstadoRuta
+            });
         }
 
         public async Task<EstadoRuta> UpdateEstadoRuta(
-                     int IdEstadoRuta,
-                              string? nombreEstadoRuta = null
-                   )
+          int IdEstadoRuta,
+          string? NombreEstadoRuta
+          )
         {
-            var estadoRuta = await _estadoRutaRepository.GetEstadoRuta(IdEstadoRuta);
-            if (estadoRuta == null)
-            {
-                // Manejar la situación en la que el estado de ruta no existe
-                // Por ejemplo, lanzar una excepción o devolver un resultado indicando el error
-                throw new Exception("Estado de Ruta no encontrado");
-            }
-
-            if (nombreEstadoRuta != null)
-            {
-                estadoRuta.NombreEstadoRuta = nombreEstadoRuta;
-            }
-
-            return await _estadoRutaRepository.UpdateEstadoRuta(estadoRuta);
+            EstadoRuta? estadoRuta = await estadoRutaRepository.GetEstadoRuta(IdEstadoRuta);
+            if (estadoRuta == null) throw new Exception("EstadoRuta not found");
+            estadoRuta.NombreEstadoRuta = NombreEstadoRuta ?? estadoRuta.NombreEstadoRuta;
+            return await estadoRutaRepository.UpdateEstadoRuta(estadoRuta);
         }
 
-        public async Task<EstadoRuta> DeleteEstadoRuta(int idEstadoRuta)
+        public async Task<EstadoRuta> DeleteEstadoRuta(int id)
         {
-            return await _estadoRutaRepository.DeleteEstadoRuta(idEstadoRuta);
+            return await estadoRutaRepository.DeleteEstadoRuta(id);
         }
-
+        
     }
     
 }
