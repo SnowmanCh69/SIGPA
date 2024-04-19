@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IPartidaLogroRepository
     {
         Task<IEnumerable<PartidaLogro>> GetPartidasLogros();
-        Task<PartidaLogro> GetPartidaLogro(int id);
+        Task<PartidaLogro?> GetPartidaLogro(int id);
         Task<PartidaLogro> CreatePartidaLogro(PartidaLogro partidaLogro);
         Task<PartidaLogro> UpdatePartidaLogro(PartidaLogro partidaLogro);
-        Task<PartidaLogro> DeletePartidaLogro(int id);
+        Task<PartidaLogro?> DeletePartidaLogro(int id);
     }
     public class PartidaLogroRepository(ApplicationDbContext  db): IPartidaLogroRepository
     {
@@ -38,11 +38,12 @@ namespace SIGPA.Repositories
             return partidaLogro;
         }
 
-        public async Task<PartidaLogro> DeletePartidaLogro(int id)
+        public async Task<PartidaLogro?> DeletePartidaLogro(int id)
         {
-            var partidaLogro = await db.PartidaLogro.FindAsync(id);
+            PartidaLogro? partidaLogro = await db.PartidaLogro.FindAsync(id);
             if (partidaLogro == null) return partidaLogro;
             partidaLogro.IsDeleted = false;
+            db.Entry(partidaLogro).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return partidaLogro;
         }

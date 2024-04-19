@@ -8,10 +8,10 @@ namespace SIGPA.Repositories
     public interface IVehiculoRepository
     {
         Task<IEnumerable<Vehiculo>> GetVehiculos();
-        Task<Vehiculo> GetVehiculo(int id);
+        Task<Vehiculo?> GetVehiculo(int id);
         Task<Vehiculo> CreateVehiculo(Vehiculo vehiculo);
         Task<Vehiculo> UpdateVehiculo(Vehiculo vehiculo);
-        Task<Vehiculo> DeleteVehiculo(int id);
+        Task<Vehiculo?> DeleteVehiculo(int id);
 
     }
     public class VehiculoRepository(ApplicationDbContext db): IVehiculoRepository
@@ -40,11 +40,12 @@ namespace SIGPA.Repositories
             return vehiculo;
         }
 
-        public async Task<Vehiculo> DeleteVehiculo(int id)
+        public async Task<Vehiculo?> DeleteVehiculo(int id)
         {
-            var vehiculo = await db.Vehiculo.FindAsync(id);
+            Vehiculo? vehiculo = await db.Vehiculo.FindAsync(id);
             if (vehiculo == null) return vehiculo;
             vehiculo.IsDeleted = false;
+            db.Entry(vehiculo).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return vehiculo;
         }

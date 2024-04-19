@@ -1,5 +1,4 @@
 ﻿using SIGPA.Models;
-using SIGPA.Models.SIGPA.Models;
 using SIGPA.Repositories;
 
 namespace SIGPA.Services

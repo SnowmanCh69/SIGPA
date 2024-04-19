@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface INivelRepository
     {
         Task<IEnumerable<Nivel>> GetNiveles();
-        Task<Nivel> GetNivel(int id);
+        Task<Nivel?> GetNivel(int id);
         Task<Nivel> CreateNivel(Nivel nivel);
         Task<Nivel> UpdateNivel(Nivel nivel);
-        Task<Nivel> DeleteNivel(int id);
+        Task<Nivel?> DeleteNivel(int id);
 
     }
     public class NivelRepository(ApplicationDbContext db) :INivelRepository
@@ -39,11 +39,12 @@ namespace SIGPA.Repositories
             return nivel;
         }
 
-        public async Task<Nivel> DeleteNivel(int id)
+        public async Task<Nivel?> DeleteNivel(int id)
         {
-            var nivel = await db.Nivel.FindAsync(id);
+            Nivel? nivel = await db.Nivel.FindAsync(id);
             if (nivel == null) return nivel;
             nivel.IsDeleted = false;
+            db.Entry(nivel).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return nivel;
         }

@@ -42,9 +42,10 @@ namespace SIGPA.Repositories
 
         public async Task<RolUsuario?> DeleteRolUsuario(int id)
         {
-            var rolUsuario = await db.RolUsuarios.FindAsync(id);
+            RolUsuario? rolUsuario = await db.RolUsuarios.FindAsync(id);
             if (rolUsuario == null) return rolUsuario;
             rolUsuario.IsDeleted = false;
+            db.Entry(rolUsuario).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return rolUsuario;
         }

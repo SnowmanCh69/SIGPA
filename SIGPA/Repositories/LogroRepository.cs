@@ -8,10 +8,10 @@ namespace SIGPA.Repositories
     public interface ILogroRepository
     {
         Task<IEnumerable<Logro>> GetLogros();
-        Task<Logro> GetLogro(int id);
+        Task<Logro?> GetLogro(int id);
         Task<Logro> CreateLogro(Logro logro);
         Task<Logro> UpdateLogro(Logro logro);
-        Task<Logro> DeleteLogro(int id);
+        Task<Logro?> DeleteLogro(int id);
 
     }
     public class LogroRepository ( ApplicationDbContext db) : ILogroRepository
@@ -40,11 +40,12 @@ namespace SIGPA.Repositories
             return logro;
         }
 
-        public async Task<Logro> DeleteLogro(int id)
+        public async Task<Logro?> DeleteLogro(int id)
         {
-            var logro = await db.Logro.FindAsync(id);
+            Logro? logro = await db.Logro.FindAsync(id);
             if (logro == null) return logro;
             logro.IsDeleted = false;
+            db.Entry(logro).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return logro;
         }

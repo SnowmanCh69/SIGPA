@@ -9,7 +9,7 @@ namespace SIGPA.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ControlCalidadService(IControlCalidadService controlCalidadService) : ControllerBase
+    public class ControlCalidadController(IControlCalidadService controlCalidadService) : ControllerBase
     {
        
 
@@ -60,12 +60,9 @@ namespace SIGPA.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteControlCalidad(int id)
         {
-            var controlCalidad = await controlCalidadService.DeleteControlCalidad(id);
-            if (controlCalidad == null)
-            {
-                return NotFound();
-            }
-            return Ok(controlCalidad);
+            var deletedControlCalidad = await controlCalidadService.DeleteControlCalidad(id);
+            if(deletedControlCalidad == null) return NotFound();
+            return Ok(deletedControlCalidad);
         }
         
     }

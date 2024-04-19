@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SIGPA.Context;
-using SIGPA.Models.SIGPA.Models;
-
+using SIGPA.Models;
 namespace SIGPA.Repositories
 {
     public interface IRecolectaControlCalidadRepository
     {
         Task<IEnumerable<RecolectaControlCalidad>> GetRecolectasControlCalidad();
-        Task<RecolectaControlCalidad> GetRecolectaControlCalidad(int id);
+        Task<RecolectaControlCalidad?> GetRecolectaControlCalidad(int id);
         Task<RecolectaControlCalidad> CreateRecolectaControlCalidad(RecolectaControlCalidad recolectaControlCalidad);
         Task<RecolectaControlCalidad> UpdateRecolectaControlCalidad(RecolectaControlCalidad recolectaControlCalidad);
-        Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id);
+        Task<RecolectaControlCalidad?> DeleteRecolectaControlCalidad(int id);
     }
 
     public class RecolectaControlCalidadRepository(ApplicationDbContext db): IRecolectaControlCalidadRepository
@@ -40,11 +39,12 @@ namespace SIGPA.Repositories
             return recolectaControlCalidad;
         }
 
-        public async Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id)
+        public async Task<RecolectaControlCalidad?> DeleteRecolectaControlCalidad(int id)
         {
-            var recolectaControlCalidad = await db.RecolectaControlCalidad.FindAsync(id);
+            RecolectaControlCalidad? recolectaControlCalidad = await db.RecolectaControlCalidad.FindAsync(id);
             if (recolectaControlCalidad == null) return recolectaControlCalidad;
             recolectaControlCalidad.IsDeleted = false;
+            db.Entry(recolectaControlCalidad).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return recolectaControlCalidad;
         }

@@ -54,7 +54,7 @@ namespace SIGPA.Controllers
         {
             var deletedRolUsuario = await rolUsuarioService.DeleteRolUsuario(id);
             if (deletedRolUsuario == null) return NotFound();
-            return Ok();
+            return Ok(deletedRolUsuario);
         }
     }
 }

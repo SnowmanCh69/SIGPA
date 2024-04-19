@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface ITipoLogroRepository
     {
         Task<IEnumerable<TipoLogro>> GetTiposLogros();
-        Task<TipoLogro> GetTipoLogro(int id);
+        Task<TipoLogro?> GetTipoLogro(int id);
         Task<TipoLogro> CreateTipoLogro(TipoLogro tipoLogro);
         Task<TipoLogro> UpdateTipoLogro(TipoLogro tipoLogro);
-        Task<TipoLogro> DeleteTipoLogro(int id);
+        Task<TipoLogro?> DeleteTipoLogro(int id);
     }
     public class TipoLogroRepositoryRepository(ApplicationDbContext db): ITipoLogroRepository
     {
@@ -38,11 +38,12 @@ namespace SIGPA.Repositories
             return tipoLogro;
         }
 
-        public async Task<TipoLogro> DeleteTipoLogro(int id)
+        public async Task<TipoLogro?> DeleteTipoLogro(int id)
         {
-            var tipoLogro = await db.TipoLogro.FindAsync(id);
+            TipoLogro? tipoLogro = await db.TipoLogro.FindAsync(id);
             if (tipoLogro == null) return tipoLogro;
             tipoLogro.IsDeleted = false;
+            db.Entry(tipoLogro).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return tipoLogro;
         }

@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IControlCalidadRepository
     {
         Task<IEnumerable<ControlCalidad>> GetControlesCalidad();
-        Task<ControlCalidad> GetControlCalidad(int id);
+        Task<ControlCalidad?> GetControlCalidad(int id);
         Task<ControlCalidad> CreateControlCalidad(ControlCalidad controlCalidad);
         Task<ControlCalidad> UpdateControlCalidad(ControlCalidad controlCalidad);
-        Task<ControlCalidad> DeleteControlCalidad(int id);
+        Task<ControlCalidad?> DeleteControlCalidad(int id);
 
     }
 
@@ -19,7 +19,7 @@ namespace SIGPA.Repositories
         
         //Obtener control calidad por su ID
         
-        public async Task<ControlCalidad> GetControlCalidad(int id)
+        public async Task<ControlCalidad?> GetControlCalidad(int id)
         {
             return await db.ControlCalidad.FindAsync(id);
         }
@@ -48,7 +48,7 @@ namespace SIGPA.Repositories
         }
 
         //Eliminar un control de calidad
-        public async Task<ControlCalidad> DeleteControlCalidad(int id)
+        public async Task<ControlCalidad?> DeleteControlCalidad(int id)
         {
             ControlCalidad? controlCalidad = await db.ControlCalidad.FindAsync(id);
             if (controlCalidad == null) return controlCalidad;

@@ -19,6 +19,7 @@ namespace SIGPA.Services
           string? DescripcionLogro,
           int? IdTipoLogro
         );
+        Task<Logro> DeleteLogro(int id);
         
     }
     public class LogroService(ILogroRepository logroRepository): ILogroService

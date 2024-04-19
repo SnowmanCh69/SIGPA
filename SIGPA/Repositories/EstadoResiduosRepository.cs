@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IEstadoResiduosRepository
     {
         Task<IEnumerable<EstadoResiduos>> GetEstadosResiduos();
-        Task<EstadoResiduos> GetEstadoResiduo(int id);
+        Task<EstadoResiduos?> GetEstadoResiduo(int id);
         Task<EstadoResiduos> CreateEstadoResiduo(EstadoResiduos estadoResiduos);
         Task<EstadoResiduos> UpdateEstadoResiduo(EstadoResiduos estadoResiduos);
-        Task<EstadoResiduos> DeleteEstadoResiduo(int id);
+        Task<EstadoResiduos?> DeleteEstadoResiduo(int id);
 
     }
     public class EstadoResiduosRepository(ApplicationDbContext db) : IEstadoResiduosRepository
@@ -39,13 +39,17 @@ namespace SIGPA.Repositories
             return estadoResiduos;
         }
 
-        public async Task<EstadoResiduos> DeleteEstadoResiduo(int id)
+        public async Task<EstadoResiduos?> DeleteEstadoResiduo(int id)
         {
-            var estadoResiduos = await db.EstadoResiduos.FindAsync(id);
+            EstadoResiduos? estadoResiduos = await db.EstadoResiduos.FindAsync(id);
             if (estadoResiduos == null) return estadoResiduos;
             estadoResiduos.IsDeleted = false;
+            db.Entry(estadoResiduos).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return estadoResiduos;
+
+
+        }
+
         }
     }
-}

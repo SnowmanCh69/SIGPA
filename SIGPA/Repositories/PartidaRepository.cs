@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IPartidaRepository
     {
         Task<IEnumerable<Partida>> GetPartidas();
-        Task<Partida> GetPartida(int id);
+        Task<Partida?> GetPartida(int id);
         Task<Partida> CreatePartida(Partida partida);
         Task<Partida> UpdatePartida(Partida partida);
-        Task<Partida> DeletePartida(int id);
+        Task<Partida?> DeletePartida(int id);
     }
     public class PartidaRepository(ApplicationDbContext db) : IPartidaRepository 
     {
@@ -39,11 +39,12 @@ namespace SIGPA.Repositories
             return partida;
         }
 
-        public async Task<Partida> DeletePartida(int id)
+        public async Task<Partida?> DeletePartida(int id)
         {
-            var partida = await db.Partida.FindAsync(id);
+            Partida? partida = await db.Partida.FindAsync(id);
             if (partida == null) return partida;
             partida.IsDeleted = false;
+            db.Entry(partida).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return partida;
         }

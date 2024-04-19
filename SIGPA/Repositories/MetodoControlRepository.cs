@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IMetodoControlRepository
     {
         Task<IEnumerable<MetodoControl>> GetMetodosControl();
-        Task<MetodoControl> GetMetodoControl(int id);
+        Task<MetodoControl?> GetMetodoControl(int id);
         Task<MetodoControl> CreateMetodoControl(MetodoControl metodoControl);
         Task<MetodoControl> UpdateMetodoControl(MetodoControl metodoControl);
-        Task<MetodoControl> DeleteMetodoControl(int id);
+        Task<MetodoControl?> DeleteMetodoControl(int id);
 
     }
     public class MetodoControlRepository (ApplicationDbContext db) : IMetodoControlRepository
@@ -39,13 +39,15 @@ namespace SIGPA.Repositories
             return metodoControl;
         }
 
-        public async Task<MetodoControl> DeleteMetodoControl(int id)
+        public async Task<MetodoControl?> DeleteMetodoControl(int id)
         {
-            var metodoControl = await db.MetodoControl.FindAsync(id);
+            MetodoControl? metodoControl = await db.MetodoControl.FindAsync(id);
             if (metodoControl == null) return metodoControl;
             metodoControl.IsDeleted = false;
+            db.Entry(metodoControl).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return metodoControl;
+
         }
     }
 }

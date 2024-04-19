@@ -17,7 +17,7 @@ namespace SIGPA.Models
 
         public required string CantidadRegistrada { get; set; }
 
-     
+
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
 
@@ -30,6 +30,8 @@ namespace SIGPA.Models
         public virtual EstadoResiduos? EstadoResiduos { get; set; }
         public virtual Usuario? Usuario { get; set; }
         public virtual ResiduosPartida? ResiduosPartida { get; set; }
-  
+
+        public virtual ICollection<ResiduosPartida> ResiduosPartidas { get; set; }
+
     }
 }

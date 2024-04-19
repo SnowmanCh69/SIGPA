@@ -18,13 +18,26 @@ builder.Services.AddSwaggerGen();
 
 #region AppRepositories
 
+builder.Services.AddScoped<IControlCalidadRepository, ControlCalidadRepository>();
+builder.Services.AddScoped<IEstadoResiduosRepository, EstadoResiduosRepository>();
+builder.Services.AddScoped<IEstadoRutaRepository, EstadoRutaRepository>();
+builder.Services.AddScoped<ILogroRepository, LogroRepository>();
+
 builder.Services.AddScoped<IRolUsuarioRepository, RolUsuarioRepository>();
+builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
+
 
 #endregion
 
 #region AppServices
 
+builder.Services.AddScoped<IControlCalidadService, ControlCalidadService>();
+builder.Services.AddScoped<IEstadoResiduosService, EstadoResiduosService>();
+builder.Services.AddScoped<IEstadoRutaService, EstadoRutaService>();
+builder.Services.AddScoped<ILogroService, LogroService>();
+
 builder.Services.AddScoped<IRolUsuarioService, RolUsuarioService>();
+builder.Services.AddScoped<IVehiculoService, VehiculoService>();
 
 #endregion
 

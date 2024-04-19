@@ -6,10 +6,10 @@ using SIGPA.Models;
     public interface IResiduosPartidaRepository
     {
         Task<IEnumerable<ResiduosPartida>> GetResiduosPartida();
-        Task<ResiduosPartida> GetResiduoPartida(int id);
+        Task<ResiduosPartida?> GetResiduoPartida(int id);
         Task<ResiduosPartida> CreateResiduoPartida(ResiduosPartida residuoPartida);
         Task<ResiduosPartida> UpdateResiduoPartida(ResiduosPartida residuoPartida);
-        Task<ResiduosPartida> DeleteResiduoPartida(int id);
+        Task<ResiduosPartida?> DeleteResiduoPartida(int id);
     }
     public class ResiduosPartidaRepository(ApplicationDbContext db): IResiduosPartidaRepository
     {
@@ -37,11 +37,12 @@ using SIGPA.Models;
             return residuoPartida;
         }
 
-        public async Task<ResiduosPartida> DeleteResiduoPartida(int id)
+        public async Task<ResiduosPartida?> DeleteResiduoPartida(int id)
         {
-            var residuoPartida = await db.ResiduosPartida.FindAsync(id);
+            ResiduosPartida? residuoPartida = await db.ResiduosPartida.FindAsync(id);
             if (residuoPartida == null) return residuoPartida;
             residuoPartida.IsDeleted = false;
+            db.Entry(residuoPartida).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return residuoPartida;
         }

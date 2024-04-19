@@ -6,10 +6,10 @@ using SIGPA.Models;
     public interface IRecolectaResiduosRepository
     {
         Task<IEnumerable<RecolectaResiduos>> GetRecolectasResiduos();
-        Task<RecolectaResiduos> GetRecolectaResiduos(int id);
+        Task<RecolectaResiduos?> GetRecolectaResiduos(int id);
         Task<RecolectaResiduos> CreateRecolectaResiduos(RecolectaResiduos recolectaResiduos);
         Task<RecolectaResiduos> UpdateRecolectaResiduos(RecolectaResiduos recolectaResiduos);
-        Task<RecolectaResiduos> DeleteRecolectaResiduos(int id);
+        Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id);
 
     }
     public class RecolectaResiduosRepository(ApplicationDbContext db): IRecolectaResiduosRepository
@@ -36,11 +36,12 @@ using SIGPA.Models;
             await db.SaveChangesAsync();
             return recolectaResiduos;
          }
-        public async Task<RecolectaResiduos> DeleteRecolectaResiduos(int id)
+        public async Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id)
         {
-            var recolectaResiduos = await db.RecolectaResiduos.FindAsync(id);
+            RecolectaResiduos? recolectaResiduos = await db.RecolectaResiduos.FindAsync(id);
             if (recolectaResiduos == null) return recolectaResiduos;
             recolectaResiduos.IsDeleted = false;
+            db.Entry(recolectaResiduos).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return recolectaResiduos;
         }

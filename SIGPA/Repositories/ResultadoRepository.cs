@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IResultadoRepository
     {
         Task<IEnumerable<Resultado>> GetResultados();
-        Task<Resultado> GetResultado(int id);
+        Task<Resultado?> GetResultado(int id);
         Task<Resultado> CreateResultado(Resultado resultado);
         Task<Resultado> UpdateResultado(Resultado resultado);
-        Task<Resultado> DeleteResultado(int id);
+        Task<Resultado?> DeleteResultado(int id);
 
     }
     public class ResultadoRepository(ApplicationDbContext db): IResultadoRepository
@@ -39,13 +39,15 @@ namespace SIGPA.Repositories
             return resultado;
         }
 
-        public async Task<Resultado> DeleteResultado(int id)
+        public async Task<Resultado?> DeleteResultado(int id)
         {
-            var resultado = await db.Resultado.FindAsync(id);
+            Resultado resultado = await db.Resultado.FindAsync(id);
             if (resultado == null) return resultado;
             resultado.IsDeleted = false;
+            db.Entry(resultado).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return resultado;
+
         }
     }
 }

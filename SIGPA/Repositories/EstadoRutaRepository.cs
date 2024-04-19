@@ -7,10 +7,10 @@ namespace SIGPA.Repositories
     public interface IEstadoRutaRepository
     {
         Task<IEnumerable<EstadoRuta>> GetEstadosRuta();
-        Task<EstadoRuta> GetEstadoRuta(int id);
+        Task<EstadoRuta?> GetEstadoRuta(int id);
         Task<EstadoRuta> CreateEstadoRuta(EstadoRuta estadoRuta);
         Task<EstadoRuta> UpdateEstadoRuta(EstadoRuta estadoRuta);
-        Task<EstadoRuta> DeleteEstadoRuta(int id);
+        Task<EstadoRuta?> DeleteEstadoRuta(int id);
     }
     public class EstadoRutaRepository(ApplicationDbContext db) : IEstadoRutaRepository
     {
@@ -39,13 +39,15 @@ namespace SIGPA.Repositories
             return estadoRuta;
         }
 
-        public async Task<EstadoRuta> DeleteEstadoRuta(int id)
+        public async Task<EstadoRuta?> DeleteEstadoRuta(int id)
         {
-            var estadoRuta = await db.EstadoRuta.FindAsync(id);
+            EstadoRuta? estadoRuta = await db.EstadoRuta.FindAsync(id);
             if (estadoRuta == null) return estadoRuta;
             estadoRuta.IsDeleted = false;
+            db.Entry(estadoRuta).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return estadoRuta;
+
         }
 
     }

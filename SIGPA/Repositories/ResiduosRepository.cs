@@ -7,12 +7,12 @@ namespace SIGPA.Repositories
     public interface IResiduosRepository
     {
         Task<IEnumerable<Residuos>> GetResiduos();
-        Task<Residuos> GetResiduo(int id);
+        Task<Residuos?> GetResiduo(int id);
         Task<Residuos> CreateResiduo(Residuos residuo);
         Task<Residuos> UpdateResiduo(Residuos residuo);
-        Task<Residuos> DeleteResiduo(int id);
+        Task<Residuos?> DeleteResiduo(int id);
     }
-    public class ResiduosRepository(ApplicationDbContext db): IResiduosRepository
+    public class ResiduoRepository(ApplicationDbContext db): IResiduosRepository
     {
         public async Task<Residuos?> GetResiduo(int id)
         {
@@ -38,13 +38,15 @@ namespace SIGPA.Repositories
             return residuo;
         }
 
-        public async Task<Residuos> DeleteResiduo(int id)
+        public async Task<Residuos?> DeleteResiduo(int id)
         {
-            var residuo = await db.Residuos.FindAsync(id);
+            Residuos? residuo = await db.Residuos.FindAsync(id);
             if (residuo == null) return residuo;
             residuo.IsDeleted = false;
+            db.Entry(residuo).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return residuo;
+
         }
     }
 }

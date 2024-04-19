@@ -22,6 +22,9 @@ namespace SIGPA.Services
           int? IdUsuario,
           int? IdVehiculo
         );
+        Task<RutaRecolecta?> DeleteRutaRecolecta(int id);
+
+
 
     }
     public class RutaRecolectaService(IRutaRecolectaRepository rutaRecolectaRepository) : IRutaRecolectaService
@@ -73,6 +76,11 @@ namespace SIGPA.Services
             rutaRecolecta.IdVehiculo = IdVehiculo ?? rutaRecolecta.IdVehiculo;
             return await rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
             
+        }
+
+        public async Task<RutaRecolecta?> DeleteRutaRecolecta(int id)
+        {
+            return await rutaRecolectaRepository.DeleteRutaRecolecta(id);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SIGPA.Models
         public int IdRecolectaResiduos { get; set; }
 
         [ForeignKey(nameof(RutaRecolecta))]
-        public int IdRutaRecolecta{ get; set; }
+        public int IdRutaRecolecta { get; set; }
         [ForeignKey(nameof(Residuos))]
         public int IdResiduo { get; set; }
         [ForeignKey(nameof(Usuario))]

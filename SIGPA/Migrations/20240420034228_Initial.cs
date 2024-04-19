@@ -111,20 +111,6 @@ namespace SIGPA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipoResiduos",
-                columns: table => new
-                {
-                    IdTipoResiduos = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreTipoResiduos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoResiduos", x => x.IdTipoResiduos);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TipoVehiculo",
                 columns: table => new
                 {
@@ -235,43 +221,6 @@ namespace SIGPA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Residuos",
-                columns: table => new
-                {
-                    IdResiduos = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdEstadoResiduos = table.Column<int>(type: "int", nullable: false),
-                    CantidadRegistrada = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdTipoResiduos = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    IdResiduosPartida = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Residuos", x => x.IdResiduos);
-                    table.ForeignKey(
-                        name: "FK_Residuos_EstadoResiduos_IdEstadoResiduos",
-                        column: x => x.IdEstadoResiduos,
-                        principalTable: "EstadoResiduos",
-                        principalColumn: "IdEstadoResiduos",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Residuos_TipoResiduos_IdTipoResiduos",
-                        column: x => x.IdTipoResiduos,
-                        principalTable: "TipoResiduos",
-                        principalColumn: "IdTipoResiduos",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Residuos_Usuarios_IdUsuario",
-                        column: x => x.IdUsuario,
-                        principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RutaRecolecta",
                 columns: table => new
                 {
@@ -281,7 +230,8 @@ namespace SIGPA.Migrations
                     PuntoFinalizacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdEstadoRuta = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    IdVehiculo = table.Column<int>(type: "int", nullable: false)
+                    IdVehiculo = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -346,8 +296,9 @@ namespace SIGPA.Migrations
                     IdNivel = table.Column<int>(type: "int", nullable: false),
                     UbicacionJugador = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CantidadVidas = table.Column<int>(type: "int", nullable: false),
-                    IdResiduos = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IdResiduo = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    ResiduosIdResiduos = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -359,52 +310,11 @@ namespace SIGPA.Migrations
                         principalColumn: "IdNivel",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Partida_Residuos_IdResiduos",
-                        column: x => x.IdResiduos,
-                        principalTable: "Residuos",
-                        principalColumn: "IdResiduos",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Partida_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
                         principalTable: "Usuarios",
                         principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RecolectaResiduos",
-                columns: table => new
-                {
-                    IdRecolectaResiduos = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdRutaRecolecta = table.Column<int>(type: "int", nullable: false),
-                    IdResiduos = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    CantidadRecolectada = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaRecoleccion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecolectaResiduos", x => x.IdRecolectaResiduos);
-                    table.ForeignKey(
-                        name: "FK_RecolectaResiduos_Residuos_IdResiduos",
-                        column: x => x.IdResiduos,
-                        principalTable: "Residuos",
-                        principalColumn: "IdResiduos",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RecolectaResiduos_RutaRecolecta_IdRutaRecolecta",
-                        column: x => x.IdRutaRecolecta,
-                        principalTable: "RutaRecolecta",
-                        principalColumn: "IdRutaRecolecta",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RecolectaResiduos_Usuarios_IdUsuario",
-                        column: x => x.IdUsuario,
-                        principalTable: "Usuarios",
-                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -436,13 +346,73 @@ namespace SIGPA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RecolectaResiduos",
+                columns: table => new
+                {
+                    IdRecolectaResiduos = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdRutaRecolecta = table.Column<int>(type: "int", nullable: false),
+                    IdResiduo = table.Column<int>(type: "int", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    CantidadRecolectada = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaRecoleccion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecolectaResiduos", x => x.IdRecolectaResiduos);
+                    table.ForeignKey(
+                        name: "FK_RecolectaResiduos_RutaRecolecta_IdRutaRecolecta",
+                        column: x => x.IdRutaRecolecta,
+                        principalTable: "RutaRecolecta",
+                        principalColumn: "IdRutaRecolecta",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RecolectaResiduos_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Residuos",
+                columns: table => new
+                {
+                    IdResiduos = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreResiduo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdEstadoResiduos = table.Column<int>(type: "int", nullable: false),
+                    CantidadRegistrada = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdResiduosPartida = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Residuos", x => x.IdResiduos);
+                    table.ForeignKey(
+                        name: "FK_Residuos_EstadoResiduos_IdEstadoResiduos",
+                        column: x => x.IdEstadoResiduos,
+                        principalTable: "EstadoResiduos",
+                        principalColumn: "IdEstadoResiduos",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Residuos_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ResiduosPartida",
                 columns: table => new
                 {
                     IdResiduosPartida = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdPartida = table.Column<int>(type: "int", nullable: false),
-                    IdResiduos = table.Column<int>(type: "int", nullable: false),
+                    IdResiduo = table.Column<int>(type: "int", nullable: false),
                     CantidadRegistrada = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -453,11 +423,10 @@ namespace SIGPA.Migrations
                         name: "FK_ResiduosPartida_Partida_IdPartida",
                         column: x => x.IdPartida,
                         principalTable: "Partida",
-                        principalColumn: "IdPartida",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdPartida");
                     table.ForeignKey(
-                        name: "FK_ResiduosPartida_Residuos_IdResiduos",
-                        column: x => x.IdResiduos,
+                        name: "FK_ResiduosPartida_Residuos_IdResiduo",
+                        column: x => x.IdResiduo,
                         principalTable: "Residuos",
                         principalColumn: "IdResiduos");
                 });
@@ -483,14 +452,14 @@ namespace SIGPA.Migrations
                 column: "IdNivel");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Partida_IdResiduos",
-                table: "Partida",
-                column: "IdResiduos");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Partida_IdUsuario",
                 table: "Partida",
                 column: "IdUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partida_ResiduosIdResiduos",
+                table: "Partida",
+                column: "ResiduosIdResiduos");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PartidaLogro_IdLogro",
@@ -513,9 +482,9 @@ namespace SIGPA.Migrations
                 column: "IdResultado");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecolectaResiduos_IdResiduos",
+                name: "IX_RecolectaResiduos_IdResiduo",
                 table: "RecolectaResiduos",
-                column: "IdResiduos");
+                column: "IdResiduo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecolectaResiduos_IdRutaRecolecta",
@@ -533,9 +502,9 @@ namespace SIGPA.Migrations
                 column: "IdEstadoResiduos");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Residuos_IdTipoResiduos",
+                name: "IX_Residuos_IdResiduosPartida",
                 table: "Residuos",
-                column: "IdTipoResiduos");
+                column: "IdResiduosPartida");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Residuos_IdUsuario",
@@ -548,10 +517,9 @@ namespace SIGPA.Migrations
                 column: "IdPartida");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResiduosPartida_IdResiduos",
+                name: "IX_ResiduosPartida_IdResiduo",
                 table: "ResiduosPartida",
-                column: "IdResiduos",
-                unique: true);
+                column: "IdResiduo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RutaRecolecta_IdEstadoRuta",
@@ -577,11 +545,54 @@ namespace SIGPA.Migrations
                 name: "IX_Vehiculo_IdTipoVehiculo",
                 table: "Vehiculo",
                 column: "IdTipoVehiculo");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Partida_Residuos_ResiduosIdResiduos",
+                table: "Partida",
+                column: "ResiduosIdResiduos",
+                principalTable: "Residuos",
+                principalColumn: "IdResiduos");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_RecolectaResiduos_Residuos_IdResiduo",
+                table: "RecolectaResiduos",
+                column: "IdResiduo",
+                principalTable: "Residuos",
+                principalColumn: "IdResiduos",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Residuos_ResiduosPartida_IdResiduosPartida",
+                table: "Residuos",
+                column: "IdResiduosPartida",
+                principalTable: "ResiduosPartida",
+                principalColumn: "IdResiduosPartida",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Partida_Usuarios_IdUsuario",
+                table: "Partida");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Residuos_Usuarios_IdUsuario",
+                table: "Residuos");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Partida_Nivel_IdNivel",
+                table: "Partida");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Partida_Residuos_ResiduosIdResiduos",
+                table: "Partida");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ResiduosPartida_Residuos_IdResiduo",
+                table: "ResiduosPartida");
+
             migrationBuilder.DropTable(
                 name: "PartidaLogro");
 
@@ -590,9 +601,6 @@ namespace SIGPA.Migrations
 
             migrationBuilder.DropTable(
                 name: "RecolectaResiduos");
-
-            migrationBuilder.DropTable(
-                name: "ResiduosPartida");
 
             migrationBuilder.DropTable(
                 name: "Logro");
@@ -607,9 +615,6 @@ namespace SIGPA.Migrations
                 name: "RutaRecolecta");
 
             migrationBuilder.DropTable(
-                name: "Partida");
-
-            migrationBuilder.DropTable(
                 name: "TipoLogro");
 
             migrationBuilder.DropTable(
@@ -622,25 +627,28 @@ namespace SIGPA.Migrations
                 name: "Vehiculo");
 
             migrationBuilder.DropTable(
-                name: "Nivel");
-
-            migrationBuilder.DropTable(
-                name: "Residuos");
-
-            migrationBuilder.DropTable(
                 name: "TipoVehiculo");
-
-            migrationBuilder.DropTable(
-                name: "EstadoResiduos");
-
-            migrationBuilder.DropTable(
-                name: "TipoResiduos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "RolUsuarios");
+
+            migrationBuilder.DropTable(
+                name: "Nivel");
+
+            migrationBuilder.DropTable(
+                name: "Residuos");
+
+            migrationBuilder.DropTable(
+                name: "EstadoResiduos");
+
+            migrationBuilder.DropTable(
+                name: "ResiduosPartida");
+
+            migrationBuilder.DropTable(
+                name: "Partida");
         }
     }
 }

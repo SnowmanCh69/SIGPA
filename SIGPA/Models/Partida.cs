@@ -20,7 +20,8 @@ namespace SIGPA.Models
         public int IdNivel { get; set; }
         public required string UbicacionJugador { get; set; }
         public int CantidadVidas { get; set; }
-        [ForeignKey(nameof(Residuos))]
+
+    
         public int IdResiduo { get; set; }
 
         [JsonIgnore]
@@ -29,6 +30,8 @@ namespace SIGPA.Models
         public virtual Nivel? Nivel { get; set; }
         public virtual Usuario? Usuario { get; set; }
         public virtual Residuos? Residuos { get; set; }
+
+        public virtual ICollection<ResiduosPartida> ResiduosPartidas { get; set; }
 
     }
 }

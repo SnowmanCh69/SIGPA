@@ -8,10 +8,10 @@ namespace SIGPA.Repositories
     public interface IUsuarioRepository
     {
         Task<IEnumerable<Usuario>> GetUsuarios();
-        Task<Usuario> GetUsuario(int id);
+        Task<Usuario?> GetUsuario(int id);
         Task<Usuario> CreateUsuario(Usuario usuario);
         Task<Usuario> UpdateUsuario(Usuario usuario);
-        Task<Usuario> DeleteUsuario(int id);
+        Task<Usuario?> DeleteUsuario(int id);
     }
     public class UsuarioRepository(ApplicationDbContext db) : IUsuarioRepository
     {
@@ -40,11 +40,12 @@ namespace SIGPA.Repositories
             return usuario;
         }
 
-        public async Task<Usuario> DeleteUsuario(int id)
+        public async Task<Usuario?> DeleteUsuario(int id)
         {
-            var usuario = await db.Usuarios.FindAsync(id);
+            Usuario? usuario = await db.Usuarios.FindAsync(id);
             if (usuario == null) return usuario;
             usuario.IsDeleted = false;
+            db.Entry(usuario).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return usuario;
         }

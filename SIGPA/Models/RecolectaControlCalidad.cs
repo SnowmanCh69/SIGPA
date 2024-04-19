@@ -4,8 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SIGPA.Models
 {
-    namespace SIGPA.Models
-    {
+    
         public class RecolectaControlCalidad
         {
             [Key]
@@ -24,9 +23,8 @@ namespace SIGPA.Models
             public bool IsDeleted { get; set; } = true;
 
 
-   
+
             public virtual ControlCalidad? ControlCalidad { get; set; }
             public virtual Resultado? Resultado { get; set; }
         }
-    }
 }

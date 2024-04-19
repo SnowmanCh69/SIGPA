@@ -5,7 +5,7 @@ namespace SIGPA.Services
 {
     public interface ITipoVehiculoService
     {
-        Task<IEnumerable<TipoVehiculo>> GetTipoVehiculo();
+        Task<IEnumerable<TipoVehiculo>> GetTiposVehiculos();
         Task<TipoVehiculo?> GetTipoVehiculo(int id);
         Task<TipoVehiculo> CreateTipoVehiculo(
            string NombreTipoVehiculo
@@ -23,7 +23,7 @@ namespace SIGPA.Services
             return await tipoVehiculoRepository.GetTipoVehiculo(id);
         }
 
-        public async Task<IEnumerable<TipoVehiculo>> GetTipoVehiculo()
+        public async Task<IEnumerable<TipoVehiculo>> GetTiposVehiculos()
         {
             return await tipoVehiculoRepository.GetTiposVehiculos();
         }

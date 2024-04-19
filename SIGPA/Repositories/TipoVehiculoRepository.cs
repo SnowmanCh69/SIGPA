@@ -8,10 +8,10 @@ namespace SIGPA.Repositories
     public interface ITipoVehiculoRepository
     {
         Task<IEnumerable<TipoVehiculo>> GetTiposVehiculos();
-        Task<TipoVehiculo> GetTipoVehiculo(int id);
+        Task<TipoVehiculo?> GetTipoVehiculo(int id);
         Task<TipoVehiculo> CreateTipoVehiculo(TipoVehiculo tipoVehiculo);
         Task<TipoVehiculo> UpdateTipoVehiculo(TipoVehiculo tipoVehiculo);
-        Task<TipoVehiculo> DeleteTipoVehiculo(int id);
+        Task<TipoVehiculo?> DeleteTipoVehiculo(int id);
     }
     public class TipoVehiculoRepository (ApplicationDbContext db) : ITipoVehiculoRepository
     {
@@ -40,11 +40,12 @@ namespace SIGPA.Repositories
             return tipoVehiculo;
         }
 
-        public async Task<TipoVehiculo> DeleteTipoVehiculo(int id)
+        public async Task<TipoVehiculo?> DeleteTipoVehiculo(int id)
         {
-            var tipoVehiculo = await db.TipoVehiculo.FindAsync(id);
+            TipoVehiculo? tipoVehiculo = await db.TipoVehiculo.FindAsync(id);
             if (tipoVehiculo == null) return tipoVehiculo;
             tipoVehiculo.IsDeleted = false;
+            db.Entry(tipoVehiculo).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return tipoVehiculo;
         }
