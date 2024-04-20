@@ -12,7 +12,7 @@ namespace SIGPA.Repositories
         Task<TipoLogro> UpdateTipoLogro(TipoLogro tipoLogro);
         Task<TipoLogro?> DeleteTipoLogro(int id);
     }
-    public class TipoLogroRepositoryRepository(ApplicationDbContext db): ITipoLogroRepository
+    public class TipoLogroRepository(ApplicationDbContext db): ITipoLogroRepository
     {
         public async Task<TipoLogro?> GetTipoLogro(int id)
         {

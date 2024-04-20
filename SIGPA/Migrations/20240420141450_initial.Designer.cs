@@ -12,8 +12,8 @@ using SIGPA.Context;
 namespace SIGPA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240420034228_Initial")]
-    partial class Initial
+    [Migration("20240420141450_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
