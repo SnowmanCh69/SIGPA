@@ -14,7 +14,7 @@ namespace SIGPA.Services
             int IdTipoVehiculo,
              string? NombreTipoVehiculo
         );
-        Task<TipoVehiculo> DeleteTipoVehiculo(int id);
+        Task<TipoVehiculo?> DeleteTipoVehiculo(int id);
     }
     public class TipoVehiculoService(ITipoVehiculoRepository tipoVehiculoRepository) : ITipoVehiculoService
     {
@@ -49,7 +49,7 @@ namespace SIGPA.Services
             return await tipoVehiculoRepository.UpdateTipoVehiculo(tipoVehiculo);
         }
 
-        public async Task<TipoVehiculo> DeleteTipoVehiculo(int id)
+        public async Task<TipoVehiculo?> DeleteTipoVehiculo(int id)
         {
             return await tipoVehiculoRepository.DeleteTipoVehiculo(id);
         }

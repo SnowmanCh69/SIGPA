@@ -27,7 +27,7 @@ namespace SIGPA.Services
            int? CantidadVidas,
            int? IdResiduo
        );
-        Task<Partida> DeletePartida(int id);
+        Task<Partida?> DeletePartida(int id);
     }
     public class PartidaService(IPartidaRepository partidaRepository) : IPartidaService
     {
@@ -87,7 +87,7 @@ namespace SIGPA.Services
             return await partidaRepository.UpdatePartida(partida);
         }
 
-        public async Task<Partida> DeletePartida(int id)
+        public async Task<Partida?> DeletePartida(int id)
         {
             return await partidaRepository.DeletePartida(id);
         }

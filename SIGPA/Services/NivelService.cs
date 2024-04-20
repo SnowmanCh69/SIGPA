@@ -14,7 +14,7 @@ namespace SIGPA.Services
           int IdNivel,
           string? NombreNivel
         );
-        Task<Nivel> DeleteNivel(int id);
+        Task<Nivel?> DeleteNivel(int id);
     }
     public class NivelService(INivelRepository nivelRepository) : INivelService
     {
@@ -50,7 +50,7 @@ namespace SIGPA.Services
             return await nivelRepository.UpdateNivel(nivel);
         }
 
-        public async Task<Nivel> DeleteNivel(int id)
+        public async Task<Nivel?> DeleteNivel(int id)
         {
             return await nivelRepository.DeleteNivel(id);
         } 

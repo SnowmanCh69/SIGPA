@@ -16,7 +16,7 @@ namespace SIGPA.Services
          string? NombreMetodoControl,
          string? DescripcionMetodoControl
         );
-        Task<MetodoControl> DeleteMetodoControl(int id);
+        Task<MetodoControl?> DeleteMetodoControl(int id);
         
     }
     public class MetodoControlService(IMetodoControlRepository metodoControlRepository): IMetodoControlService
@@ -57,7 +57,7 @@ namespace SIGPA.Services
             return await metodoControlRepository.UpdateMetodoControl(metodoControl);
         }
 
-        public async Task<MetodoControl> DeleteMetodoControl(int id)
+        public async Task<MetodoControl?> DeleteMetodoControl(int id)
         {
             return await metodoControlRepository.DeleteMetodoControl(id);
         }

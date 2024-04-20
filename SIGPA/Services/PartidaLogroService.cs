@@ -19,7 +19,7 @@ namespace SIGPA.Services
           int? IdLogro,
           DateTime? FechaLogro
         );
-        Task<PartidaLogro> DeletePartidaLogro(int id);
+        Task<PartidaLogro?> DeletePartidaLogro(int id);
     }
     public class PartidaLogroService(IPartidaLogroRepository partidaLogroRepository) : IPartidaLogroService
     {
@@ -63,7 +63,7 @@ namespace SIGPA.Services
             return await partidaLogroRepository.UpdatePartidaLogro(partidaLogro);
         }
 
-        public async Task<PartidaLogro> DeletePartidaLogro(int id)
+        public async Task<PartidaLogro?> DeletePartidaLogro(int id)
         {
             return await partidaLogroRepository.DeletePartidaLogro(id);
         }

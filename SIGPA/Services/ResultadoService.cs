@@ -15,7 +15,7 @@ namespace SIGPA.Services
             int IdResultado,
             string? NombreResultado
         );
-        Task<Resultado> DeleteResultado(int id);
+        Task<Resultado?> DeleteResultado(int id);
     }
     public class ResultadoService(IResultadoRepository resultadoRepository) : IResultadoService
     {
@@ -51,7 +51,7 @@ namespace SIGPA.Services
             return await resultadoRepository.UpdateResultado(resultado);
         }
 
-        public async Task<Resultado> DeleteResultado(int id)
+        public async Task<Resultado?> DeleteResultado(int id)
         {
             return await resultadoRepository.DeleteResultado(id);
         } 

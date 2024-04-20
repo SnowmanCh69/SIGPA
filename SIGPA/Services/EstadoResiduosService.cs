@@ -15,7 +15,7 @@ namespace SIGPA.Services
            int IdEstadoResiduos,
            string? NombreEstadoResiduos
          );
-        Task<EstadoResiduos> DeleteEstadoResiduo(int id);
+        Task<EstadoResiduos?> DeleteEstadoResiduo(int id);
     }
     public class EstadoResiduosService(IEstadoResiduosRepository estadoResiduosRepository): IEstadoResiduosService
     {
@@ -51,7 +51,7 @@ namespace SIGPA.Services
             return await estadoResiduosRepository.UpdateEstadoResiduo(estadoResiduos);
         }
 
-        public async Task<EstadoResiduos> DeleteEstadoResiduo(int id)
+        public async Task<EstadoResiduos?> DeleteEstadoResiduo(int id)
         {
             return await estadoResiduosRepository.DeleteEstadoResiduo(id);
         }

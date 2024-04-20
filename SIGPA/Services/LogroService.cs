@@ -19,7 +19,7 @@ namespace SIGPA.Services
           string? DescripcionLogro,
           int? IdTipoLogro
         );
-        Task<Logro> DeleteLogro(int id);
+        Task<Logro?> DeleteLogro(int id);
         
     }
     public class LogroService(ILogroRepository logroRepository): ILogroService
@@ -64,7 +64,7 @@ namespace SIGPA.Services
             return await logroRepository.UpdateLogro(logro);
         }
 
-        public async Task<Logro> DeleteLogro(int id)
+        public async Task<Logro?> DeleteLogro(int id)
         {
             return await logroRepository.DeleteLogro(id);
         }

@@ -25,7 +25,7 @@ namespace SIGPA.Services
          DateTime? FechaRecoleccion
        );
 
-        Task<RecolectaResiduos> DeleteRecolectaResiduos(int id);
+        Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id);
     }
 
     public class RecolectaResiduosService(IRecolectaResiduosRepository recolectaResiduosRepository) : IRecolectaResiduosService
@@ -79,7 +79,7 @@ namespace SIGPA.Services
             
         }
 
-        public async Task<RecolectaResiduos> DeleteRecolectaResiduos(int id)
+        public async Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id)
         {
             return await recolectaResiduosRepository.DeleteRecolectaResiduos(id);
         }

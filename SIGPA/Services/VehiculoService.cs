@@ -20,7 +20,7 @@ namespace SIGPA.Services
            string? PlacaVehiculo,
            int? IdTipoVehiculo
         );
-        Task<Vehiculo> DeleteVehiculo(int id);
+        Task<Vehiculo?> DeleteVehiculo(int id);
 
     }
 
@@ -70,7 +70,7 @@ namespace SIGPA.Services
             return await vehiculoRepository.UpdateVehiculo(vehiculo);
         }
 
-        public async Task<Vehiculo> DeleteVehiculo(int id)
+        public async Task<Vehiculo?> DeleteVehiculo(int id)
         {
             return await vehiculoRepository.DeleteVehiculo(id);
         }

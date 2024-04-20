@@ -18,7 +18,7 @@ namespace SIGPA.Services
            int? IdResultado,
            string? Observaciones
          );
-        Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id);
+        Task<RecolectaControlCalidad?> DeleteRecolectaControlCalidad(int id);
     }
     public class RecolectaControlCalidadService(IRecolectaControlCalidadRepository recolectaControlCalidadRepository): IRecolectaControlCalidadService
     {
@@ -62,7 +62,7 @@ namespace SIGPA.Services
             return await recolectaControlCalidadRepository.UpdateRecolectaControlCalidad(recolectaControlCalidad);
         }
 
-        public async Task<RecolectaControlCalidad> DeleteRecolectaControlCalidad(int id)
+        public async Task<RecolectaControlCalidad?> DeleteRecolectaControlCalidad(int id)
         {
             return await recolectaControlCalidadRepository.DeleteRecolectaControlCalidad(id);
         }

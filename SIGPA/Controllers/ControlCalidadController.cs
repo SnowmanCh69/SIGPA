@@ -64,7 +64,5 @@ namespace SIGPA.Controllers
             if(deletedControlCalidad == null) return NotFound();
             return Ok(deletedControlCalidad);
         }
-        
     }
-    
 }

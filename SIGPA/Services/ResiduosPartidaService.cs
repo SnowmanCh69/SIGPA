@@ -19,7 +19,7 @@ namespace SIGPA.Services
           int? IdResiduo,
           string? CantidadRegistrada
         );
-        Task<ResiduosPartida> DeleteResiduoPartida(int id);
+        Task<ResiduosPartida?> DeleteResiduoPartida(int id);
        
 
     }
@@ -65,7 +65,7 @@ namespace SIGPA.Services
             return await residuosPartidaRepository.UpdateResiduoPartida(residuosPartida);
         }
 
-        public async Task<ResiduosPartida> DeleteResiduoPartida(int id)
+        public async Task<ResiduosPartida?> DeleteResiduoPartida(int id)
         {
             return await residuosPartidaRepository.DeleteResiduoPartida(id);
         }

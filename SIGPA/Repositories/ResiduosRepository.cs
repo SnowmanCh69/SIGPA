@@ -12,7 +12,7 @@ namespace SIGPA.Repositories
         Task<Residuos> UpdateResiduo(Residuos residuo);
         Task<Residuos?> DeleteResiduo(int id);
     }
-    public class ResiduoRepository(ApplicationDbContext db): IResiduosRepository
+    public class ResiduosRepository(ApplicationDbContext db): IResiduosRepository
     {
         public async Task<Residuos?> GetResiduo(int id)
         {

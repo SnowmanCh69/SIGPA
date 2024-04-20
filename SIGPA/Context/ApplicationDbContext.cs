@@ -1,5 +1,7 @@
 ﻿using SIGPA.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+
 
 
 
@@ -29,9 +31,10 @@ namespace SIGPA.Context
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-        }
 
-        
+
+           
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,10 +59,10 @@ namespace SIGPA.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ResiduosPartida>()
-            .HasOne(rp => rp.Partida)
-            .WithMany(p => p.ResiduosPartidas) // Assuming this is the collection in Partida
-            .HasForeignKey(rp => rp.IdPartida)
-        .   OnDelete(DeleteBehavior.NoAction); // This is the important part
+                .HasOne(rp => rp.Partida)
+                .WithMany(p => p.ResiduosPartidas) // Assuming this is the collection in Partida
+                .HasForeignKey(rp => rp.IdPartida)
+                .OnDelete(DeleteBehavior.NoAction); // This is the important part
 
             modelBuilder.Entity<ResiduosPartida>()
                 .HasOne(rp => rp.Residuos)

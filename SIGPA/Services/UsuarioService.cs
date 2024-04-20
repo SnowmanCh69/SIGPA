@@ -21,7 +21,7 @@ namespace SIGPA.Services
           string? EmailUsuario,
           int? IdRolUsuario
       );
-        Task<Usuario> DeleteUsuario(int id);
+        Task<Usuario?> DeleteUsuario(int id);
     }
     public class UsuarioService(IUsuarioRepository usuarioRepository) : IUsuarioService
     {
@@ -72,7 +72,7 @@ namespace SIGPA.Services
             return await usuarioRepository.UpdateUsuario(usuario);
         }
 
-        public async Task<Usuario> DeleteUsuario(int id)
+        public async Task<Usuario?> DeleteUsuario(int id)
         {
            return await usuarioRepository.DeleteUsuario(id);
         }
