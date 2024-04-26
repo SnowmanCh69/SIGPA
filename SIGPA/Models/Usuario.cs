@@ -25,11 +25,11 @@ namespace SIGPA.Models
         public virtual RolUsuario? RolUsuario { get; set; }
 
 
-        public ICollection<Partida> Partidas { get; set; } = new List<Partida>();
-        public List<ControlCalidad> ControlCalidad { get; set; } = new List<ControlCalidad>();
-        public List<RutaRecolecta> RutaRecolecta { get; set; } = new List<RutaRecolecta>();
-        public List<Residuos> Residuos { get; set; } = new List<Residuos>();
-        public ICollection<RecolectaResiduos> RecolectaResiduos { get; set; } = new List<RecolectaResiduos>();
+        public virtual ICollection<Partida> Partidas { get; set; } = new List<Partida>();
+        public virtual List<ControlCalidad> ControlCalidad { get; set; } = new List<ControlCalidad>();
+        public virtual List<RutaRecolecta> RutaRecolecta { get; set; } = new List<RutaRecolecta>();
+        public virtual List<Residuos> Residuos { get; set; } = new List<Residuos>();
+        public virtual ICollection<RecolectaResiduos> RecolectaResiduos { get; set; } = new List<RecolectaResiduos>();
 
 
 
