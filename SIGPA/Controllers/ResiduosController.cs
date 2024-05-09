@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -28,12 +29,12 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateResiduo(
-            string NombreResiduo,
-           DateTime FechaRegistro,
-           int IdEstadoResiduos,
-           string CantidadRegistrada,
-           int IdUsuario,
-           int IdResiduosPartida
+           [FromForm][Required] string NombreResiduo,
+           [FromForm][Required] DateOnly FechaRegistro,
+           [FromForm][Required] int IdEstadoResiduos,
+           [FromForm][Required] string CantidadRegistrada,
+           [FromForm][Required] int IdUsuario,
+           [FromForm][Required] int IdResiduosPartida
         )
         {
             var residuo = await residuosService.CreateResiduo(NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario, IdResiduosPartida);
@@ -42,13 +43,13 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateResiduo(
-          int IdResiduo,
-           string? NombreResiduo,
-           DateTime? FechaRegistro,
-           int? IdEstadoResiduos,
-           string? CantidadRegistrada,
-           int? IdUsuario,
-           int? IdResiduosPartida
+           [FromForm][Required] int IdResiduo,
+           [FromForm] string? NombreResiduo,
+           [FromForm] DateOnly? FechaRegistro,
+           [FromForm] int? IdEstadoResiduos,
+           [FromForm] string? CantidadRegistrada,
+           [FromForm] int? IdUsuario,
+           [FromForm] int? IdResiduosPartida
            )
         {
             

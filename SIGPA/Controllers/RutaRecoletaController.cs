@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -30,11 +31,11 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateRutaRecolecta(
-          string PuntoIncio,
-          string PuntoFinalizacion,
-          int IdEstadoRuta,
-          int IdUsuario,
-          int IdVehiculo
+          [FromForm][Required] string PuntoIncio,
+          [FromForm][Required] string PuntoFinalizacion,
+          [FromForm][Required] int IdEstadoRuta,
+          [FromForm][Required] int IdUsuario,
+          [FromForm][Required] int IdVehiculo
         )
         {
             var rutaRecolecta = await rutaRecolectaService.CreateRutaRecolecta(PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo);
@@ -43,12 +44,12 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateRutaRecolecta(
-          int IdRutaRecolecta,
-          string? PuntoIncio,
-          string? PuntoFinalizacion,
-          int? IdEstadoRuta,
-          int? IdUsuario,
-          int? IdVehiculo
+          [FromForm][Required] int IdRutaRecolecta,
+          [FromForm] string? PuntoIncio,
+          [FromForm] string? PuntoFinalizacion,
+          [FromForm] int? IdEstadoRuta,
+          [FromForm] int? IdUsuario,
+          [FromForm] int? IdVehiculo
          )
         {
             var rutaRecolecta = await rutaRecolectaService.UpdateRutaRecolecta(IdRutaRecolecta, PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo);

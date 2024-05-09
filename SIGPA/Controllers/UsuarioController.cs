@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SIGPA.Helpers;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UsuarioController(IUsuarioService usuarioService) : ControllerBase
     {
 
@@ -30,27 +34,31 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateUsuario(
-            string NombresUsuario,
-            string ApellidosUsuario,
-            string EmailUsuario,
-            int IdRolUsuario
+            [FromForm][Required] string NombresUsuario,
+            [FromForm][Required] string ApellidosUsuario,
+            [FromForm][Required] string EmailUsuario,
+            [FromForm] string? Username,
+            [FromForm][Required] string Password,
+            [FromForm][Required] int IdRolUsuario
          )
         {
-            var usuario= await usuarioService.CreateUsuario(NombresUsuario, ApellidosUsuario, EmailUsuario, IdRolUsuario);
+            var usuario= await usuarioService.CreateUsuario(NombresUsuario, ApellidosUsuario, EmailUsuario,Username,Password, IdRolUsuario);
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
         }
 
         [HttpPut]
 
         public async Task<IActionResult> UpdateUsuario(
-             int IdUsuario,
-             string? NombresUsuario,
-             string? ApellidosUsuario,
-             string? EmailUsuario,
-             int? IdRolUsuario
+             [FromForm][Required] int IdUsuario,
+             [FromForm] string? NombresUsuario,
+             [FromForm] string? ApellidosUsuario,
+             [FromForm] string? EmailUsuario,
+             [FromForm] string? Username,
+             [FromForm] string? Password,
+             [FromForm] int? IdRolUsuario
         )
         {
-            var usuario = await usuarioService.UpdateUsuario(IdUsuario, NombresUsuario, ApellidosUsuario, EmailUsuario, IdRolUsuario);
+            var usuario = await usuarioService.UpdateUsuario(IdUsuario, NombresUsuario, ApellidosUsuario, EmailUsuario,Username,Password, IdRolUsuario);
             return Ok(usuario);
         }
 

@@ -8,18 +8,17 @@ namespace SIGPA.Services
         Task<IEnumerable<ControlCalidad>> GetControlesCalidad();
         Task<ControlCalidad?> GetControlCalidad(int id);
         Task<ControlCalidad> CreateControlCalidad(
-            DateTime FechaControl,
+            DateOnly FechaControl,
             int IdUsuario,
             int IdMetodoControl
             );
         Task<ControlCalidad> UpdateControlCalidad(
            int IdControlCalidad,
-           DateTime? FechaControl,
+           DateOnly? FechaControl,
            int? IdUsuario,
            int? IdMetodoControl
             );
         Task<ControlCalidad?> DeleteControlCalidad(int id);
-
     }
     public class ControlCalidadService(IControlCalidadRepository controlCalidadRepository) : IControlCalidadService
     {
@@ -35,7 +34,7 @@ namespace SIGPA.Services
         }
 
         public async Task<ControlCalidad> CreateControlCalidad(
-          DateTime FechaControl,
+          DateOnly FechaControl,
           int IdUsuario,
           int IdMetodoControl
          )
@@ -51,7 +50,7 @@ namespace SIGPA.Services
         public async Task<ControlCalidad> UpdateControlCalidad(
             
             int IdControlCalidad,
-            DateTime? FechaControl,
+            DateOnly? FechaControl,
             int? IdUsuario,
             int? IdMetodoControl
             )

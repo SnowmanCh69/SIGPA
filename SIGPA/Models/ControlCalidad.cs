@@ -10,7 +10,7 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdControlCalidad { get; set; }
-        public required DateTime FechaControl { get; set; }
+        public required DateOnly FechaControl { get; set; }
 
         [ForeignKey(nameof(IdUsuario))]
         public int IdUsuario { get; set; }

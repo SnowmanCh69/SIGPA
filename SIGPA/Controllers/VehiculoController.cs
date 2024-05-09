@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -26,10 +27,10 @@ namespace SIGPA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateVehiculo
         (
-            string Marcavehiculo,
-            string Modelovehiculo,
-            string Placavehiculo,
-            int Tipovehiculo
+            [FromForm][Required] string Marcavehiculo,
+            [FromForm][Required] string Modelovehiculo,
+            [FromForm][Required] string Placavehiculo,
+            [FromForm][Required] int Tipovehiculo
          )
         {
             var vehiculo = await vehiculoService.CreateVehiculo(Marcavehiculo,Modelovehiculo,Placavehiculo,Tipovehiculo);
@@ -39,11 +40,11 @@ namespace SIGPA.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateVehiculo
         (
-           int IdVehiculo,
-           string? Marcavehiculo,
-           string? Modelovehiculo,
-           string? Placavehiculo,
-           int? Tipovehiculo
+           [FromForm][Required] int IdVehiculo,
+           [FromForm] string? Marcavehiculo,
+           [FromForm] string? Modelovehiculo,
+           [FromForm] string? Placavehiculo,
+           [FromForm] int? Tipovehiculo
           )
         {
             var vehiculo = await vehiculoService.UpdateVehiculo(IdVehiculo, Marcavehiculo, Modelovehiculo, Placavehiculo, Tipovehiculo);

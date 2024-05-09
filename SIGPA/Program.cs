@@ -3,13 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using SIGPA.Repositories;
 using SIGPA.Services;
 using System.Configuration;
+using SIGPA.Models;
+using SIGPA.Helpers;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connString));
+
+
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connString));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -67,6 +72,39 @@ builder.Services.AddScoped<IVehiculoService, VehiculoService>();
 
 #endregion
 
+
+// Authentication
+builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AppSettings"));
+
+builder.Services.AddSwaggerGen(swagger =>
+{
+    // To Enable authorization using Swagger (JWT)
+    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+    });
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+
+        }
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -82,10 +120,9 @@ app.UseSwaggerUI(c =>
 });
 
 
-
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+
 
 app.MapControllers();
 
@@ -101,5 +138,8 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+
+app.UseMiddleware<JwtMiddleware>();
+app.UseAuthorization();
 
 app.Run();

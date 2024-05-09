@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -30,8 +31,8 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateMetodoControl(
-           string NombreMetodoControl,
-           string DescripcionMetodoControl                                     
+           [FromForm][Required] string NombreMetodoControl,
+           [FromForm][Required] string DescripcionMetodoControl                                     
         )
         {
             var metodoControl= await metodoControlService.CreateMetodoControl(NombreMetodoControl, DescripcionMetodoControl);
@@ -40,9 +41,9 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateMetodoControl(
-            int IdMetodoControl,
-            string? NombreMetodoControl,
-            string? DescripcionMetodoControl
+            [FromForm][Required] int IdMetodoControl,
+            [FromForm] string? NombreMetodoControl,
+            [FromForm] string? DescripcionMetodoControl
          )
         {
             var metodoControl = await metodoControlService.UpdateMetodoControl(IdMetodoControl, NombreMetodoControl, DescripcionMetodoControl);

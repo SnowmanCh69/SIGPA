@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -29,9 +30,9 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreatePartidaLogro(
-           int IdPartida,
-           int IdLogro,
-           DateTime FechaLogro
+           [FromForm][Required] int IdPartida,
+           [FromForm][Required] int IdLogro,
+           [FromForm][Required] DateTime FechaLogro
         )
         {
             var partidaLogro = await partidaLogroService.CreatePartidaLogro(IdPartida, IdLogro, FechaLogro);
@@ -41,10 +42,10 @@ namespace SIGPA.Controllers
         [HttpPut]
         
         public async Task<IActionResult> UpdatePartidaLogro(
-         int IdPartidaLogro,
-         int? IdPartida,
-         int? IdLogro,
-         DateTime? FechaLogro
+         [FromForm][Required] int IdPartidaLogro,
+         [FromForm] int? IdPartida,
+         [FromForm] int? IdLogro,
+         [FromForm] DateTime? FechaLogro
          )
         {
             var partidaLogro = await partidaLogroService.UpdatePartidaLogro(IdPartidaLogro, IdPartida, IdLogro, FechaLogro);

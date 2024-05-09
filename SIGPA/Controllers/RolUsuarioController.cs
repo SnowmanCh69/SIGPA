@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -29,7 +30,7 @@ namespace SIGPA.Controllers
         [HttpPost]
         
         public async Task<IActionResult> CreateRolUsuario(
-            string nombreRolUsuario
+           [FromForm][Required] string nombreRolUsuario
         )
         {
             var rolUsuario = await rolUsuarioService.CreateRolUsuario(nombreRolUsuario);
@@ -39,8 +40,8 @@ namespace SIGPA.Controllers
         [HttpPut]
         
         public async Task<IActionResult> UpdateRolUsuario(
-          int IdRolUsuario,
-          string? nombreRolUsuario
+          [FromForm][Required] int IdRolUsuario,
+          [FromForm] string? nombreRolUsuario
         )
         {
            

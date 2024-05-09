@@ -35,10 +35,7 @@ namespace SIGPA.Context
 
            
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,6 +72,7 @@ namespace SIGPA.Context
                 .OnDelete(DeleteBehavior.NoAction); // This is the important part
 
 
+            // Filter entities with IsDeleted = true
             modelBuilder.Entity<ControlCalidad>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<MetodoControl>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Partida>().HasQueryFilter(e => e.IsDeleted);
@@ -95,6 +93,11 @@ namespace SIGPA.Context
             modelBuilder.Entity<Nivel>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Logro>().HasQueryFilter(e => e.IsDeleted);
 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }

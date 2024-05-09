@@ -5,13 +5,15 @@ namespace SIGPA.Services
 {
     public interface IUsuarioService
     {
-
+        Task<AuthResponse?> Authenticate(AuthRequest authRequest);
         Task<IEnumerable<Usuario>> GetUsuarios();
         Task<Usuario?> GetUsuario(int id);
         Task<Usuario> CreateUsuario(
           string NombresUsuario,
           string ApellidosUsuario,
           string EmailUsuario,
+          string? Username,
+          string Password,
           int IdRolUsuario
         );
         Task<Usuario> UpdateUsuario(
@@ -19,13 +21,18 @@ namespace SIGPA.Services
           string? NombresUsuario,
           string? ApellidosUsuario,
           string? EmailUsuario,
+          string? Username,
+          string? Password,
           int? IdRolUsuario
       );
         Task<Usuario?> DeleteUsuario(int id);
     }
     public class UsuarioService(IUsuarioRepository usuarioRepository) : IUsuarioService
     {
-
+        public async Task<AuthResponse?> Authenticate(AuthRequest authRequest)
+        {
+            return await usuarioRepository.Authenticate(authRequest);
+        }
         public async Task<Usuario?> GetUsuario(int id)
         {
             return await usuarioRepository.GetUsuario(id);
@@ -40,6 +47,8 @@ namespace SIGPA.Services
           string NombresUsuario,
           string ApellidosUsuario,
           string EmailUsuario,
+          string? Username,
+          string Password,
           int IdRolUsuario
                      )
         {
@@ -48,6 +57,8 @@ namespace SIGPA.Services
                 NombresUsuario = NombresUsuario,
                 ApellidosUsuario = ApellidosUsuario,
                 EmailUsuario = EmailUsuario,
+                Username = Username,
+                Password = Password,
                 IdRolUsuario = IdRolUsuario
             });
         }
@@ -57,6 +68,8 @@ namespace SIGPA.Services
             string? NombresUsuario,
             string? ApellidosUsuario,
             string? EmailUsuario,
+            string? Username,
+            string? Password,
             int? IdRolUsuario
          )
         {
@@ -68,6 +81,8 @@ namespace SIGPA.Services
             usuario.NombresUsuario = NombresUsuario ?? usuario.NombresUsuario;
             usuario.ApellidosUsuario = ApellidosUsuario ?? usuario.ApellidosUsuario;
             usuario.EmailUsuario = EmailUsuario ?? usuario.EmailUsuario;
+            usuario.Username = Username ?? usuario.Username;
+            usuario.Password = Password ?? usuario.Password;
             usuario.IdRolUsuario = IdRolUsuario ?? usuario.IdRolUsuario;
             return await usuarioRepository.UpdateUsuario(usuario);
         }

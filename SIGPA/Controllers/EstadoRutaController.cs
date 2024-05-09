@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -27,7 +28,7 @@ namespace SIGPA.Controllers
         [HttpPost]
         
         public async Task<IActionResult> CreateEstadoRuta(
-           string NombreEstadoRuta
+           [FromForm][Required] string NombreEstadoRuta
         )
         {
             var estadoRuta = await estadoRutaService.CreateEstadoRuta(NombreEstadoRuta);
@@ -36,8 +37,8 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateEstadoRuta(
-          int IdEstadoRuta,
-          string? NombreEstadoRuta
+          [FromForm][Required] int IdEstadoRuta,
+          [FromForm] string? NombreEstadoRuta
           )
         {
             var estadoRuta = await estadoRutaService.UpdateEstadoRuta(IdEstadoRuta, NombreEstadoRuta);

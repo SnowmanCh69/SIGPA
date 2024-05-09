@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -29,9 +30,9 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateResiduoPartida(
-           int IdPartida,
-           int IdResiduo,
-           string CantidadRegistrada
+           [FromForm][Required] int IdPartida,
+           [FromForm][Required] int IdResiduo,
+           [FromForm][Required] string CantidadRegistrada
 
          )
         {
@@ -43,10 +44,10 @@ namespace SIGPA.Controllers
         [HttpPut]
 
         public async Task<IActionResult> UpdateResiduoPartida(
-           int IdResiduosPartida,
-           int? IdPartida,
-           int? IdResiduo,
-           string? CantidadRegistrada
+           [FromForm] int IdResiduosPartida,
+           [FromForm] int? IdPartida,
+           [FromForm] int? IdResiduo,
+           [FromForm] string? CantidadRegistrada
          )
         {
             var residuoPartida = await residuosPartidaService.UpdateResiduoPartida(IdResiduosPartida, IdPartida, IdResiduo, CantidadRegistrada);

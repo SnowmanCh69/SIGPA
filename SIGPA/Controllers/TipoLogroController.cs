@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -27,7 +28,7 @@ namespace SIGPA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTipoLogro
         (
-           string NombreTipoLogro
+           [FromForm][Required] string NombreTipoLogro
         )
         {
             var tipoLogro = await tipoLogroService.CreateTipoLogro(NombreTipoLogro);
@@ -37,8 +38,8 @@ namespace SIGPA.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateTipoLogro
         (
-            int IdTipoLogro,
-            string? NombreTipoLogro
+            [FromForm][Required] int IdTipoLogro,
+            [FromForm] string? NombreTipoLogro
         )
         {
             var tipoLogro = await tipoLogroService.UpdateTipoLogro(IdTipoLogro, NombreTipoLogro);

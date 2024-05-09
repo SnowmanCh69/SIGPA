@@ -19,9 +19,7 @@ namespace SIGPA.Models
         [ForeignKey(nameof(Nivel))]
         public int IdNivel { get; set; }
         public required string UbicacionJugador { get; set; }
-        public int CantidadVidas { get; set; }
-
-    
+        
         public int IdResiduo { get; set; }
 
         [JsonIgnore]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -29,11 +30,11 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateRecolectaResiduo(
-           int IdRutaRecolecta,
-           int IdResiduo,
-           int IdUsuario,
-           string CantidadRecolectada,
-           DateTime FechaRecoleccion
+           [FromForm][Required] int IdRutaRecolecta,
+           [FromForm][Required] int IdResiduo,
+           [FromForm][Required] int IdUsuario,
+           [FromForm][Required] string CantidadRecolectada,
+           [FromForm][Required] DateOnly FechaRecoleccion
          )
         {
             var recolectaResiduo = await recolectaResiduosService.CreateRecolectaResiduos(IdRutaRecolecta, IdResiduo, IdUsuario, CantidadRecolectada, FechaRecoleccion);
@@ -42,12 +43,12 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateRecolectaResiduos(
-            int IdRecolectaResiduos,
-            int? IdRutaRecolecta,
-            int? IdResiduo,
-            int? IdUsuario,
-            string? CantidadRecolectada,
-            DateTime? FechaRecoleccion
+            [FromForm][Required] int IdRecolectaResiduos,
+            [FromForm] int? IdRutaRecolecta,
+            [FromForm] int? IdResiduo,
+            [FromForm] int? IdUsuario,
+            [FromForm] string? CantidadRecolectada,
+            [FromForm] DateOnly? FechaRecoleccion
           )
         {
             var recolectaResiduo = await recolectaResiduosService.UpdateRecolectaResiduos(IdRecolectaResiduos, IdRutaRecolecta, IdResiduo, IdUsuario, CantidadRecolectada, FechaRecoleccion);

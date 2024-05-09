@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -30,32 +31,30 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreatePartida(
-           int IdUsuario,
-           DateTime FechaInicioPartida,
-           DateTime FechaFinPartida,
-           int IdNivel,
-           string UbicacionJugador,
-           int CantidadVidas,
-           int IdResiduo
+           [FromForm][Required] int IdUsuario,
+           [FromForm][Required] DateTime FechaInicioPartida,
+           [FromForm] DateTime FechaFinPartida,
+           [FromForm][Required] int IdNivel,
+           [FromForm][Required] string UbicacionJugador,
+           [FromForm][Required] int IdResiduo
          )
         {
-            var partida = await partidaService.CreatePartida(IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, CantidadVidas, IdResiduo);
+            var partida = await partidaService.CreatePartida(IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, IdResiduo);
             return CreatedAtAction(nameof(GetPartida), new { id = partida.IdPartida }, partida);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdatePartida(
-           int IdPartida,
-           int? IdUsuario,
-           DateTime? FechaInicioPartida,
-           DateTime? FechaFinPartida,
-           int? IdNivel,
-           string? UbicacionJugador,
-           int? CantidadVidas,
-           int? IdResiduo
+           [FromForm][Required] int IdPartida,
+           [FromForm] int? IdUsuario,
+           [FromForm] DateTime? FechaInicioPartida,
+           [FromForm] DateTime? FechaFinPartida,
+           [FromForm] int? IdNivel,
+           [FromForm] string? UbicacionJugador,
+           [FromForm] int? IdResiduo
         )
         {
-            var partida = await partidaService.UpdatePartida(IdPartida, IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, CantidadVidas, IdResiduo);
+            var partida = await partidaService.UpdatePartida(IdPartida, IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, IdResiduo);
             return Ok(partida);
         }
 

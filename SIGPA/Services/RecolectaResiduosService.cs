@@ -13,7 +13,7 @@ namespace SIGPA.Services
            int IdResiduo,
            int IdUsuario,
            string CantidadRecolectada,
-           DateTime FechaRecoleccion
+           DateOnly FechaRecoleccion
          );
 
         Task<RecolectaResiduos> UpdateRecolectaResiduos(
@@ -22,7 +22,7 @@ namespace SIGPA.Services
          int? IdResiduo,
          int? IdUsuario,
          string? CantidadRecolectada,
-         DateTime? FechaRecoleccion
+         DateOnly? FechaRecoleccion
        );
 
         Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id);
@@ -46,7 +46,7 @@ namespace SIGPA.Services
            int IdResiduo,
            int IdUsuario,
            string CantidadRecolectada,
-           DateTime FechaRecoleccion
+           DateOnly FechaRecoleccion
          )
         {
             return await recolectaResiduosRepository.CreateRecolectaResiduos(new RecolectaResiduos
@@ -65,7 +65,7 @@ namespace SIGPA.Services
             int? IdResiduo,
             int? IdUsuario,
             string? CantidadRecolectada,
-             DateTime? FechaRecoleccion
+            DateOnly? FechaRecoleccion
          )
         {
             RecolectaResiduos? recolectaResiduos = await recolectaResiduosRepository.GetRecolectaResiduos(IdRecolectaResiduos);

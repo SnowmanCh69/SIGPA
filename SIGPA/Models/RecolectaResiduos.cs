@@ -17,7 +17,7 @@ namespace SIGPA.Models
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
         public required string CantidadRecolectada { get; set; }
-        public required DateTime FechaRecoleccion { get; set; }
+        public required DateOnly FechaRecoleccion { get; set; }
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;

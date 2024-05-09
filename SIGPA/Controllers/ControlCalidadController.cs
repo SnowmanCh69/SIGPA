@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
 {
@@ -33,10 +34,10 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateControlCalidad(
-            
-            DateTime FechaControl,
-            int IdUsuario,
-            int IdMetodoControl
+
+            [FromForm] DateOnly FechaControl,
+            [FromForm] int IdUsuario,
+            [FromForm] int IdMetodoControl
             )
         {
             var controlCalidad = await controlCalidadService.CreateControlCalidad(FechaControl, IdUsuario, IdMetodoControl);
@@ -46,11 +47,11 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateControlCalidad(
-                       
-          int IdControlCalidad,
-          DateTime? FechaControl,
-          int? IdUsuario,
-          int? IdMetodoControl
+
+          [FromForm][Required] int IdControlCalidad,
+          [FromForm] DateOnly? FechaControl,
+          [FromForm] int? IdUsuario,
+          [FromForm] int? IdMetodoControl
          )
         {
          var controlCalidad = await controlCalidadService.UpdateControlCalidad(IdControlCalidad, FechaControl, IdUsuario, IdMetodoControl);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 
@@ -31,7 +32,7 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateNivel(
-           string NombreNivel
+           [FromForm][Required] string NombreNivel
          )
         {
             var nivel= await nivelService.CreateNivel(NombreNivel);
@@ -40,8 +41,8 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateNivel(
-            int IdNivel,
-            string? NombreNivel
+           [FromForm][Required] int IdNivel,
+           [FromForm] string? NombreNivel
          )
         {
             var nivel = await nivelService.UpdateNivel(IdNivel, NombreNivel);

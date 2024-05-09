@@ -9,7 +9,7 @@ namespace SIGPA.Services
         Task<Residuos?> GetResiduo(int id);
         Task<Residuos> CreateResiduo(
            string NombreResiduo,
-           DateTime FechaRegistro,
+           DateOnly FechaRegistro,
            int IdEstadoResiduos,
            string CantidadRegistrada,
            int IdUsuario,
@@ -18,7 +18,7 @@ namespace SIGPA.Services
         Task<Residuos> UpdateResiduo(
            int IdResiduo,
            string? NombreResiduo,
-           DateTime? FechaRegistro,
+           DateOnly? FechaRegistro,
            int? IdEstadoResiduos,
            string? CantidadRegistrada,
            int? IdUsuario,
@@ -41,7 +41,7 @@ namespace SIGPA.Services
 
         public async Task<Residuos> CreateResiduo(
             string NombreResiduo,
-            DateTime FechaRegistro,
+            DateOnly FechaRegistro,
             int IdEstadoResiduos,
             string CantidadRegistrada,
             int IdUsuario,
@@ -62,7 +62,7 @@ namespace SIGPA.Services
         public async Task<Residuos> UpdateResiduo(
              int IdResiduo,
              string? NombreResiduo,
-             DateTime? FechaRegistro,
+             DateOnly? FechaRegistro,
              int? IdEstadoResiduos,
              string? CantidadRegistrada,
              int? IdUsuario,

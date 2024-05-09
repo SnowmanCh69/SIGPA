@@ -11,7 +11,7 @@ namespace SIGPA.Models
         public int IdResiduos { get; set; }
 
         public required string NombreResiduo { get; set; }
-        public required DateTime FechaRegistro { get; set; }
+        public required DateOnly FechaRegistro { get; set; }
         [ForeignKey(nameof(EstadoResiduos))]
         public int IdEstadoResiduos { get; set; }
 
@@ -31,6 +31,7 @@ namespace SIGPA.Models
         public virtual Usuario? Usuario { get; set; }
         public virtual ResiduosPartida? ResiduosPartida { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ResiduosPartida> ResiduosPartidas { get; set; }
 
     }

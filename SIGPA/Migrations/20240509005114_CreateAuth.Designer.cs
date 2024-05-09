@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGPA.Context;
 
@@ -11,9 +12,11 @@ using SIGPA.Context;
 namespace SIGPA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509005114_CreateAuth")]
+    partial class CreateAuth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,8 +36,8 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdControlCalidad"));
 
-                    b.Property<DateOnly>("FechaControl")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("FechaControl")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdMetodoControl")
                         .HasColumnType("int");
@@ -291,8 +294,8 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("FechaRecoleccion")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("FechaRecoleccion")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdResiduo")
                         .HasColumnType("int");
@@ -329,8 +332,8 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("FechaRegistro")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdEstadoResiduos")
                         .HasColumnType("int");
@@ -535,8 +538,8 @@ namespace SIGPA.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");

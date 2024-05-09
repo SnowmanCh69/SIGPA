@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SIGPA.Controllers
@@ -30,9 +31,9 @@ namespace SIGPA.Controllers
 
         [HttpPost]
         public async Task <IActionResult> CreateRecolectaControlCalidad(
-           int IdControlCalidad,
-           int IdResultado,
-           string Observaciones
+           [FromForm][Required] int IdControlCalidad,
+           [FromForm][Required] int IdResultado,
+           [FromForm][Required] string Observaciones
          )
         {
            var recolectaControlCalidad = await recolectaControlCalidadService.CreateRecolectaControlCalidad(IdControlCalidad, IdResultado, Observaciones);
@@ -41,11 +42,11 @@ namespace SIGPA.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateRecolectaControlCalidad(
-           int IdRecolectaControlCalidad,
-           int? IdControlCalidad,
-           int? IdResultado,
-            string? Observaciones
-                    )
+           [FromForm][Required] int IdRecolectaControlCalidad,
+           [FromForm] int? IdControlCalidad,
+           [FromForm] int? IdResultado,
+           [FromForm] string? Observaciones
+         )
         {
             var recolectaControlCalidad = await recolectaControlCalidadService.UpdateRecolectaControlCalidad(IdRecolectaControlCalidad, IdControlCalidad, IdResultado, Observaciones);
             return Ok(recolectaControlCalidad);
