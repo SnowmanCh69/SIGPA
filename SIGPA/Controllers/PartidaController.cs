@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ namespace SIGPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 
     public class PartidaController(IPartidaService partidaService) : ControllerBase
     {

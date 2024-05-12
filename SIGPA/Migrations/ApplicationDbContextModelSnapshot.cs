@@ -57,7 +57,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("UsuarioIdUsuario");
 
-                    b.ToTable("ControlCalidad");
+                    b.ToTable("ControlCalidad", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.EstadoResiduos", b =>
@@ -77,7 +77,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdEstadoResiduos");
 
-                    b.ToTable("EstadoResiduos");
+                    b.ToTable("EstadoResiduos", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.EstadoRuta", b =>
@@ -97,7 +97,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdEstadoRuta");
 
-                    b.ToTable("EstadoRuta");
+                    b.ToTable("EstadoRuta", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Logro", b =>
@@ -129,7 +129,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("TipoLogroIdTipoLogro");
 
-                    b.ToTable("Logro");
+                    b.ToTable("Logro", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.MetodoControl", b =>
@@ -153,7 +153,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdMetodoControl");
 
-                    b.ToTable("MetodoControl");
+                    b.ToTable("MetodoControl", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Nivel", b =>
@@ -173,7 +173,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdNivel");
 
-                    b.ToTable("Nivel");
+                    b.ToTable("Nivel", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Partida", b =>
@@ -217,7 +217,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("ResiduosIdResiduos");
 
-                    b.ToTable("Partida");
+                    b.ToTable("Partida", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.PartidaLogro", b =>
@@ -246,7 +246,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdPartida");
 
-                    b.ToTable("PartidaLogro");
+                    b.ToTable("PartidaLogro", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.RecolectaControlCalidad", b =>
@@ -276,7 +276,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdResultado");
 
-                    b.ToTable("RecolectaControlCalidad");
+                    b.ToTable("RecolectaControlCalidad", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.RecolectaResiduos", b =>
@@ -314,7 +314,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("RecolectaResiduos");
+                    b.ToTable("RecolectaResiduos", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Residuos", b =>
@@ -356,7 +356,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("Residuos");
+                    b.ToTable("Residuos", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.ResiduosPartida", b =>
@@ -386,7 +386,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdResiduo");
 
-                    b.ToTable("ResiduosPartida");
+                    b.ToTable("ResiduosPartida", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Resultado", b =>
@@ -406,7 +406,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdResultado");
 
-                    b.ToTable("Resultado");
+                    b.ToTable("Resultado", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.RolUsuario", b =>
@@ -426,7 +426,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdRolUsuario");
 
-                    b.ToTable("RolUsuarios");
+                    b.ToTable("RolUsuarios", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.RutaRecolecta", b =>
@@ -465,7 +465,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdVehiculo");
 
-                    b.ToTable("RutaRecolecta");
+                    b.ToTable("RutaRecolecta", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.TipoLogro", b =>
@@ -485,7 +485,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdTipoLogro");
 
-                    b.ToTable("TipoLogro");
+                    b.ToTable("TipoLogro", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.TipoVehiculo", b =>
@@ -505,7 +505,7 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdTipoVehiculo");
 
-                    b.ToTable("TipoVehiculo");
+                    b.ToTable("TipoVehiculo", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Usuario", b =>
@@ -545,7 +545,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdRolUsuario");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.Vehiculo", b =>
@@ -578,7 +578,7 @@ namespace SIGPA.Migrations
 
                     b.HasIndex("IdTipoVehiculo");
 
-                    b.ToTable("Vehiculo");
+                    b.ToTable("Vehiculo", (string)null);
                 });
 
             modelBuilder.Entity("SIGPA.Models.ControlCalidad", b =>

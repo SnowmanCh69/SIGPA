@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SIGPA.Models;
 using SIGPA.Services;
 using System.ComponentModel.DataAnnotations;
@@ -31,8 +32,22 @@ public class AuthController (IUsuarioService usuarioService) : ControllerBase
         [FromForm][Required] string? Username,
         [FromForm][Required][MaxLength(30)] string Password
     )
-    { 
-        var response = await usuarioService.CreateUsuario(
+    {
+
+        // Check if the email is already taken
+        Usuario? emailUser = await usuarioService.GetUsuarioByEmail(EmailUsuario, IdRolUsuario);
+        if (emailUser != null) return BadRequest(new { message = "Email is already taken" });
+
+        // Check if the username is already taken
+
+
+       if (Username != null)
+        {
+          Usuario? usuario = await usuarioService.GetUsuarioByUsername(Username, IdRolUsuario);
+          if (usuario != null) return BadRequest(new { message = "Username is already taken" });
+        }
+
+            Usuario response = await usuarioService.CreateUsuario(
             NombresUsuario, 
             ApellidosUsuario, 
             EmailUsuario, 

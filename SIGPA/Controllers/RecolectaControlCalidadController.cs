@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
@@ -10,6 +11,7 @@ namespace SIGPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RecolectaControlCalidadController (IRecolectaControlCalidadService recolectaControlCalidadService) : ControllerBase
     {
 

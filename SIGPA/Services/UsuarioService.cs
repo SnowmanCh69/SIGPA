@@ -5,10 +5,12 @@ namespace SIGPA.Services
 {
     public interface IUsuarioService
     {
-        Task<AuthResponse?> Authenticate(AuthRequest authRequest);
-        Task<IEnumerable<Usuario>> GetUsuarios();
-        Task<Usuario?> GetUsuario(int id);
-        Task<Usuario> CreateUsuario(
+        Task<AuthResponse?> Authenticate(AuthRequest authRequest); // Autenticar un usuario
+        Task<IEnumerable<Usuario>> GetUsuarios(); //Listar todos los usuarios
+        Task<Usuario?> GetUsuario(int id); //Obtener un usuario por su id
+        Task<Usuario?> GetUsuarioByUsername(string username, int IdRolUsuario);
+        Task<Usuario?> GetUsuarioByEmail(string email, int IdRolUsuario);
+        Task<Usuario> CreateUsuario( //Crear un usuario
           string NombresUsuario,
           string ApellidosUsuario,
           string EmailUsuario,
@@ -16,7 +18,7 @@ namespace SIGPA.Services
           string Password,
           int IdRolUsuario
         );
-        Task<Usuario> UpdateUsuario(
+        Task<Usuario> UpdateUsuario( //Actualizar un usuario
           int IdUsuario,
           string? NombresUsuario,
           string? ApellidosUsuario,
@@ -41,6 +43,18 @@ namespace SIGPA.Services
         public async Task<IEnumerable<Usuario>> GetUsuarios()
         {
             return await usuarioRepository.GetUsuarios();
+        }
+
+        // get usuario by username
+        public async Task<Usuario?> GetUsuarioByUsername(string username, int IdRolUsuario)
+        {
+            return await usuarioRepository.GetUsuarioByUsername(username, IdRolUsuario);
+        }
+
+        // get usuario by email
+        public async Task<Usuario?> GetUsuarioByEmail(string email, int IdRolUsuario)
+        {
+            return await usuarioRepository.GetUsuarioByEmail(email, IdRolUsuario);
         }
 
         public async Task<Usuario> CreateUsuario(
@@ -91,5 +105,7 @@ namespace SIGPA.Services
         {
            return await usuarioRepository.DeleteUsuario(id);
         }
+
+       
     }
 }

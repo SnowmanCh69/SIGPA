@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SIGPA.Helpers;
 using SIGPA.Models;
 using SIGPA.Services;
@@ -42,7 +43,18 @@ namespace SIGPA.Controllers
             [FromForm][Required] int IdRolUsuario
          )
         {
-            var usuario= await usuarioService.CreateUsuario(NombresUsuario, ApellidosUsuario, EmailUsuario,Username,Password, IdRolUsuario);
+            // Check if the email is already taken
+            Usuario? emailUsuario = await usuarioService.GetUsuarioByEmail(EmailUsuario, IdRolUsuario);
+            if (emailUsuario != null) return BadRequest(new { message = "Email is already taken" });
+
+
+            // Check if the username is already taken
+            if (Username != null)
+            {
+                Usuario? userCheck = await usuarioService.GetUsuarioByUsername(Username, IdRolUsuario);
+                if (userCheck != null) return BadRequest(new { message = "Username is already taken" });
+            }
+            var usuario = await usuarioService.CreateUsuario(NombresUsuario, ApellidosUsuario, EmailUsuario,Username,Password, IdRolUsuario);
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
         }
 

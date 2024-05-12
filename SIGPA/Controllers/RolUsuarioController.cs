@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SIGPA.Helpers;
 using SIGPA.Models;
 using SIGPA.Services;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +29,7 @@ namespace SIGPA.Controllers
         }
 
         [HttpPost]
-        
+        [Authorize]
         public async Task<IActionResult> CreateRolUsuario(
            [FromForm][Required] string nombreRolUsuario
         )
@@ -38,7 +39,7 @@ namespace SIGPA.Controllers
         }
 
         [HttpPut]
-        
+        [Authorize]
         public async Task<IActionResult> UpdateRolUsuario(
           [FromForm][Required] int IdRolUsuario,
           [FromForm] string? nombreRolUsuario
@@ -51,6 +52,7 @@ namespace SIGPA.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteRolUsuario(int id)
         {
             var deletedRolUsuario = await rolUsuarioService.DeleteRolUsuario(id);
