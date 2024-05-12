@@ -9,9 +9,7 @@ namespace SIGPA.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<TipoLogro> TipoLogro { get; set; }
-        public DbSet<Logro> Logro { get; set; }
-        public DbSet<PartidaLogro> PartidaLogro { get; set; }
+
         public DbSet<Partida> Partida { get; set; }
         public DbSet<Nivel> Nivel { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
@@ -22,8 +20,6 @@ namespace SIGPA.Context
         public DbSet<Residuos> Residuos { get; set; }
         public DbSet<EstadoResiduos> EstadoResiduos { get; set; }
         public DbSet<RecolectaResiduos> RecolectaResiduos { get; set; }
-        public DbSet<RecolectaControlCalidad> RecolectaControlCalidad { get; set; }
-        public DbSet<Resultado> Resultado { get; set; }
         public DbSet<EstadoRuta> EstadoRuta { get; set; }
         public DbSet<RutaRecolecta> RutaRecolecta { get; set; }
         public DbSet<Vehiculo> Vehiculo { get; set; }
@@ -51,12 +47,7 @@ namespace SIGPA.Context
                 .HasForeignKey(r => r.IdRutaRecolecta)
                 .OnDelete(DeleteBehavior.Restrict); // Especifica el comportamiento al eliminar
 
-            modelBuilder.Entity<RecolectaResiduos>()
-                .HasOne(r => r.Usuario)
-                .WithMany(u => u.RecolectaResiduos)
-                .HasForeignKey(r => r.IdUsuario)
-                .OnDelete(DeleteBehavior.NoAction); // Especifica la opción ON DELETE aquí
-
+            
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ResiduosPartida>()
@@ -76,22 +67,18 @@ namespace SIGPA.Context
             modelBuilder.Entity<ControlCalidad>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<MetodoControl>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Partida>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<PartidaLogro>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<RecolectaControlCalidad>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<RecolectaResiduos>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Residuos>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<ResiduosPartida>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Resultado>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<RolUsuario>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<RutaRecolecta>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<TipoLogro>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<TipoVehiculo>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Usuario>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Vehiculo>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<EstadoRuta>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<EstadoResiduos>().HasQueryFilter(e => e.IsDeleted);
             modelBuilder.Entity<Nivel>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Logro>().HasQueryFilter(e => e.IsDeleted);
+
 
         }
 

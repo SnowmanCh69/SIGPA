@@ -15,7 +15,7 @@ namespace SIGPA.Models
 
         [ForeignKey(nameof(Residuos))]
         public int IdResiduo { get; set; }
-        public required string CantidadRegistrada { get; set; }
+        
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;

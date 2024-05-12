@@ -37,10 +37,11 @@ namespace SIGPA.Controllers
           [FromForm][Required] string PuntoFinalizacion,
           [FromForm][Required] int IdEstadoRuta,
           [FromForm][Required] int IdUsuario,
-          [FromForm][Required] int IdVehiculo
+          [FromForm][Required] int IdVehiculo,
+          [FromForm][Required] DateOnly FechaRecoleccion
         )
         {
-            var rutaRecolecta = await rutaRecolectaService.CreateRutaRecolecta(PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo);
+            var rutaRecolecta = await rutaRecolectaService.CreateRutaRecolecta(PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo, FechaRecoleccion);
             return CreatedAtAction(nameof(GetRutaRecolecta), new { id = rutaRecolecta.IdRutaRecolecta }, rutaRecolecta);
         }
 
@@ -51,10 +52,11 @@ namespace SIGPA.Controllers
           [FromForm] string? PuntoFinalizacion,
           [FromForm] int? IdEstadoRuta,
           [FromForm] int? IdUsuario,
-          [FromForm] int? IdVehiculo
+          [FromForm] int? IdVehiculo,
+          [FromForm] DateOnly? FechaRecoleccion
          )
         {
-            var rutaRecolecta = await rutaRecolectaService.UpdateRutaRecolecta(IdRutaRecolecta, PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo);
+            var rutaRecolecta = await rutaRecolectaService.UpdateRutaRecolecta(IdRutaRecolecta, PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo, FechaRecoleccion);
             return Ok(rutaRecolecta);
         }
 

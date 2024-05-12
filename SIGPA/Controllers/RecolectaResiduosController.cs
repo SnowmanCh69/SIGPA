@@ -33,13 +33,10 @@ namespace SIGPA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRecolectaResiduo(
            [FromForm][Required] int IdRutaRecolecta,
-           [FromForm][Required] int IdResiduo,
-           [FromForm][Required] int IdUsuario,
-           [FromForm][Required] string CantidadRecolectada,
-           [FromForm][Required] DateOnly FechaRecoleccion
+           [FromForm][Required] int IdResiduo
          )
         {
-            var recolectaResiduo = await recolectaResiduosService.CreateRecolectaResiduos(IdRutaRecolecta, IdResiduo, IdUsuario, CantidadRecolectada, FechaRecoleccion);
+            var recolectaResiduo = await recolectaResiduosService.CreateRecolectaResiduos(IdRutaRecolecta, IdResiduo);
             return CreatedAtAction(nameof(GetRecolectaResiduo), new { id = recolectaResiduo.IdRecolectaResiduos }, recolectaResiduo);
         }
 
@@ -47,13 +44,10 @@ namespace SIGPA.Controllers
         public async Task<IActionResult> UpdateRecolectaResiduos(
             [FromForm][Required] int IdRecolectaResiduos,
             [FromForm] int? IdRutaRecolecta,
-            [FromForm] int? IdResiduo,
-            [FromForm] int? IdUsuario,
-            [FromForm] string? CantidadRecolectada,
-            [FromForm] DateOnly? FechaRecoleccion
+            [FromForm] int? IdResiduo
           )
         {
-            var recolectaResiduo = await recolectaResiduosService.UpdateRecolectaResiduos(IdRecolectaResiduos, IdRutaRecolecta, IdResiduo, IdUsuario, CantidadRecolectada, FechaRecoleccion);
+            var recolectaResiduo = await recolectaResiduosService.UpdateRecolectaResiduos(IdRecolectaResiduos, IdRutaRecolecta, IdResiduo);
             return CreatedAtAction(nameof(GetRecolectaResiduo), new { id = recolectaResiduo.IdRecolectaResiduos }, recolectaResiduo);
         }
 

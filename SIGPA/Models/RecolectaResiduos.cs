@@ -14,16 +14,13 @@ namespace SIGPA.Models
         public int IdRutaRecolecta { get; set; }
         [ForeignKey(nameof(Residuos))]
         public int IdResiduo { get; set; }
-        [ForeignKey(nameof(Usuario))]
-        public int IdUsuario { get; set; }
-        public required string CantidadRecolectada { get; set; }
-        public required DateOnly FechaRecoleccion { get; set; }
+
+        
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;
 
         public virtual RutaRecolecta? RutaRecolecta { get; set; }
         public virtual Residuos? Residuos { get; set; }
-        public virtual Usuario? Usuario { get; set; }
     }
 }

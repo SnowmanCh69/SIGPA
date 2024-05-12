@@ -39,8 +39,6 @@ public class AuthController (IUsuarioService usuarioService) : ControllerBase
         if (emailUser != null) return BadRequest(new { message = "Email is already taken" });
 
         // Check if the username is already taken
-
-
        if (Username != null)
         {
           Usuario? usuario = await usuarioService.GetUsuarioByUsername(Username, IdRolUsuario);

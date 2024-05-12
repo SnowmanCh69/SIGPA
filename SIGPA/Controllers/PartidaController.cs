@@ -38,10 +38,10 @@ namespace SIGPA.Controllers
            [FromForm] DateTime FechaFinPartida,
            [FromForm][Required] int IdNivel,
            [FromForm][Required] string UbicacionJugador,
-           [FromForm][Required] int IdResiduo
+           [FromForm][Required] string Puntuacion
          )
         {
-            var partida = await partidaService.CreatePartida(IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, IdResiduo);
+            var partida = await partidaService.CreatePartida(IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, Puntuacion);
             return CreatedAtAction(nameof(GetPartida), new { id = partida.IdPartida }, partida);
         }
 
@@ -53,10 +53,10 @@ namespace SIGPA.Controllers
            [FromForm] DateTime? FechaFinPartida,
            [FromForm] int? IdNivel,
            [FromForm] string? UbicacionJugador,
-           [FromForm] int? IdResiduo
+           [FromForm] string? Puntuacion
         )
         {
-            var partida = await partidaService.UpdatePartida(IdPartida, IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, IdResiduo);
+            var partida = await partidaService.UpdatePartida(IdPartida, IdUsuario, FechaInicioPartida, FechaFinPartida, IdNivel, UbicacionJugador, Puntuacion);
             return Ok(partida);
         }
 

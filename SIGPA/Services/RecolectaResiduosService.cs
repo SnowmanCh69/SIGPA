@@ -10,19 +10,13 @@ namespace SIGPA.Services
         Task<RecolectaResiduos?> GetRecolectaResiduos(int id);
         Task<RecolectaResiduos> CreateRecolectaResiduos(
            int IdRutaRecolecta,
-           int IdResiduo,
-           int IdUsuario,
-           string CantidadRecolectada,
-           DateOnly FechaRecoleccion
+           int IdResiduo
          );
 
         Task<RecolectaResiduos> UpdateRecolectaResiduos(
          int IdRecolectaResiduos,
          int? IdRutaRecolecta,
-         int? IdResiduo,
-         int? IdUsuario,
-         string? CantidadRecolectada,
-         DateOnly? FechaRecoleccion
+         int? IdResiduo
        );
 
         Task<RecolectaResiduos?> DeleteRecolectaResiduos(int id);
@@ -43,38 +37,26 @@ namespace SIGPA.Services
 
         public async Task<RecolectaResiduos> CreateRecolectaResiduos(
            int IdRutaRecolecta,
-           int IdResiduo,
-           int IdUsuario,
-           string CantidadRecolectada,
-           DateOnly FechaRecoleccion
+           int IdResiduo
          )
         {
             return await recolectaResiduosRepository.CreateRecolectaResiduos(new RecolectaResiduos
             {
                 IdRutaRecolecta = IdRutaRecolecta,
-                IdResiduo = IdResiduo,
-                IdUsuario = IdUsuario,
-                CantidadRecolectada = CantidadRecolectada,
-                FechaRecoleccion = FechaRecoleccion
+                IdResiduo = IdResiduo
             });
         }
 
         public async Task<RecolectaResiduos> UpdateRecolectaResiduos(
             int IdRecolectaResiduos,
             int? IdRutaRecolecta,
-            int? IdResiduo,
-            int? IdUsuario,
-            string? CantidadRecolectada,
-            DateOnly? FechaRecoleccion
+            int? IdResiduo
          )
         {
             RecolectaResiduos? recolectaResiduos = await recolectaResiduosRepository.GetRecolectaResiduos(IdRecolectaResiduos);
             if (recolectaResiduos == null) throw new Exception("RecolectaResiduos not found");
             recolectaResiduos.IdRutaRecolecta = IdRutaRecolecta ?? recolectaResiduos.IdRutaRecolecta;
             recolectaResiduos.IdResiduo = IdResiduo ?? recolectaResiduos.IdResiduo;
-            recolectaResiduos.IdUsuario = IdUsuario ?? recolectaResiduos.IdUsuario;
-            recolectaResiduos.CantidadRecolectada = CantidadRecolectada ?? recolectaResiduos.CantidadRecolectada;
-            recolectaResiduos.FechaRecoleccion = FechaRecoleccion ?? recolectaResiduos.FechaRecoleccion;
             return await recolectaResiduosRepository.UpdateRecolectaResiduos(recolectaResiduos);
             
         }

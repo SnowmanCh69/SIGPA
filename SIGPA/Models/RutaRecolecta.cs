@@ -20,6 +20,7 @@ namespace SIGPA.Models
 
         [ForeignKey(nameof(Vehiculo))]
         public int IdVehiculo { get; set; }
+        public required DateOnly FechaRecoleccion { get; set; }
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;

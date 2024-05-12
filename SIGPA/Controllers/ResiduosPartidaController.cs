@@ -33,12 +33,10 @@ namespace SIGPA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateResiduoPartida(
            [FromForm][Required] int IdPartida,
-           [FromForm][Required] int IdResiduo,
-           [FromForm][Required] string CantidadRegistrada
-
+           [FromForm][Required] int IdResiduo
          )
         {
-            var residuoPartida = await residuosPartidaService.CreateResiduoPartida(IdPartida, IdResiduo, CantidadRegistrada);
+            var residuoPartida = await residuosPartidaService.CreateResiduoPartida(IdPartida, IdResiduo);
             return CreatedAtAction(nameof(GetResiduoPartida), new { id = residuoPartida.IdResiduosPartida }, residuoPartida);
            
         }
@@ -48,11 +46,10 @@ namespace SIGPA.Controllers
         public async Task<IActionResult> UpdateResiduoPartida(
            [FromForm] int IdResiduosPartida,
            [FromForm] int? IdPartida,
-           [FromForm] int? IdResiduo,
-           [FromForm] string? CantidadRegistrada
+           [FromForm] int? IdResiduo
          )
         {
-            var residuoPartida = await residuosPartidaService.UpdateResiduoPartida(IdResiduosPartida, IdPartida, IdResiduo, CantidadRegistrada);
+            var residuoPartida = await residuosPartidaService.UpdateResiduoPartida(IdResiduosPartida, IdPartida, IdResiduo);
             return Ok(residuoPartida);
         }
 

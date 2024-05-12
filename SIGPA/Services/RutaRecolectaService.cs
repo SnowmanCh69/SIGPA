@@ -12,7 +12,8 @@ namespace SIGPA.Services
           string PuntoFinalizacion,
           int IdEstadoRuta,
           int IdUsuario,
-          int IdVehiculo
+          int IdVehiculo,
+          DateOnly FechaRecoleccion
         );
         Task<RutaRecolecta> UpdateRutaRecolecta(
           int IdRutaRecolecta,
@@ -20,7 +21,8 @@ namespace SIGPA.Services
           string? PuntoFinalizacion,
           int? IdEstadoRuta,
           int? IdUsuario,
-          int? IdVehiculo
+          int? IdVehiculo,
+          DateOnly? FechaRecoleccion
         );
         Task<RutaRecolecta?> DeleteRutaRecolecta(int id);
 
@@ -45,7 +47,8 @@ namespace SIGPA.Services
            string PuntoFinalizacion,
            int IdEstadoRuta,
            int IdUsuario,
-           int IdVehiculo
+           int IdVehiculo,
+           DateOnly FechaRecoleccion
          )
         {
             return await rutaRecolectaRepository.CreateRutaRecolecta(new RutaRecolecta
@@ -54,7 +57,9 @@ namespace SIGPA.Services
                 PuntoFinalizacion = PuntoFinalizacion,
                 IdEstadoRuta = IdEstadoRuta,
                 IdUsuario = IdUsuario,
-                IdVehiculo = IdVehiculo
+                IdVehiculo = IdVehiculo,
+                FechaRecoleccion = FechaRecoleccion
+                
             });
         }
 
@@ -64,7 +69,8 @@ namespace SIGPA.Services
            string? PuntoFinalizacion,
            int? IdEstadoRuta,
            int? IdUsuario,
-           int? IdVehiculo
+           int? IdVehiculo,
+           DateOnly? FechaRecoleccion
           )
         {
             RutaRecolecta? rutaRecolecta = await rutaRecolectaRepository.GetRutaRecolecta(IdRutaRecolecta);
@@ -74,6 +80,7 @@ namespace SIGPA.Services
             rutaRecolecta.IdEstadoRuta = IdEstadoRuta ?? rutaRecolecta.IdEstadoRuta;
             rutaRecolecta.IdUsuario = IdUsuario ?? rutaRecolecta.IdUsuario;
             rutaRecolecta.IdVehiculo = IdVehiculo ?? rutaRecolecta.IdVehiculo;
+            rutaRecolecta.FechaRecoleccion = FechaRecoleccion ?? rutaRecolecta.FechaRecoleccion;
             return await rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
             
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGPA.Context;
 
@@ -11,9 +12,11 @@ using SIGPA.Context;
 namespace SIGPA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240512174138_updatePartidaModel")]
+    partial class updatePartidaModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,6 +195,9 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRecolectaResiduos"));
 
+                    b.Property<DateOnly>("FechaRecoleccion")
+                        .HasColumnType("date");
+
                     b.Property<int>("IdResiduo")
                         .HasColumnType("int");
 
@@ -310,9 +316,6 @@ namespace SIGPA.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRutaRecolecta"));
-
-                    b.Property<DateOnly>("FechaRecoleccion")
-                        .HasColumnType("date");
 
                     b.Property<int>("IdEstadoRuta")
                         .HasColumnType("int");

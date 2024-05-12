@@ -14,7 +14,7 @@ namespace SIGPA.Services
           DateTime FechaFinPartida,
           int IdNivel,
           string UbicacionJugador,
-          int IdResiduo
+          string Puntuacion
         );
         Task<Partida> UpdatePartida(
            int IdPartida,
@@ -23,7 +23,7 @@ namespace SIGPA.Services
            DateTime? FechafINPartida,
            int? IdNivel,
            string? UbicacionJugador,
-           int? IdResiduo
+           string? Puntuacion
        );
         Task<Partida?> DeletePartida(int id);
     }
@@ -46,7 +46,7 @@ namespace SIGPA.Services
             DateTime FechaFinPartida,
             int IdNivel,
             string UbicacionJugador,
-            int IdResiduo
+            string Puntuacion
         )
         {
             return await partidaRepository.CreatePartida(new Partida
@@ -56,7 +56,7 @@ namespace SIGPA.Services
                 FechaFinPartida = FechaFinPartida,
                 IdNivel = IdNivel,
                 UbicacionJugador = UbicacionJugador,
-                IdResiduo = IdResiduo
+                Puntuacion = Puntuacion
             });
         }
 
@@ -67,7 +67,7 @@ namespace SIGPA.Services
                 DateTime? FechaFinPartida,
                 int? IdNivel,
                 string? UbicacionJugador,
-                int? IdResiduo
+                string? Puntuacion
          )
         {
             Partida? partida = await partidaRepository.GetPartida(IdPartida);
@@ -77,7 +77,7 @@ namespace SIGPA.Services
             partida.FechaFinPartida = FechaFinPartida ?? partida.FechaFinPartida;
             partida.IdNivel = IdNivel ?? partida.IdNivel;
             partida.UbicacionJugador = UbicacionJugador ?? partida.UbicacionJugador;
-            partida.IdResiduo = IdResiduo ?? partida.IdResiduo;
+            partida.Puntuacion = Puntuacion ?? partida.Puntuacion;
             return await partidaRepository.UpdatePartida(partida);
         }
 

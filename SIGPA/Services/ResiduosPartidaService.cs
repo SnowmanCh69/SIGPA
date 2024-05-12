@@ -10,14 +10,12 @@ namespace SIGPA.Services
         Task<ResiduosPartida?> GetResiduoPartida(int id);
         Task<ResiduosPartida> CreateResiduoPartida(
           int IdPartida,
-          int IdResiduo,
-          string CantidadRegistrada
+          int IdResiduo
         );
         Task<ResiduosPartida> UpdateResiduoPartida(
           int IdResiduoPartida,
           int? IdPartida,
-          int? IdResiduo,
-          string? CantidadRegistrada
+          int? IdResiduo
         );
         Task<ResiduosPartida?> DeleteResiduoPartida(int id);
        
@@ -38,30 +36,26 @@ namespace SIGPA.Services
 
         public async Task<ResiduosPartida> CreateResiduoPartida(
            int IdPartida,
-           int IdResiduo,
-           string CantidadRegistrada
+           int IdResiduo
           )
         {
             return await residuosPartidaRepository.CreateResiduoPartida(new ResiduosPartida
             {
                 IdPartida = IdPartida,
-                IdResiduo = IdResiduo,
-                CantidadRegistrada = CantidadRegistrada
+                IdResiduo = IdResiduo
             });
         }
 
         public async Task<ResiduosPartida> UpdateResiduoPartida(
            int IdResiduoPartida,
            int? IdPartida,
-           int? IdResiduo,
-           string? CantidadRegistrada
+           int? IdResiduo
           )
         {
             ResiduosPartida? residuosPartida = await residuosPartidaRepository.GetResiduoPartida(IdResiduoPartida);
             if (residuosPartida == null) throw new Exception("ResiduoPartida not found");
             residuosPartida.IdPartida = IdPartida ?? residuosPartida.IdPartida;
             residuosPartida.IdResiduo = IdResiduo ?? residuosPartida.IdResiduo;
-            residuosPartida.CantidadRegistrada = CantidadRegistrada ?? residuosPartida.CantidadRegistrada;
             return await residuosPartidaRepository.UpdateResiduoPartida(residuosPartida);
         }
 

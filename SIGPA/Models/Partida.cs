@@ -15,19 +15,19 @@ namespace SIGPA.Models
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
         public required DateTime FechaInicioPartida { get; set; }
-        public required DateTime FechaFinPartida { get; set; }
+        public DateTime FechaFinPartida { get; set; }
         [ForeignKey(nameof(Nivel))]
         public int IdNivel { get; set; }
         public required string UbicacionJugador { get; set; }
-        
-        public int IdResiduo { get; set; }
+        public required string Puntuacion{ get; set; }
+  
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;
 
         public virtual Nivel? Nivel { get; set; }
         public virtual Usuario? Usuario { get; set; }
-        public virtual Residuos? Residuos { get; set; }
+
 
         public virtual ICollection<ResiduosPartida> ResiduosPartidas { get; set; }
 
