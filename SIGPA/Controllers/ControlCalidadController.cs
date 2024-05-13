@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SIGPA.Models;
 using SIGPA.Services;
+using SIGPA.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers

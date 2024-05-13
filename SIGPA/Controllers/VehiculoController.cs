@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SIGPA.Helpers;
 using SIGPA.Models;
 using SIGPA.Services;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ namespace SIGPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VehiculoController (IVehiculoService vehiculoService): ControllerBase
     {
         [HttpGet]

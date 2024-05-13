@@ -29,9 +29,9 @@ namespace SIGPA.Context
         {
 
 
-           
+
         }
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace SIGPA.Context
                 .HasForeignKey(r => r.IdRutaRecolecta)
                 .OnDelete(DeleteBehavior.Restrict); // Especifica el comportamiento al eliminar
 
-            
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ResiduosPartida>()

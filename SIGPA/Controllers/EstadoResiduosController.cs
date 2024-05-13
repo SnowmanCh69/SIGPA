@@ -1,8 +1,9 @@
 ﻿
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SIGPA.Helpers;
 using SIGPA.Models;
 using SIGPA.Services;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace SIGPA.Controllers
@@ -11,6 +12,10 @@ namespace SIGPA.Controllers
     [ApiController]
 
     [Authorize]
+
+
+
+
     public class EstadoResiduosController (IEstadoResiduosService estadoResiduosService): ControllerBase
     {
         
