@@ -20,8 +20,9 @@ namespace SIGPA.Models
 
         [ForeignKey(nameof(MetodoControl))]
         public int IdMetodoControl { get; set; }
-
         public required string Observaciones { get; set; }  
+
+
 
         [JsonIgnore]
         public bool IsNotDeleted { get; set; } = true;
