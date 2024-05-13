@@ -10,7 +10,8 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdControlCalidad { get; set; }
-        public required DateOnly FechaControl { get; set; }
+
+        public DateOnly FechaControl { get; set; } 
 
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
@@ -21,6 +22,8 @@ namespace SIGPA.Models
         [ForeignKey(nameof(MetodoControl))]
         public int IdMetodoControl { get; set; }
 
+        public string Observaciones { get; set; } // Cambiado a string
+
         [JsonIgnore]
         public bool IsNotDeleted { get; set; } = true;
 
@@ -28,5 +31,6 @@ namespace SIGPA.Models
         public virtual Usuario? Usuario { get; set; }
         public virtual Residuos? Residuo { get; set; }
         public virtual MetodoControl? MetodoControl { get; set; }
+   
     }
 }
