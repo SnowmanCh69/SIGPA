@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             EstadoResiduos? estadoResiduos = await db.EstadoResiduos.FindAsync(id);
             if (estadoResiduos == null) return estadoResiduos;
-            estadoResiduos.IsDeleted = false;
+            estadoResiduos.IsNotDeleted = false;
             db.Entry(estadoResiduos).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return estadoResiduos;

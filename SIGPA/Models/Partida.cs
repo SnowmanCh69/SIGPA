@@ -23,7 +23,7 @@ namespace SIGPA.Models
   
 
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
 
         public virtual Nivel? Nivel { get; set; }
         public virtual Usuario? Usuario { get; set; }

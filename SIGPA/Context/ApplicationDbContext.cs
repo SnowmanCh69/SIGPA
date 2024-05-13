@@ -35,9 +35,11 @@ namespace SIGPA.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Partida>()
                 .HasOne(p => p.Usuario)
-                .WithMany(u => u.Partidas) // Indica que un usuario puede tener varias partidas
+                .WithMany(u => u.Partidas)
                 .HasForeignKey(p => p.IdUsuario)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -45,42 +47,38 @@ namespace SIGPA.Context
                 .HasOne(r => r.RutaRecolecta)
                 .WithMany()
                 .HasForeignKey(r => r.IdRutaRecolecta)
-                .OnDelete(DeleteBehavior.Restrict); // Especifica el comportamiento al eliminar
-
-
-            base.OnModelCreating(modelBuilder);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ResiduosPartida>()
                 .HasOne(rp => rp.Partida)
-                .WithMany(p => p.ResiduosPartidas) // Assuming this is the collection in Partida
+                .WithMany(p => p.ResiduosPartidas)
                 .HasForeignKey(rp => rp.IdPartida)
-                .OnDelete(DeleteBehavior.NoAction); // This is the important part
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ResiduosPartida>()
-                .HasOne(rp => rp.Residuos)
-                .WithMany(r => r.ResiduosPartidas) // Assuming this is the collection in Residuos
-                .HasForeignKey(rp => rp.IdResiduo)
-                .OnDelete(DeleteBehavior.NoAction); // This is the important part
-
-
-            // Filter entities with IsDeleted = true
-            modelBuilder.Entity<ControlCalidad>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<MetodoControl>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Partida>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<RecolectaResiduos>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Residuos>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<ResiduosPartida>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<RolUsuario>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<RutaRecolecta>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<TipoVehiculo>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Usuario>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Vehiculo>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<EstadoRuta>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<EstadoResiduos>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Nivel>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<ControlCalidad>()
+                .HasOne(c => c.Residuo)
+                .WithMany()
+                .HasForeignKey(c => c.IdResiduo)
+                .OnDelete(DeleteBehavior.NoAction); // Cambiar a NO ACTION o SET NULL según lo necesites
 
 
+            // Restricciones de consulta global para entidades eliminadas
+            modelBuilder.Entity<ControlCalidad>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<MetodoControl>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<Partida>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<RecolectaResiduos>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<Residuos>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<ResiduosPartida>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<RolUsuario>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<RutaRecolecta>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<TipoVehiculo>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<Usuario>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<Vehiculo>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<EstadoRuta>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<EstadoResiduos>().HasQueryFilter(e => e.IsNotDeleted);
+            modelBuilder.Entity<Nivel>().HasQueryFilter(e => e.IsNotDeleted);
         }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

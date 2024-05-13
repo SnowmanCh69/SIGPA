@@ -52,7 +52,7 @@ namespace SIGPA.Repositories
         {
             ControlCalidad? controlCalidad = await db.ControlCalidad.FindAsync(id);
             if (controlCalidad == null) return controlCalidad;
-            controlCalidad.IsDeleted = false; 
+            controlCalidad.IsNotDeleted = false; 
             db.Entry(controlCalidad).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return controlCalidad;

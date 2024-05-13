@@ -40,7 +40,7 @@ using SIGPA.Models;
         {
             RecolectaResiduos? recolectaResiduos = await db.RecolectaResiduos.FindAsync(id);
             if (recolectaResiduos == null) return recolectaResiduos;
-            recolectaResiduos.IsDeleted = false;
+            recolectaResiduos.IsNotDeleted = false;
             db.Entry(recolectaResiduos).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return recolectaResiduos;

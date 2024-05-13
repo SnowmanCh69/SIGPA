@@ -10,13 +10,17 @@ namespace SIGPA.Services
         Task<ControlCalidad> CreateControlCalidad(
             DateOnly FechaControl,
             int IdUsuario,
-            int IdMetodoControl
+            int IdResiduo,
+            int IdMetodoControl,
+            string Observaciones
             );
         Task<ControlCalidad> UpdateControlCalidad(
            int IdControlCalidad,
            DateOnly? FechaControl,
            int? IdUsuario,
-           int? IdMetodoControl
+           int? IdResiduo,
+           int? IdMetodoControl,
+           string? Observaciones
             );
         Task<ControlCalidad?> DeleteControlCalidad(int id);
     }
@@ -36,14 +40,18 @@ namespace SIGPA.Services
         public async Task<ControlCalidad> CreateControlCalidad(
           DateOnly FechaControl,
           int IdUsuario,
-          int IdMetodoControl
+          int IdResiduo,
+          int IdMetodoControl,
+          string Observaciones
          )
         {
             return await controlCalidadRepository.CreateControlCalidad(new ControlCalidad
             { 
                 FechaControl = FechaControl,
                 IdUsuario = IdUsuario,
-                IdMetodoControl = IdMetodoControl
+                IdResiduo = IdResiduo,
+                IdMetodoControl = IdMetodoControl,
+                Observaciones = Observaciones
                 });
             }
 
@@ -52,15 +60,18 @@ namespace SIGPA.Services
             int IdControlCalidad,
             DateOnly? FechaControl,
             int? IdUsuario,
-            int? IdMetodoControl
+            int? IdResiduo,
+            int? IdMetodoControl,
+            string? Observaciones
             )
         {
             ControlCalidad? controlCalidad = await controlCalidadRepository.GetControlCalidad(IdControlCalidad);
             if (controlCalidad == null) throw new Exception("Control de calidad no encontrado");
-
             controlCalidad.FechaControl = FechaControl ?? controlCalidad.FechaControl;
             controlCalidad.IdUsuario = IdUsuario ?? controlCalidad.IdUsuario;
+            controlCalidad.IdResiduo = IdResiduo ?? controlCalidad.IdResiduo;
             controlCalidad.IdMetodoControl = IdMetodoControl ?? controlCalidad.IdMetodoControl;
+            controlCalidad.Observaciones = Observaciones ?? controlCalidad.Observaciones;
             return await controlCalidadRepository.UpdateControlCalidad(controlCalidad);
         }
 

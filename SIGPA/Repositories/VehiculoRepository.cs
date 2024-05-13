@@ -44,7 +44,7 @@ namespace SIGPA.Repositories
         {
             Vehiculo? vehiculo = await db.Vehiculo.FindAsync(id);
             if (vehiculo == null) return vehiculo;
-            vehiculo.IsDeleted = false;
+            vehiculo.IsNotDeleted = false;
             db.Entry(vehiculo).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return vehiculo;

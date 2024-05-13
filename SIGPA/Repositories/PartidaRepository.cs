@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             Partida? partida = await db.Partida.FindAsync(id);
             if (partida == null) return partida;
-            partida.IsDeleted = false;
+            partida.IsNotDeleted = false;
             db.Entry(partida).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return partida;

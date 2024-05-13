@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             EstadoRuta? estadoRuta = await db.EstadoRuta.FindAsync(id);
             if (estadoRuta == null) return estadoRuta;
-            estadoRuta.IsDeleted = false;
+            estadoRuta.IsNotDeleted = false;
             db.Entry(estadoRuta).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return estadoRuta;

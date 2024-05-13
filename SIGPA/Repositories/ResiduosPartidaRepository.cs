@@ -41,7 +41,7 @@ using SIGPA.Models;
         {
             ResiduosPartida? residuoPartida = await db.ResiduosPartida.FindAsync(id);
             if (residuoPartida == null) return residuoPartida;
-            residuoPartida.IsDeleted = false;
+            residuoPartida.IsNotDeleted = false;
             db.Entry(residuoPartida).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return residuoPartida;

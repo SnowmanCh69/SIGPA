@@ -12,7 +12,7 @@ namespace SIGPA.Models
         public required string NombreRolUsuario { get; set; }
 
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
 
     }
 }

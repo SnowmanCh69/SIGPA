@@ -23,7 +23,7 @@ namespace SIGPA.Models
         [JsonIgnore]
         public string Password { get; set; } = null!;
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
         
 
 

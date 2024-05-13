@@ -14,6 +14,6 @@ namespace SIGPA.Models
 
 
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
     }
 }

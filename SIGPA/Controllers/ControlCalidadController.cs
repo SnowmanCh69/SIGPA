@@ -39,10 +39,12 @@ namespace SIGPA.Controllers
 
             [FromForm] DateOnly FechaControl,
             [FromForm] int IdUsuario,
-            [FromForm] int IdMetodoControl
+            [FromForm] int IdResiduo,
+            [FromForm] int IdMetodoControl,
+            [FromForm] string Observaciones
             )
         {
-            var controlCalidad = await controlCalidadService.CreateControlCalidad(FechaControl, IdUsuario, IdMetodoControl);
+            var controlCalidad = await controlCalidadService.CreateControlCalidad(FechaControl, IdUsuario,IdResiduo, IdMetodoControl,Observaciones);
             return CreatedAtAction(nameof(GetControlCalidad), new { id = controlCalidad.IdControlCalidad }, controlCalidad);
 
         }
@@ -53,10 +55,12 @@ namespace SIGPA.Controllers
           [FromForm][Required] int IdControlCalidad,
           [FromForm] DateOnly? FechaControl,
           [FromForm] int? IdUsuario,
-          [FromForm] int? IdMetodoControl
+          [FromForm] int? IdResiduo,
+          [FromForm] int? IdMetodoControl,
+          [FromForm] string? Observaciones
          )
         {
-         var controlCalidad = await controlCalidadService.UpdateControlCalidad(IdControlCalidad, FechaControl, IdUsuario, IdMetodoControl);
+         var controlCalidad = await controlCalidadService.UpdateControlCalidad(IdControlCalidad, FechaControl, IdUsuario, IdResiduo, IdMetodoControl, Observaciones);
          return Ok(controlCalidad);  
         }
 

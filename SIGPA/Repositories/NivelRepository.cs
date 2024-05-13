@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             Nivel? nivel = await db.Nivel.FindAsync(id);
             if (nivel == null) return nivel;
-            nivel.IsDeleted = false;
+            nivel.IsNotDeleted = false;
             db.Entry(nivel).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return nivel;

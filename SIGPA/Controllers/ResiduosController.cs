@@ -35,11 +35,10 @@ namespace SIGPA.Controllers
            [FromForm][Required] DateOnly FechaRegistro,
            [FromForm][Required] int IdEstadoResiduos,
            [FromForm][Required] string CantidadRegistrada,
-           [FromForm][Required] int IdUsuario,
-           [FromForm][Required] int IdResiduosPartida
+           [FromForm][Required] int IdUsuario
         )
         {
-            var residuo = await residuosService.CreateResiduo(NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario, IdResiduosPartida);
+            var residuo = await residuosService.CreateResiduo(NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario);
             return CreatedAtAction(nameof(GetResiduo), new { id = residuo.IdResiduos }, residuo);
         }
 
@@ -50,12 +49,11 @@ namespace SIGPA.Controllers
            [FromForm] DateOnly? FechaRegistro,
            [FromForm] int? IdEstadoResiduos,
            [FromForm] string? CantidadRegistrada,
-           [FromForm] int? IdUsuario,
-           [FromForm] int? IdResiduosPartida
+           [FromForm] int? IdUsuario
            )
         {
             
-            var residuo = await residuosService.UpdateResiduo(IdResiduo, NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario, IdResiduosPartida);
+            var residuo = await residuosService.UpdateResiduo(IdResiduo, NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario);
             return Ok(residuo);
         }
 

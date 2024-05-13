@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             MetodoControl? metodoControl = await db.MetodoControl.FindAsync(id);
             if (metodoControl == null) return metodoControl;
-            metodoControl.IsDeleted = false;
+            metodoControl.IsNotDeleted = false;
             db.Entry(metodoControl).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return metodoControl;

@@ -44,7 +44,7 @@ namespace SIGPA.Repositories
         {
             RolUsuario? rolUsuario = await db.RolUsuarios.FindAsync(id);
             if (rolUsuario == null) return rolUsuario;
-            rolUsuario.IsDeleted = false;
+            rolUsuario.IsNotDeleted = false;
             db.Entry(rolUsuario).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return rolUsuario;

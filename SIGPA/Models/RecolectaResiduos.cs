@@ -18,7 +18,7 @@ namespace SIGPA.Models
         
 
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
 
         public virtual RutaRecolecta? RutaRecolecta { get; set; }
         public virtual Residuos? Residuos { get; set; }

@@ -43,7 +43,7 @@ namespace SIGPA.Repositories
         {
             RutaRecolecta? rutaRecolecta = await db.RutaRecolecta.FindAsync(id);
             if (rutaRecolecta == null) return rutaRecolecta;
-            rutaRecolecta.IsDeleted = false;
+            rutaRecolecta.IsNotDeleted = false;
             db.Entry(rutaRecolecta).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return rutaRecolecta;

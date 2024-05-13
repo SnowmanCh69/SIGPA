@@ -23,7 +23,7 @@ namespace SIGPA.Models
         public required DateOnly FechaRecoleccion { get; set; }
 
         [JsonIgnore]
-        public bool IsDeleted { get; set; } = true;
+        public bool IsNotDeleted { get; set; } = true;
 
 
         public virtual Usuario? Usuario { get; set; }
