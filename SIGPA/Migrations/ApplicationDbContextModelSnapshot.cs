@@ -54,9 +54,9 @@ namespace SIGPA.Migrations
 
                     b.HasKey("IdControlCalidad");
 
-                    b.HasIndex("IdMetodoControl");
+                    b.HasIndex("MetodoControlIdMetodoControl");
 
-                    b.HasIndex("IdResiduo");
+                    b.HasIndex("UsuarioIdUsuario");
 
                     b.HasIndex("IdUsuario");
 
@@ -440,15 +440,7 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.MetodoControl", "MetodoControl")
                         .WithMany()
-                        .HasForeignKey("IdMetodoControl")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SIGPA.Models.Residuos", "Residuo")
-                        .WithMany()
-                        .HasForeignKey("IdResiduo")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("MetodoControlIdMetodoControl");
 
                     b.HasOne("SIGPA.Models.Usuario", "Usuario")
                         .WithMany("ControlCalidad")

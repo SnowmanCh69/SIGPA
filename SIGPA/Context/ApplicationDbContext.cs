@@ -55,11 +55,7 @@ namespace SIGPA.Context
                 .HasForeignKey(rp => rp.IdPartida)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ControlCalidad>()
-                .HasOne(c => c.Residuo)
-                .WithMany()
-                .HasForeignKey(c => c.IdResiduo)
-                .OnDelete(DeleteBehavior.NoAction); // Cambiar a NO ACTION o SET NULL según lo necesites
+            
 
 
             // Restricciones de consulta global para entidades eliminadas
