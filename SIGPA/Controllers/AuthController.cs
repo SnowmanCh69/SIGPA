@@ -29,7 +29,7 @@ public class AuthController (IUsuarioService usuarioService) : ControllerBase
         [FromForm][Required] string NombresUsuario,
         [FromForm] string ApellidosUsuario,
         [FromForm][Required][EmailAddress(ErrorMessage = "Invalid email address")] string EmailUsuario,
-        [FromForm][Required] string? Username,
+        [FromForm] string? Username,
         [FromForm][Required][MaxLength(30)] string Password
     )
     {

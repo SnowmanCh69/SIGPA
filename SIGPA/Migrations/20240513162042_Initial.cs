@@ -268,13 +268,14 @@ namespace SIGPA.Migrations
                         name: "FK_ControlCalidad_Residuos_IdResiduo",
                         column: x => x.IdResiduo,
                         principalTable: "Residuos",
-                        principalColumn: "IdResiduos");
+                        principalColumn: "IdResiduos",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ControlCalidad_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
                         principalTable: "Usuarios",
                         principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

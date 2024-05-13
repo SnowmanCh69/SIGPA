@@ -12,8 +12,8 @@ using SIGPA.Context;
 namespace SIGPA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240513121736_UpdateResiduos")]
-    partial class UpdateResiduos
+    [Migration("20240513162042_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,23 +42,26 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdMetodoControl")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdResiduo")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("MetodoControlIdMetodoControl")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsuarioIdUsuario")
-                        .HasColumnType("int");
+                    b.Property<string>("Observaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdControlCalidad");
 
-                    b.HasIndex("MetodoControlIdMetodoControl");
+                    b.HasIndex("IdMetodoControl");
 
-                    b.HasIndex("UsuarioIdUsuario");
+                    b.HasIndex("IdResiduo");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("ControlCalidad");
                 });
@@ -71,7 +74,7 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoResiduos"));
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreEstadoResiduos")
@@ -91,7 +94,7 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoRuta"));
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreEstadoRuta")
@@ -115,7 +118,7 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreMetodoControl")
@@ -135,7 +138,7 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNivel"));
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreNivel")
@@ -167,7 +170,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Puntuacion")
@@ -201,7 +204,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdRutaRecolecta")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int?>("UsuarioIdUsuario")
@@ -239,7 +242,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreResiduo")
@@ -269,7 +272,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdResiduo")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("IdResiduosPartida");
@@ -289,7 +292,7 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRolUsuario"));
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreRolUsuario")
@@ -321,7 +324,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdVehiculo")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("PuntoFinalizacion")
@@ -351,7 +354,7 @@ namespace SIGPA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoVehiculo"));
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreTipoVehiculo")
@@ -382,7 +385,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdRolUsuario")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombresUsuario")
@@ -414,7 +417,7 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdTipoVehiculo")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsNotDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("MarcaVehiculo")
@@ -440,13 +443,25 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.MetodoControl", "MetodoControl")
                         .WithMany()
-                        .HasForeignKey("MetodoControlIdMetodoControl");
+                        .HasForeignKey("IdMetodoControl")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SIGPA.Models.Residuos", "Residuo")
+                        .WithMany()
+                        .HasForeignKey("IdResiduo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SIGPA.Models.Usuario", "Usuario")
                         .WithMany("ControlCalidad")
-                        .HasForeignKey("UsuarioIdUsuario");
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("MetodoControl");
+
+                    b.Navigation("Residuo");
 
                     b.Navigation("Usuario");
                 });
