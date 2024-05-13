@@ -12,8 +12,7 @@ namespace SIGPA.Services
            DateOnly FechaRegistro,
            int IdEstadoResiduos,
            string CantidadRegistrada,
-           int IdUsuario,
-           int IdResiduosPartida
+           int IdUsuario
      );
         Task<Residuos> UpdateResiduo(
            int IdResiduo,
@@ -21,8 +20,7 @@ namespace SIGPA.Services
            DateOnly? FechaRegistro,
            int? IdEstadoResiduos,
            string? CantidadRegistrada,
-           int? IdUsuario,
-           int? IdResiduosPartida
+           int? IdUsuario
                   );
         Task<Residuos?> DeleteResiduo(int id);
        
@@ -44,8 +42,7 @@ namespace SIGPA.Services
             DateOnly FechaRegistro,
             int IdEstadoResiduos,
             string CantidadRegistrada,
-            int IdUsuario,
-            int IdResiduosPartida
+            int IdUsuario
           )
         {
             return await residuosRepository.CreateResiduo(new Residuos
@@ -54,8 +51,7 @@ namespace SIGPA.Services
                 FechaRegistro = FechaRegistro,
                 IdEstadoResiduos = IdEstadoResiduos,
                 CantidadRegistrada = CantidadRegistrada,
-                IdUsuario = IdUsuario,
-                IdResiduosPartida = IdResiduosPartida
+                IdUsuario = IdUsuario
             });
         }
 
@@ -65,8 +61,7 @@ namespace SIGPA.Services
              DateOnly? FechaRegistro,
              int? IdEstadoResiduos,
              string? CantidadRegistrada,
-             int? IdUsuario,
-             int? IdResiduosPartida
+             int? IdUsuario
         )
         {
             Residuos? residuo = await residuosRepository.GetResiduo(IdResiduo);
@@ -76,7 +71,6 @@ namespace SIGPA.Services
             residuo.IdEstadoResiduos = IdEstadoResiduos ?? residuo.IdEstadoResiduos;
             residuo.CantidadRegistrada = CantidadRegistrada ?? residuo.CantidadRegistrada;
             residuo.IdUsuario = IdUsuario ?? residuo.IdUsuario;
-            residuo.IdResiduosPartida = IdResiduosPartida ?? residuo.IdResiduosPartida;
             return await residuosRepository.UpdateResiduo(residuo);
         }
 

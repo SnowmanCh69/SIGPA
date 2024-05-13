@@ -12,16 +12,22 @@ namespace SIGPA.Models
         public int IdControlCalidad { get; set; }
         public required DateOnly FechaControl { get; set; }
 
-        [ForeignKey(nameof(IdUsuario))]
+        [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
-        [ForeignKey(nameof(IdMetodoControl))]
+
+        [ForeignKey(nameof(Residuo))]
+        public int IdResiduo { get; set; }
+
+        [ForeignKey(nameof(MetodoControl))]
         public int IdMetodoControl { get; set; }
+        public required string Observaciones { get; set; }  
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;
 
 
         public virtual Usuario? Usuario { get; set; }
+        public virtual Residuos? Residuo { get; set; }
         public virtual MetodoControl? MetodoControl { get; set; }
     }
 }

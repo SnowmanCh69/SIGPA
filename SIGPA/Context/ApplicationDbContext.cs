@@ -56,11 +56,7 @@ namespace SIGPA.Context
                 .HasForeignKey(rp => rp.IdPartida)
                 .OnDelete(DeleteBehavior.NoAction); // This is the important part
 
-            modelBuilder.Entity<ResiduosPartida>()
-                .HasOne(rp => rp.Residuos)
-                .WithMany(r => r.ResiduosPartidas) // Assuming this is the collection in Residuos
-                .HasForeignKey(rp => rp.IdResiduo)
-                .OnDelete(DeleteBehavior.NoAction); // This is the important part
+            
 
 
             // Filter entities with IsDeleted = true

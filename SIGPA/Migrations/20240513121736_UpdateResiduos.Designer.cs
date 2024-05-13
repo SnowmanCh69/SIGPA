@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGPA.Context;
 
@@ -11,9 +12,11 @@ using SIGPA.Context;
 namespace SIGPA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240513121736_UpdateResiduos")]
+    partial class UpdateResiduos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,26 +42,23 @@ namespace SIGPA.Migrations
                     b.Property<int>("IdMetodoControl")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdResiduo")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Observaciones")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("MetodoControlIdMetodoControl")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioIdUsuario")
+                        .HasColumnType("int");
 
                     b.HasKey("IdControlCalidad");
 
-                    b.HasIndex("IdMetodoControl");
+                    b.HasIndex("MetodoControlIdMetodoControl");
 
-                    b.HasIndex("IdResiduo");
-
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("ControlCalidad");
                 });
@@ -440,25 +440,13 @@ namespace SIGPA.Migrations
                 {
                     b.HasOne("SIGPA.Models.MetodoControl", "MetodoControl")
                         .WithMany()
-                        .HasForeignKey("IdMetodoControl")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SIGPA.Models.Residuos", "Residuo")
-                        .WithMany()
-                        .HasForeignKey("IdResiduo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MetodoControlIdMetodoControl");
 
                     b.HasOne("SIGPA.Models.Usuario", "Usuario")
                         .WithMany("ControlCalidad")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioIdUsuario");
 
                     b.Navigation("MetodoControl");
-
-                    b.Navigation("Residuo");
 
                     b.Navigation("Usuario");
                 });

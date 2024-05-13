@@ -17,7 +17,6 @@ namespace SIGPA.Repositories
         Task<Usuario?> GetUsuario(int id); //Obtener un usuario por su id
         Task<Usuario?> GetUsuarioByUsername(string username, int IdRolUsuario); //Obtener un usuario por su nombre de usuario
         Task<Usuario?> GetUsuarioByEmail(string email, int IdRolUsuario); //Obtener un usuario por su email
-
         Task<Usuario> CreateUsuario(Usuario usuario); //Crear un usuario
         Task<Usuario> UpdateUsuario(Usuario usuario); //Actualizar un usuario
         Task<Usuario?> DeleteUsuario(int id); //Eliminar un usuario
@@ -33,23 +32,40 @@ namespace SIGPA.Repositories
             // Check for username or email
             if (authRequest.Username == null)
             {
-                usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.EmailUsuario == authRequest.EmailUsuario && u.Password == authRequest.Password);
+                if(authRequest.IdRolUsuario != null)
+                {
+                    usuario = await db.Usuarios.FirstOrDefaultAsync(u =>
+                    u.EmailUsuario == authRequest.EmailUsuario && u.Password == authRequest.Password && u.IdRolUsuario == authRequest.IdRolUsuario);
+                }
+                else
+                {
+                    usuario = await db.Usuarios.FirstOrDefaultAsync(u =>
+                    u.EmailUsuario == authRequest.EmailUsuario && u.Password == authRequest.Password);
+                }
             }
             else
             {
-                usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Username == authRequest.Username && u.Password == authRequest.Password);
+                if(authRequest.IdRolUsuario != null)
+                {
+                    usuario = await db.Usuarios.FirstOrDefaultAsync(u =>
+                      u.Username == authRequest.Username && u.Password == authRequest.Password && u.IdRolUsuario == authRequest.IdRolUsuario);
+                }
+                else
+                {
+                    usuario = await db.Usuarios.FirstOrDefaultAsync(u =>
+                    u.Username == authRequest.Username && u.Password == authRequest.Password);
+                }
             }
-
 
             if (usuario == null) return null;
 
-            // Generate JWT
+            //Generate JWT
+
             string token = await GenerateJwtToken(usuario);
 
             return new AuthResponse(usuario, token);
+
         }
-
-
 
         // helper methods
         // Genera un token JWT para autenticación y autorización de usuarios.
@@ -95,14 +111,6 @@ namespace SIGPA.Repositories
             return await db.Usuarios.FirstOrDefaultAsync(u => u.EmailUsuario == email && u.IdRolUsuario == IdRolUsuario);
         }
 
-        public async Task<Usuario?> GetUsuario(string? username = null, string? email = null) // Obtener un usuario por su nombre de usuario o email
-        {
-            if (username != null)
-                return await db.Usuarios.FirstOrDefaultAsync(u => u.Username == username);
-            if (email != null)
-                return await db.Usuarios.FirstOrDefaultAsync(u => u.EmailUsuario == email);
-            return null;
-        }
 
         public async Task<Usuario> CreateUsuario(Usuario usuario) // Crear un usuario
         {

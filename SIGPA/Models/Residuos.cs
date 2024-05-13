@@ -21,18 +21,12 @@ namespace SIGPA.Models
         [ForeignKey(nameof(Usuario))]
         public int IdUsuario { get; set; }
 
-        [ForeignKey(nameof(ResiduosPartida))]
-        public int IdResiduosPartida { get; set; }
+
 
         [JsonIgnore]
         public bool IsDeleted { get; set; } = true;
 
         public virtual EstadoResiduos? EstadoResiduos { get; set; }
         public virtual Usuario? Usuario { get; set; }
-        public virtual ResiduosPartida? ResiduosPartida { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<ResiduosPartida> ResiduosPartidas { get; set; }
-
     }
 }
