@@ -39,7 +39,7 @@ namespace SIGPA.Controllers
         )
         {
             var residuo = await residuosService.CreateResiduo(NombreResiduo, FechaRegistro, IdEstadoResiduos, CantidadRegistrada, IdUsuario);
-            return CreatedAtAction(nameof(GetResiduo), new { id = residuo.IdResiduos }, residuo);
+            return CreatedAtAction(nameof(GetResiduo), new { id = residuo.IdResiduo }, residuo);
         }
 
         [HttpPut]

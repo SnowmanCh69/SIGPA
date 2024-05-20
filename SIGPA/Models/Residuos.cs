@@ -8,7 +8,7 @@ namespace SIGPA.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdResiduos { get; set; }
+        public int IdResiduo { get; set; }
 
         public required string NombreResiduo { get; set; }
         public required DateOnly FechaRegistro { get; set; }
