@@ -74,7 +74,13 @@ namespace SIGPA.Context
                 .HasOne(p => p.Vehiculo)
                 .WithMany()
                 .HasForeignKey(p => p.IdVehiculo)
-                .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCAD
+                .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCAD+
+
+            modelBuilder.Entity<ControlCalidad>()
+        .HasOne(c => c.Usuario)
+        .WithMany()
+        .HasForeignKey(c => c.IdUsuario)
+        .OnDelete(DeleteBehavior.NoAction);
 
 
 

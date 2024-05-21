@@ -179,7 +179,7 @@ namespace SIGPA.Migrations
                 name: "Residuos",
                 columns: table => new
                 {
-                    IdResiduos = table.Column<int>(type: "int", nullable: false)
+                    IdResiduo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreResiduo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaRegistro = table.Column<DateOnly>(type: "date", nullable: false),
@@ -190,7 +190,7 @@ namespace SIGPA.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Residuos", x => x.IdResiduos);
+                    table.PrimaryKey("PK_Residuos", x => x.IdResiduo);
                     table.ForeignKey(
                         name: "FK_Residuos_EstadoResiduos_IdEstadoResiduos",
                         column: x => x.IdEstadoResiduos,
@@ -206,43 +206,6 @@ namespace SIGPA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RutaRecolecta",
-                columns: table => new
-                {
-                    IdRutaRecolecta = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PuntoInicio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PuntoFinalizacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdEstadoRuta = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    IdVehiculo = table.Column<int>(type: "int", nullable: false),
-                    FechaRecoleccion = table.Column<DateOnly>(type: "date", nullable: false),
-                    IsNotDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RutaRecolecta", x => x.IdRutaRecolecta);
-                    table.ForeignKey(
-                        name: "FK_RutaRecolecta_EstadoRuta_IdEstadoRuta",
-                        column: x => x.IdEstadoRuta,
-                        principalTable: "EstadoRuta",
-                        principalColumn: "IdEstadoRuta",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RutaRecolecta_Usuarios_IdUsuario",
-                        column: x => x.IdUsuario,
-                        principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RutaRecolecta_Vehiculo_IdVehiculo",
-                        column: x => x.IdVehiculo,
-                        principalTable: "Vehiculo",
-                        principalColumn: "IdVehiculo",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ControlCalidad",
                 columns: table => new
                 {
@@ -253,7 +216,8 @@ namespace SIGPA.Migrations
                     IdResiduo = table.Column<int>(type: "int", nullable: false),
                     IdMetodoControl = table.Column<int>(type: "int", nullable: false),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsNotDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsNotDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    UsuarioIdUsuario = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -268,14 +232,18 @@ namespace SIGPA.Migrations
                         name: "FK_ControlCalidad_Residuos_IdResiduo",
                         column: x => x.IdResiduo,
                         principalTable: "Residuos",
-                        principalColumn: "IdResiduos",
+                        principalColumn: "IdResiduo",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ControlCalidad_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
                         principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdUsuario");
+                    table.ForeignKey(
+                        name: "FK_ControlCalidad_Usuarios_UsuarioIdUsuario",
+                        column: x => x.UsuarioIdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -300,8 +268,58 @@ namespace SIGPA.Migrations
                         name: "FK_ResiduosPartida_Residuos_IdResiduo",
                         column: x => x.IdResiduo,
                         principalTable: "Residuos",
-                        principalColumn: "IdResiduos",
+                        principalColumn: "IdResiduo",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RutaRecolecta",
+                columns: table => new
+                {
+                    IdRutaRecolecta = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PuntoInicio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PuntoFinalizacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdEstadoRuta = table.Column<int>(type: "int", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdVehiculo = table.Column<int>(type: "int", nullable: false),
+                    IdResiduo = table.Column<int>(type: "int", nullable: false),
+                    FechaRecoleccion = table.Column<DateOnly>(type: "date", nullable: false),
+                    IsNotDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    UsuarioIdUsuario = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RutaRecolecta", x => x.IdRutaRecolecta);
+                    table.ForeignKey(
+                        name: "FK_RutaRecolecta_EstadoRuta_IdEstadoRuta",
+                        column: x => x.IdEstadoRuta,
+                        principalTable: "EstadoRuta",
+                        principalColumn: "IdEstadoRuta",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RutaRecolecta_Residuos_IdResiduo",
+                        column: x => x.IdResiduo,
+                        principalTable: "Residuos",
+                        principalColumn: "IdResiduo",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RutaRecolecta_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RutaRecolecta_Usuarios_UsuarioIdUsuario",
+                        column: x => x.UsuarioIdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario");
+                    table.ForeignKey(
+                        name: "FK_RutaRecolecta_Vehiculo_IdVehiculo",
+                        column: x => x.IdVehiculo,
+                        principalTable: "Vehiculo",
+                        principalColumn: "IdVehiculo",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,14 +340,14 @@ namespace SIGPA.Migrations
                         name: "FK_RecolectaResiduos_Residuos_IdResiduo",
                         column: x => x.IdResiduo,
                         principalTable: "Residuos",
-                        principalColumn: "IdResiduos",
+                        principalColumn: "IdResiduo",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RecolectaResiduos_RutaRecolecta_IdRutaRecolecta",
                         column: x => x.IdRutaRecolecta,
                         principalTable: "RutaRecolecta",
                         principalColumn: "IdRutaRecolecta",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RecolectaResiduos_Usuarios_UsuarioIdUsuario",
                         column: x => x.UsuarioIdUsuario,
@@ -351,6 +369,11 @@ namespace SIGPA.Migrations
                 name: "IX_ControlCalidad_IdUsuario",
                 table: "ControlCalidad",
                 column: "IdUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ControlCalidad_UsuarioIdUsuario",
+                table: "ControlCalidad",
+                column: "UsuarioIdUsuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Partida_IdNivel",
@@ -403,6 +426,11 @@ namespace SIGPA.Migrations
                 column: "IdEstadoRuta");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RutaRecolecta_IdResiduo",
+                table: "RutaRecolecta",
+                column: "IdResiduo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RutaRecolecta_IdUsuario",
                 table: "RutaRecolecta",
                 column: "IdUsuario");
@@ -411,6 +439,11 @@ namespace SIGPA.Migrations
                 name: "IX_RutaRecolecta_IdVehiculo",
                 table: "RutaRecolecta",
                 column: "IdVehiculo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RutaRecolecta_UsuarioIdUsuario",
+                table: "RutaRecolecta",
+                column: "UsuarioIdUsuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_IdRolUsuario",
@@ -445,10 +478,10 @@ namespace SIGPA.Migrations
                 name: "Partida");
 
             migrationBuilder.DropTable(
-                name: "Residuos");
+                name: "EstadoRuta");
 
             migrationBuilder.DropTable(
-                name: "EstadoRuta");
+                name: "Residuos");
 
             migrationBuilder.DropTable(
                 name: "Vehiculo");

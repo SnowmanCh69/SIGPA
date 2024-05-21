@@ -52,6 +52,9 @@ namespace SIGPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UsuarioIdUsuario")
+                        .HasColumnType("int");
+
                     b.HasKey("IdControlCalidad");
 
                     b.HasIndex("IdMetodoControl");
@@ -59,6 +62,8 @@ namespace SIGPA.Migrations
                     b.HasIndex("IdResiduo");
 
                     b.HasIndex("IdUsuario");
+
+                    b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("ControlCalidad");
                 });
@@ -461,10 +466,14 @@ namespace SIGPA.Migrations
                         .IsRequired();
 
                     b.HasOne("SIGPA.Models.Usuario", "Usuario")
-                        .WithMany("ControlCalidad")
+                        .WithMany()
                         .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SIGPA.Models.Usuario", null)
+                        .WithMany("ControlCalidad")
+                        .HasForeignKey("UsuarioIdUsuario");
 
                     b.Navigation("MetodoControl");
 
