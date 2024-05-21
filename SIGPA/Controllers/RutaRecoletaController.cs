@@ -55,7 +55,7 @@ namespace SIGPA.Controllers
           [FromForm] int? IdUsuario,
           [FromForm] int? IdVehiculo,
           [FromForm] int? IdResiduo,
-          [FromForm] DateOnly? FechaRecoleccion,
+          [FromForm] DateOnly? FechaRecoleccion
           
          )
         {
