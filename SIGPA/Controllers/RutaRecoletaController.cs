@@ -54,8 +54,9 @@ namespace SIGPA.Controllers
           [FromForm] int? IdEstadoRuta,
           [FromForm] int? IdUsuario,
           [FromForm] int? IdVehiculo,
+          [FromForm] int? IdResiduo,
           [FromForm] DateOnly? FechaRecoleccion,
-          [FromForm] int? IdResiduo
+          
          )
         {
             var rutaRecolecta = await rutaRecolectaService.UpdateRutaRecolecta(IdRutaRecolecta, PuntoIncio, PuntoFinalizacion, IdEstadoRuta, IdUsuario, IdVehiculo, IdResiduo,FechaRecoleccion);

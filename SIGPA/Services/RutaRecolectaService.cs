@@ -85,8 +85,9 @@ namespace SIGPA.Services
             rutaRecolecta.IdEstadoRuta = IdEstadoRuta ?? rutaRecolecta.IdEstadoRuta;
             rutaRecolecta.IdUsuario = IdUsuario ?? rutaRecolecta.IdUsuario;
             rutaRecolecta.IdVehiculo = IdVehiculo ?? rutaRecolecta.IdVehiculo;
-            rutaRecolecta.FechaRecoleccion = FechaRecoleccion ?? rutaRecolecta.FechaRecoleccion;
             rutaRecolecta.IdResiduo = IdResiduo ?? rutaRecolecta.IdResiduo;
+            rutaRecolecta.FechaRecoleccion = FechaRecoleccion ?? rutaRecolecta.FechaRecoleccion;
+            
             return await rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
             
         }
