@@ -43,11 +43,7 @@ namespace SIGPA.Context
                 .HasForeignKey(p => p.IdUsuario)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<RecolectaResiduos>()
-                .HasOne(r => r.RutaRecolecta)
-                .WithMany()
-                .HasForeignKey(r => r.IdRutaRecolecta)
-                .OnDelete(DeleteBehavior.Restrict);
+           
 
             modelBuilder.Entity<ResiduosPartida>()
                 .HasOne(rp => rp.Partida)
@@ -55,11 +51,30 @@ namespace SIGPA.Context
                 .HasForeignKey(rp => rp.IdPartida)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ControlCalidad>()
-    .HasOne(p => p.Usuario)
-    .WithMany(b => b.ControlCalidad)
-    .HasForeignKey(p => p.IdUsuario)
-    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RutaRecolecta>()
+            .HasOne(p => p.Residuos)
+            .WithMany()
+            .HasForeignKey(p => p.IdResiduo)
+            .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCADE
+
+            modelBuilder.Entity<RutaRecolecta>()
+                .HasOne(p => p.EstadoRuta)
+                .WithMany()
+                .HasForeignKey(p => p.IdEstadoRuta)
+                .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCADE
+
+            modelBuilder.Entity<RutaRecolecta>()
+                .HasOne(p => p.Usuario)
+                .WithMany()
+                .HasForeignKey(p => p.IdUsuario)
+                .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCADE
+
+            modelBuilder.Entity<RutaRecolecta>()
+                .HasOne(p => p.Vehiculo)
+                .WithMany()
+                .HasForeignKey(p => p.IdVehiculo)
+                .OnDelete(DeleteBehavior.Restrict); // Evita ON DELETE CASCAD
 
 
 

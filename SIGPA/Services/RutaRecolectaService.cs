@@ -13,6 +13,7 @@ namespace SIGPA.Services
           int IdEstadoRuta,
           int IdUsuario,
           int IdVehiculo,
+          int IdResiduo,
           DateOnly FechaRecoleccion
         );
         Task<RutaRecolecta> UpdateRutaRecolecta(
@@ -22,6 +23,7 @@ namespace SIGPA.Services
           int? IdEstadoRuta,
           int? IdUsuario,
           int? IdVehiculo,
+          int? IdResiduo,
           DateOnly? FechaRecoleccion
         );
         Task<RutaRecolecta?> DeleteRutaRecolecta(int id);
@@ -48,6 +50,7 @@ namespace SIGPA.Services
            int IdEstadoRuta,
            int IdUsuario,
            int IdVehiculo,
+           int IdResiduo,
            DateOnly FechaRecoleccion
          )
         {
@@ -58,6 +61,7 @@ namespace SIGPA.Services
                 IdEstadoRuta = IdEstadoRuta,
                 IdUsuario = IdUsuario,
                 IdVehiculo = IdVehiculo,
+                IdResiduo = IdResiduo,
                 FechaRecoleccion = FechaRecoleccion
                 
             });
@@ -70,6 +74,7 @@ namespace SIGPA.Services
            int? IdEstadoRuta,
            int? IdUsuario,
            int? IdVehiculo,
+           int? IdResiduo,
            DateOnly? FechaRecoleccion
           )
         {
@@ -81,6 +86,7 @@ namespace SIGPA.Services
             rutaRecolecta.IdUsuario = IdUsuario ?? rutaRecolecta.IdUsuario;
             rutaRecolecta.IdVehiculo = IdVehiculo ?? rutaRecolecta.IdVehiculo;
             rutaRecolecta.FechaRecoleccion = FechaRecoleccion ?? rutaRecolecta.FechaRecoleccion;
+            rutaRecolecta.IdResiduo = IdResiduo ?? rutaRecolecta.IdResiduo;
             return await rutaRecolectaRepository.UpdateRutaRecolecta(rutaRecolecta);
             
         }

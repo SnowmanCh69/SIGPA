@@ -9,6 +9,7 @@ namespace SIGPA.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdRutaRecolecta { get; set; }
+
         public required string PuntoInicio { get; set; }
         public required string PuntoFinalizacion { get; set; }
 
@@ -20,16 +21,18 @@ namespace SIGPA.Models
 
         [ForeignKey(nameof(Vehiculo))]
         public int IdVehiculo { get; set; }
+
+        [ForeignKey(nameof(Residuos))]
+        public int IdResiduo { get; set; }
+
         public required DateOnly FechaRecoleccion { get; set; }
 
         [JsonIgnore]
         public bool IsNotDeleted { get; set; } = true;
 
-
         public virtual Usuario? Usuario { get; set; }
         public virtual EstadoRuta? EstadoRuta { get; set; }
+        public virtual Residuos? Residuos { get; set; }
         public virtual Vehiculo? Vehiculo { get; set; }
-
-
     }
 }
